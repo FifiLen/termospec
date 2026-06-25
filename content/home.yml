@@ -1,0 +1,33 @@
+hero:
+  title: Kontrola temperatury w wymagających środowiskach
+  description: Rozwiązania chłodnicze i klimatyzacyjne dla podziemnych wyrobisk górniczych, tuneli oraz instalacji przemysłowych.
+  ctaLabel: Produkty
+  ctaHref: /produkty
+  image: ""
+sections:
+  intro:
+    eyebrow: Zakres
+    title: Chłodzenie, wentylacja i bezpieczeństwo pracy
+    description: Strona porządkuje ofertę wokół urządzeń chłodniczych, układów klimatyzacji kopalń oraz obsługi instalacji pracujących w trudnych warunkach.
+  about:
+    title: Techniczne rozwiązania dla przemysłu
+    description: Treści produktowe pozostają oparte na rodzinach urządzeń, parametrach, zastosowaniach i opisach działania. Nie dodajemy niepotwierdzonych certyfikatów, realizacji ani deklaracji.
+  services:
+    title: Obszary oferty
+    items:
+      - title: Urządzenia bezpośredniego działania
+        description: Tymczasowa rodzina katalogowa dla urządzeń chłodzących powietrze bezpośrednio w wyrobisku.
+      - title: Urządzenia pośredniego działania
+        description: Tymczasowa rodzina katalogowa dla układów chłodzenia wody zasilającej chłodnice powietrza.
+      - title: Chłodnice powietrza CP(N)
+        description: Chłodnice CP(N) do współpracy z systemami klimatyzacji centralnej lub grupowej.
+      - title: Chłodnice wyparne CWW
+        description: Urządzenia CWW do chłodzenia wody w układach skraplaczy i instalacjach pomocniczych.
+  team:
+    title: Zespół techniczny
+    description: Dane zespołu wymagają potwierdzenia przed publikacją.
+  contact:
+    title: Zapytanie techniczne
+    description: Przekaż wymagania instalacji, zakres mocy i środowisko pracy.
+    ctaLabel: Kontakt
+    ctaHref: /#kontakt
