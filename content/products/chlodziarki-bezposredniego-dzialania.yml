@@ -1,0 +1,74 @@
+title: "Urządzenia bezpośredniego działania"
+slug: "chlodziarki-bezposredniego-dzialania"
+category: "Urządzenia bezpośredniego działania"
+status: "draft"
+order: 10
+isFeatured: true
+lead: "Lokalne chłodziarki bezpośredniego działania do klimatyzacji robót przodkowych, chodników, przekopów i ścian eksploatacyjnych."
+shortDescription: "Urządzenia o mocy chłodniczej 150-450 kW przeznaczone do bezpośredniego chłodzenia powietrza w podziemnych wyrobiskach górniczych."
+seo:
+  title: "Urządzenia bezpośredniego działania | Termospec"
+  description: "Urządzenia bezpośredniego działania o mocy 150-450 kW do chłodzenia powietrza w podziemnych wyrobiskach górniczych."
+powerRange: "150-450 kW"
+applications:
+  - "Roboty przodkowe"
+  - "Chodniki i przekopy"
+  - "Ściany eksploatacyjne"
+  - "Podziemne kopalnie węgla kamiennego"
+components:
+  - "Zespół maszynowy ze sprężarką, silnikiem i skraplaczem"
+  - "Parownik pełniący funkcję chłodnicy powietrza"
+  - "Obieg wody chłodzącej skraplacz"
+features:
+  - "Bezpośrednie chłodzenie powietrza na parowniku"
+  - "Praca z czynnikami chłodniczymi bez chlorowcowych HFC"
+  - "Możliwość pracy z otwartym lub zamkniętym układem chłodzenia skraplacza"
+  - "Zastosowanie w wyrobiskach zagrożonych wybuchem"
+serviceScope:
+  - "Dobór mocy chłodniczej i konfiguracji lokalnej chłodziarki do warunków wyrobiska"
+  - "Produkcja i przygotowanie urządzenia do pracy w wymagającym środowisku kopalnianym"
+  - "Wsparcie uruchomienia oraz integracji z obiegiem chłodzenia skraplacza"
+  - "Serwis, przeglądy i modernizacje elementów układu chłodniczego"
+specs:
+  - label: "Zakres mocy"
+    value: "150-450 kW"
+  - label: "Typ chłodzenia"
+    value: "Bezpośrednie chłodzenie powietrza"
+  - label: "Środowisko pracy"
+    value: "Podziemne wyrobiska górnicze"
+sections:
+  - title: "Zastosowanie"
+    body: "W podziemnych kopalniach węgla kamiennego stosuje się lokalne chłodziarki bezpośredniego działania do klimatyzacji robót przodkowych drążonych chodników, przekopów i ścian eksploatacyjnych."
+  - title: "Zasada działania"
+    body: "W chłodziarce bezpośredniego działania parownik jest wykorzystywany do bezpośredniego chłodzenia powietrza jako chłodnica powietrza. Przepływające przez parownik powietrze o temperaturze powyżej 26 °C chłodzone jest o 10-14 °C."
+  - title: "Obieg chłodzenia"
+    body: "Woda ciepła z obiegu chłodzenia skraplacza lokalnych chłodziarek bezpośredniego działania jest chłodzona w zainstalowanych w zużytym prądzie powietrza chłodnicach wyparnych wody. Stosowany może być również system bezpośredniego chłodzenia skraplacza wodą technologiczną, tzw. system otwarty chłodzenia."
+heroImage: "/images/products/chlodziarka-bezposredniego-dzialania-wyrobisko-ujecie-01.png"
+imageAlt: "Chłodziarka bezpośredniego działania w podziemnym wyrobisku"
+headerSketch:
+  src: "/images/products/chlodziarka-bezposredniego-dzialania-schemat-liniowy.png"
+  alt: "Schemat liniowy zestawu chłodziarki bezpośredniego działania"
+gallery:
+  - src: "/images/products/chlodziarka-bezposredniego-dzialania-wyrobisko-ujecie-02.png"
+    alt: "Chłodziarka bezpośredniego działania w wyrobisku, ujęcie od strony wentylatora"
+relatedProjects:
+  - number: "R/01"
+    category: "klimatyzacja kopalń"
+    title: "Układ chłodzenia dla wyrobisk podziemnych"
+    body: "Dobór i obsługa rozwiązania chłodniczego dla infrastruktury pracującej w wymagających warunkach eksploatacyjnych."
+    image: "/images/realizations/uklad-chlodzenia-wyrobisko-podziemne.png"
+    imageAlt: "Przemysłowy układ chłodzenia w wyrobisku podziemnym"
+    scope:
+      - "analiza warunków"
+      - "dobór urządzeń"
+      - "serwis układu"
+  - number: "R/03"
+    category: "infrastruktura tunelowa"
+    title: "Rozwiązania techniczne dla obiektu tunelowego"
+    body: "Wsparcie instalacji odpowiedzialnych za stabilne warunki pracy i bezpieczeństwo infrastruktury."
+    image: "/images/realizations/instalacja-techniczna-rurociagi.png"
+    imageAlt: "Instalacja techniczna z rurociągami w obiekcie przemysłowym"
+    scope:
+      - "projekt techniczny"
+      - "dostawa rozwiązań"
+      - "obsługa serwisowa"

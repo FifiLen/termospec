@@ -1,0 +1,75 @@
+title: "Urządzenia pośredniego działania"
+slug: "chlodziarki-posredniego-dzialania"
+category: "Urządzenia pośredniego działania"
+status: "draft"
+order: 20
+isFeatured: true
+lead: "Chłodziarki pośredniego działania przeznaczone do chłodzenia wody doprowadzanej do chodnikowych i ścianowych chłodnic powietrza."
+shortDescription: "Rodzina urządzeń o mocy chłodniczej 300-900 kW dla podziemnych wyrobisk górniczych."
+seo:
+  title: "Urządzenia pośredniego działania | Termospec"
+  description: "Urządzenia pośredniego działania o mocy 300-900 kW do chłodzenia wody dla chłodnic powietrza w kopalniach."
+powerRange: "300-900 kW"
+applications:
+  - "Chodnikowe chłodnice powietrza"
+  - "Ścianowe chłodnice powietrza"
+  - "Układy klimatyzacji kopalń"
+  - "Podziemne wyrobiska górnicze"
+components:
+  - "Zespół maszynowy ze sprężarką, silnikiem i skraplaczem"
+  - "Parownik jako chłodnica wody doprowadzanej do chłodnic powietrza"
+  - "Obieg wody chłodzącej skraplacz"
+  - "Urządzenia pomocnicze: rurociągi, pompy, filtry"
+features:
+  - "Pośrednie chłodzenie przez obieg wody"
+  - "Współpraca z chłodnicami powietrza w wyrobiskach"
+  - "Możliwość zastosowania systemu otwartego chłodzenia skraplacza"
+  - "Opcjonalne zastosowanie w układach chłodzenia silników, przekładni i przemienników częstotliwości"
+serviceScope:
+  - "Dobór układu pośredniego do chłodnic powietrza i warunków pracy wyrobiska"
+  - "Kompletacja urządzenia z elementami obiegu wody i osprzętem pomocniczym"
+  - "Wsparcie przy uruchomieniu oraz integracji z chłodnicami powietrza"
+  - "Serwis, przeglądy i modernizacje układów pośredniego chłodzenia"
+specs:
+  - label: "Zakres mocy"
+    value: "300-900 kW"
+  - label: "Medium robocze"
+    value: "Woda doprowadzana do chłodnic powietrza"
+  - label: "Typ układu"
+    value: "Pośrednie działanie"
+sections:
+  - title: "Zastosowanie"
+    body: "Chłodziarki pośredniego działania o mocy chłodniczej 300-900 kW są przeznaczone do chłodzenia wody, która doprowadzana jest do chodnikowych i/lub ścianowych chłodnic powietrza w podziemnych wyrobiskach górniczych."
+  - title: "Chłodzenie skraplacza"
+    body: "Woda ciepła z obiegu chłodzenia skraplacza lokalnych chłodziarek pośredniego działania jest chłodzona w zainstalowanych w zużytym prądzie powietrza chłodnicach wyparnych wody. Stosowany może być również system bezpośredniego chłodzenia skraplacza wodą technologiczną, tzw. system otwarty chłodzenia."
+  - title: "Dodatkowe zastosowania"
+    body: "Chłodziarki pośredniego działania mogą być również wykorzystane w opatentowanym systemie układu chłodzenia silników elektrycznych, przekładni i przemienników częstotliwości pracujących w podziemnych zakładach górniczych."
+heroImage: "/images/products/chlodziarka-posredniego-dzialania-wyrobisko-ujecie-01.png"
+imageAlt: "Chłodziarka pośredniego działania w podziemnym wyrobisku"
+headerSketch:
+  src: "/images/products/chlodziarka-posredniego-dzialania-schemat-liniowy.png"
+  alt: "Schemat liniowy zestawu chłodziarki pośredniego działania"
+gallery:
+  - src: "/images/products/chlodziarka-posredniego-dzialania-wyrobisko-ujecie-02.png"
+    alt: "Chłodziarka pośredniego działania w wyrobisku, ujęcie od strony instalacji"
+relatedProjects:
+  - number: "R/01"
+    category: "klimatyzacja kopalń"
+    title: "Układ chłodzenia dla wyrobisk podziemnych"
+    body: "Dobór i obsługa rozwiązania chłodniczego dla infrastruktury pracującej w wymagających warunkach eksploatacyjnych."
+    image: "/images/realizations/uklad-chlodzenia-wyrobisko-podziemne.png"
+    imageAlt: "Przemysłowy układ chłodzenia w wyrobisku podziemnym"
+    scope:
+      - "analiza warunków"
+      - "dobór urządzeń"
+      - "serwis układu"
+  - number: "R/02"
+    category: "wentylacja przemysłowa"
+    title: "Modernizacja elementów systemu wentylacji"
+    body: "Prace związane z utrzymaniem sprawności przepływu powietrza oraz obsługą urządzeń wentylacyjnych."
+    image: "/images/realizations/instalacja-techniczna-rurociagi.png"
+    imageAlt: "Instalacja techniczna z rurociągami w obiekcie przemysłowym"
+    scope:
+      - "przegląd techniczny"
+      - "modernizacja"
+      - "utrzymanie ruchu"

@@ -1,0 +1,71 @@
+title: "Chłodnice wyparne CWW"
+slug: "chlodnice-wyparne-cww"
+category: "Chłodnice wyparne CWW"
+status: "draft"
+order: 50
+isFeatured: false
+lead: "Chłodnice wyparne wody do chłodzenia wody obiegowej skraplaczy urządzeń chłodniczych."
+shortDescription: "Chłodnice CWW o mocy chłodniczej 300-600 kW do chłodzenia wody obiegowej skraplaczy."
+seo:
+  title: "Chłodnice wyparne CWW | Termospec"
+  description: "Chłodnice wyparne CWW o mocy 300-600 kW do chłodzenia wody obiegowej skraplaczy urządzeń chłodniczych."
+powerRange: "300-600 kW"
+applications:
+  - "Chłodzenie wody obiegowej skraplaczy"
+  - "Układy chłodnicze pośredniego działania"
+  - "Obiegi zamknięte z uzupełnianiem wody"
+components:
+  - "Pakiet rurek chłodnicy"
+  - "Układ zraszania wodą krążącą"
+  - "Automatyczne uzupełnianie świeżą wodą"
+features:
+  - "Zraszanie czołowe i górne pakietu rurek"
+  - "Praca z wodą krążącą w zamkniętym obiegu"
+  - "Automatyczne uzupełnianie odparowanej wody"
+  - "Dedykowane chłodzenie wody skraplaczy"
+serviceScope:
+  - "Dobór chłodnicy wyparnej do obiegu wody skraplacza urządzeń chłodniczych"
+  - "Przygotowanie konfiguracji z układem zraszania i automatycznym uzupełnianiem wody"
+  - "Wsparcie uruchomienia oraz nastaw eksploatacyjnych obiegu"
+  - "Przeglądy, czyszczenie i serwis elementów chłodnicy w trakcie pracy"
+specs:
+  - label: "Zakres mocy"
+    value: "300-600 kW"
+  - label: "Funkcja"
+    value: "Chłodzenie wody obiegowej"
+  - label: "Obieg"
+    value: "Zamknięty z uzupełnianiem wody"
+sections:
+  - title: "Zastosowanie"
+    body: "Chłodnice wyparne CWW o mocy chłodniczej 300 do 600 kW są przeznaczone do chłodzenia wody obiegowej skraplaczy urządzeń chłodniczych."
+  - title: "Zasada pracy"
+    body: "Pakiet rurek chłodnicy jest zraszany czołowo oraz z góry wodą krążącą w zamkniętym obiegu. Woda odparowana w tym obiegu uzupełniana jest automatycznie świeżą wodą z powierzchni."
+heroImage: "/images/products/chlodnica-wyparna-cww-wyrobisko-ujecie-01.png"
+imageAlt: "Chłodnica wyparna CWW w podziemnym wyrobisku"
+headerSketch:
+  src: "/images/products/chlodnica-wyparna-cww-schemat-liniowy.png"
+  alt: "Schemat liniowy chłodnicy wyparnej CWW"
+gallery:
+  - src: "/images/products/chlodnica-wyparna-cww-wyrobisko-ujecie-02.png"
+    alt: "Chłodnica wyparna CWW w wyrobisku, ujęcie od strony pakietu rurek"
+relatedProjects:
+  - number: "R/01"
+    category: "klimatyzacja kopalń"
+    title: "Układ chłodzenia dla wyrobisk podziemnych"
+    body: "Dobór i obsługa rozwiązania chłodniczego dla infrastruktury pracującej w wymagających warunkach eksploatacyjnych."
+    image: "/images/realizations/uklad-chlodzenia-instalacja-przemyslowa.png"
+    imageAlt: "Przemysłowa instalacja chłodzenia w obiekcie technicznym"
+    scope:
+      - "analiza warunków"
+      - "dobór urządzeń"
+      - "serwis układu"
+  - number: "R/02"
+    category: "wentylacja przemysłowa"
+    title: "Modernizacja elementów systemu wentylacji"
+    body: "Prace związane z utrzymaniem sprawności przepływu powietrza oraz obsługą urządzeń wentylacyjnych."
+    image: "/images/realizations/instalacja-techniczna-rurociagi.png"
+    imageAlt: "Instalacja techniczna z rurociągami w obiekcie przemysłowym"
+    scope:
+      - "przegląd techniczny"
+      - "modernizacja"
+      - "utrzymanie ruchu"

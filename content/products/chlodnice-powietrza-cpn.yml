@@ -1,0 +1,74 @@
+title: "Chłodnice powietrza CP(N)"
+slug: "chlodnice-powietrza-cpn"
+category: "Chłodnice powietrza CP(N)"
+status: "draft"
+order: 40
+isFeatured: false
+lead: "Chłodnice powietrza do współpracy z systemem klimatyzacji centralnej lub grupowej w podziemnych wyrobiskach górniczych."
+shortDescription: "Chłodnice CP(N) o mocy chłodniczej 60-450 kW, przewidziane do stosowania w wyrobiskach zagrożonych wybuchem."
+seo:
+  title: "Chłodnice powietrza CP(N) | Termospec"
+  description: "Chłodnice powietrza CP(N) o mocy 60-450 kW do systemów klimatyzacji centralnej lub grupowej w kopalniach."
+powerRange: "60-450 kW"
+applications:
+  - "Systemy klimatyzacji centralnej"
+  - "Systemy klimatyzacji grupowej"
+  - "Wyrobiska przygotowawcze"
+  - "Wyrobiska przyścianowe i inne pomieszczenia kopalń"
+components:
+  - "Wymiennik ciepła powietrze-woda"
+  - "Wentylator"
+  - "Obudowa w wykonaniu normalnym lub niskooporowym"
+features:
+  - "Schładzanie powietrza przez wymianę ciepła między zimną wodą i powietrzem"
+  - "Współpraca z agregatami chłodniczymi pośredniego działania"
+  - "Wersja normalna i niskooporowa"
+  - "Wykonanie kwadratowe lub okrągłe w wersji normalnej"
+serviceScope:
+  - "Dobór chłodnicy powietrza do systemu klimatyzacji centralnej lub grupowej"
+  - "Dostosowanie wykonania urządzenia do geometrii i oporów instalacji"
+  - "Wsparcie montażu oraz połączenia z obiegiem wody lodowej"
+  - "Serwis wentylatora, wymiennika i obudowy w trakcie eksploatacji"
+specs:
+  - label: "Zakres mocy"
+    value: "60-450 kW"
+  - label: "Współpraca"
+    value: "Klimatyzacja centralna lub grupowa"
+  - label: "Wersje"
+    value: "Normalna i niskooporowa"
+sections:
+  - title: "Charakterystyka"
+    body: "Chłodnice powietrza CP(N) o mocy chłodniczej 60 do 450 kW są przewidziane do stosowania w podziemnych wyrobiskach górniczych w pomieszczeniach zaliczonych do stopnia \"a\", \"b\" lub \"c\" zagrożenia wybuchem metanu i pomieszczenia klasy A i B zagrożenia wybuchem pyłu węglowego."
+  - title: "Współpraca z układem"
+    body: "Chłodnice powietrza CP są przeznaczone do współpracy z systemem klimatyzacji centralnej lub grupowej. Schładzanie powietrza odbywa się w wyniku wymiany ciepła pomiędzy zimną wodą i powietrzem. Urządzenie może być zasilane z agregatów chłodniczych pośredniego działania z parownikami chłodzącymi wodę."
+  - title: "Warianty wykonania"
+    body: "Chłodnice powietrza produkowane są w wersji normalnej oraz niskooporowej. Wersja normalna oferowana jest w wykonaniu kwadratowym lub okrągłym."
+heroImage: "/images/products/chlodnica-powietrza-cpn-wyrobisko-ujecie-01.png"
+imageAlt: "Chłodnica powietrza CP(N) w podziemnym wyrobisku"
+headerSketch:
+  src: "/images/products/chlodnica-powietrza-cpn-schemat-liniowy.png"
+  alt: "Schemat liniowy chłodnicy powietrza CP(N)"
+gallery:
+  - src: "/images/products/chlodnica-powietrza-cpn-wyrobisko-ujecie-02.png"
+    alt: "Chłodnica powietrza CP(N) w wyrobisku, ujęcie od strony wlotu powietrza"
+relatedProjects:
+  - number: "R/02"
+    category: "wentylacja przemysłowa"
+    title: "Modernizacja elementów systemu wentylacji"
+    body: "Prace związane z utrzymaniem sprawności przepływu powietrza oraz obsługą urządzeń wentylacyjnych."
+    image: "/images/realizations/instalacja-techniczna-rurociagi.png"
+    imageAlt: "Instalacja techniczna z rurociągami w obiekcie przemysłowym"
+    scope:
+      - "przegląd techniczny"
+      - "modernizacja"
+      - "utrzymanie ruchu"
+  - number: "R/01"
+    category: "klimatyzacja kopalń"
+    title: "Układ chłodzenia dla wyrobisk podziemnych"
+    body: "Dobór i obsługa rozwiązania chłodniczego dla infrastruktury pracującej w wymagających warunkach eksploatacyjnych."
+    image: "/images/realizations/uklad-chlodzenia-hala-produkcyjna.png"
+    imageAlt: "Układ chłodzenia w przestrzeni hali technicznej"
+    scope:
+      - "analiza warunków"
+      - "dobór urządzeń"
+      - "serwis układu"

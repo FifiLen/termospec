@@ -1,0 +1,73 @@
+title: "Urządzenia pośredniego działania 1-3 MW"
+slug: "chlodziarki-posredniego-dzialania-1-3mw"
+category: "Urządzenia pośredniego działania 1-3 MW"
+status: "draft"
+order: 30
+isFeatured: true
+lead: "Stacjonarne chłodziarki pośredniego działania dla większych układów chłodzenia wody w kopalniach."
+shortDescription: "Urządzenia o mocy chłodniczej 1000-3000 kW do chłodzenia wody kierowanej do chłodnic powietrza."
+seo:
+  title: "Urządzenia pośredniego działania 1-3 MW | Termospec"
+  description: "Urządzenia pośredniego działania 1-3 MW do układów chłodzenia wody w kopalniach."
+powerRange: "1000-3000 kW"
+applications:
+  - "Stacjonarne układy klimatyzacji kopalń"
+  - "Chodnikowe chłodnice powietrza"
+  - "Ścianowe chłodnice powietrza"
+  - "Wysokowydajne obiegi chłodzenia wody"
+components:
+  - "Zespół maszynowy ze sprężarką, silnikiem, sterownikiem, osprzętem i skraplaczem"
+  - "Zespół parowników i skraplacza"
+  - "Obieg wody chłodzącej skraplacz"
+  - "Urządzenia pomocnicze: rurociągi, pompy, filtry"
+features:
+  - "Zakres mocy dla większych instalacji"
+  - "Chłodzenie wody dla grupowych układów chłodniczych"
+  - "Możliwość pracy z chłodnicą wyparną wody"
+  - "Kompletacja z osprzętem i sterowaniem"
+serviceScope:
+  - "Analiza zapotrzebowania większego układu chłodzenia wody"
+  - "Dobór konfiguracji stacjonarnej chłodziarki oraz urządzeń pomocniczych"
+  - "Wsparcie wdrożenia z osprzętem, sterowaniem i obiegiem skraplacza"
+  - "Obsługa serwisowa oraz modernizacje układów o dużej mocy"
+specs:
+  - label: "Zakres mocy"
+    value: "1000-3000 kW"
+  - label: "Typ pracy"
+    value: "Stacjonarny układ pośredni"
+  - label: "Zastosowanie"
+    value: "Chłodzenie wody dla chłodnic powietrza"
+sections:
+  - title: "Zastosowanie"
+    body: "Chłodziarki pośredniego działania o mocy chłodniczej 1000-3000 kW są przeznaczone do chłodzenia wody, która doprowadzana jest do chodnikowych i/lub ścianowych chłodnic powietrza w podziemnych wyrobiskach górniczych."
+  - title: "Układ pracy"
+    body: "Woda ciepła z obiegu chłodzenia skraplacza stacjonarnych chłodziarek pośredniego działania jest chłodzona w zainstalowanych w zużytym prądzie powietrza chłodnicach wyparnych wody. Stosowany może być również system bezpośredniego chłodzenia skraplacza wodą technologiczną, tzw. system otwarty chłodzenia."
+heroImage: "/images/products/chlodziarka-posredniego-dzialania-1-3mw-wyrobisko-ujecie-01.png"
+imageAlt: "Chłodziarka pośredniego działania 1-3 MW w podziemnym wyrobisku"
+headerSketch:
+  src: "/images/products/chlodziarka-posredniego-dzialania-1-3mw-schemat-liniowy.png"
+  alt: "Schemat liniowy zestawu chłodziarki pośredniego działania 1-3 MW"
+gallery:
+  - src: "/images/products/chlodziarka-posredniego-dzialania-1-3mw-wyrobisko-ujecie-02.png"
+    alt: "Chłodziarka pośredniego działania 1-3 MW w wyrobisku, ujęcie od strony instalacji"
+relatedProjects:
+  - number: "R/01"
+    category: "klimatyzacja kopalń"
+    title: "Układ chłodzenia dla wyrobisk podziemnych"
+    body: "Dobór i obsługa rozwiązania chłodniczego dla infrastruktury pracującej w wymagających warunkach eksploatacyjnych."
+    image: "/images/realizations/uklad-chlodzenia-wyrobisko-podziemne.png"
+    imageAlt: "Przemysłowy układ chłodzenia w wyrobisku podziemnym"
+    scope:
+      - "analiza warunków"
+      - "dobór urządzeń"
+      - "serwis układu"
+  - number: "R/03"
+    category: "infrastruktura tunelowa"
+    title: "Rozwiązania techniczne dla obiektu tunelowego"
+    body: "Wsparcie instalacji odpowiedzialnych za stabilne warunki pracy i bezpieczeństwo infrastruktury."
+    image: "/images/realizations/uklad-chlodzenia-instalacja-przemyslowa.png"
+    imageAlt: "Przemysłowa instalacja chłodzenia w obiekcie technicznym"
+    scope:
+      - "projekt techniczny"
+      - "dostawa rozwiązań"
+      - "obsługa serwisowa"
