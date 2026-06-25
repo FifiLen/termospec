@@ -30,52 +30,58 @@ useSeoMeta({
 
 <template>
   <main aria-label="O firmie" class="bg-surface text-ink">
-    <section class="relative border-b border-line bg-white overflow-hidden">
-      <div class="mx-auto max-w-[96rem] pr-6 lg:pr-10">
-        <div class="grid lg:min-h-[46rem] lg:grid-cols-2">
-          <div class="pb-28 pt-10 lg:pb-32 lg:pt-44 lg:pr-12">
-            <div class="w-full max-w-2xl">
-              <NuxtImg
-                src="/termospec-logo.png"
-                alt="Termospec"
-                width="128"
-                class="block h-auto"
-              />
+    <section class="border-b border-line bg-white">
+      <div class="relative overflow-hidden">
+        <div class="mx-auto max-w-[96rem] pr-6 lg:pr-10">
+          <div class="grid lg:min-h-[46rem] lg:grid-cols-2">
+            <div class="pb-16 pt-10 lg:pb-20 lg:pt-44 lg:pr-12">
+              <div class="w-full max-w-2xl">
+                <NuxtImg
+                  src="/termospec-logo.png"
+                  alt="Termospec"
+                  width="128"
+                  class="block h-auto"
+                />
 
-              <h1
-                class="mt-10 max-w-xl font-heading text-4xl font-black leading-[0.98] tracking-[-0.05em] text-ink"
-              >
-                {{ aboutHero.title }}
-              </h1>
+                <h1
+                  class="mt-10 max-w-xl font-heading text-4xl font-black leading-[0.98] tracking-[-0.05em] text-ink"
+                >
+                  {{ aboutHero.title }}
+                </h1>
 
-              <div
-                class="mt-10 grid gap-6 text-base font-medium leading-8 text-ink/68 md:grid-cols-2"
-              >
-                <p v-for="paragraph in aboutHero.lead" :key="paragraph">
-                  {{ paragraph }}
-                </p>
+                <div
+                  class="mt-10 grid gap-6 text-base font-medium leading-8 text-ink/68 md:grid-cols-2"
+                >
+                  <p
+                    v-for="(paragraph, index) in aboutHero.lead"
+                    :key="paragraph"
+                    :class="index === 2 ? 'md:col-span-2' : undefined"
+                  >
+                    {{ paragraph }}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
+
+        <figure
+          class="relative min-h-[28rem] overflow-hidden bg-ink lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2"
+        >
+          <NuxtImg
+            :src="aboutHero.image.src"
+            :alt="aboutHero.image.alt"
+            width="1200"
+            height="1400"
+            sizes="100vw lg:50vw"
+            class="h-full w-full object-cover"
+            loading="eager"
+            decoding="async"
+          />
+        </figure>
       </div>
 
-      <figure
-        class="relative min-h-[28rem] overflow-hidden bg-ink lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2"
-      >
-        <NuxtImg
-          :src="aboutHero.image.src"
-          :alt="aboutHero.image.alt"
-          width="1200"
-          height="1400"
-          sizes="100vw lg:50vw"
-          class="h-full w-full object-cover"
-          loading="eager"
-          decoding="async"
-        />
-      </figure>
-
-      <div class="relative z-10 -mt-24 pr-6 lg:-mt-28 lg:pr-10">
+      <div class="px-6 lg:px-10">
         <div class="mx-auto max-w-[96rem]">
           <div class="grid gap-px border border-line bg-line md:grid-cols-2 lg:grid-cols-4">
             <article

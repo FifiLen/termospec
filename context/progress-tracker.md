@@ -12,6 +12,9 @@ Update this file whenever the current phase, active feature, implementation stat
 
 ## Completed
 
+- Removed the extra left gutter from the `/o-firmie` hero wrapper while keeping the right gutter. No tests/build run per owner request.
+- Adjusted the `/o-firmie` hero lead layout so the third introductory paragraph spans the full two-column text grid on tablet/desktop. No tests/build run per owner request.
+- Corrected the `/o-firmie` opening layout after the hero drifted at desktop width: the hero image is now absolutely positioned only inside its own hero wrapper instead of spanning behind the fact strip, the left hero column and fact strip have matching horizontal gutters, and the four-cell fact strip now sits as a separate band below the hero. Updated `context/content-map.md` to describe the current non-overlapping structure.
 - Removed the standalone contact page and contact search-index entry. Deleted `app/pages/kontakt.vue` and `content/kontakt.md`, changed contact CTAs and footer/search quick links from `/kontakt` to `/#kontakt`, and changed Nuxt route rules so legacy `/kontakt` redirects to the homepage contact form. Updated architecture/content/project context to record that contact is an anchor section, not a separate route.
 - Changed the `/o-firmie` realization gallery between team and contact from four images to three images and adjusted the desktop layout to three columns. Updated `content/o-firmie.md` and `context/content-map.md`. No tests/build run.
 - Added a full-width four-photo realization gallery between `TeamGrid` and `HomeContactForm` on `/o-firmie`, reusing the first four `homeRealizationPhotos` from `data/home.ts` with minimal `gap-px` spacing. Updated `content/o-firmie.md` and `context/content-map.md`. No tests/build run.
