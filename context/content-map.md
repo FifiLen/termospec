@@ -15,45 +15,21 @@ This file defines the content structure for the Termospec website. It should be 
 
 ```ts
 export const navigation = [
-  { label: "Start", href: "/" },
   { label: "O firmie", href: "/o-firmie" },
   {
-    label: "Rozwiązania",
-    href: "/rozwiazania",
+    label: "Produkty",
+    href: "/produkty",
     type: "mega",
-    groups: [
-      {
-        title: "Kopalnie i tunele",
-        description: "Rozwiązania dla środowisk o wysokich wymaganiach temperaturowych.",
-        links: [
-          { label: "Zagrożenia temperaturowe", href: "/rozwiazania/zagrozenia-temperaturowe" },
-          { label: "Chłodzenie wyrobisk", href: "/rozwiazania/chlodzenie-wyrobisk" },
-          { label: "Tunele i infrastruktura", href: "/rozwiazania/tunele" }
-        ]
-      },
-      {
-        title: "Przemysł",
-        description: "Chłodzenie, wentylacja, klimatyzacja i instalacje dla przemysłu.",
-        links: [
-          { label: "Chłodnictwo przemysłowe", href: "/rozwiazania/chlodnictwo-przemyslowe" },
-          { label: "Wentylacja i klimatyzacja", href: "/rozwiazania/wentylacja-klimatyzacja" },
-          { label: "Instalacje techniczne", href: "/rozwiazania/instalacje-techniczne" }
-        ]
-      },
-      {
-        title: "Serwis",
-        description: "Utrzymanie, modernizacja i obsługa maszyn oraz instalacji.",
-        links: [
-          { label: "Serwis maszyn", href: "/rozwiazania/serwis-maszyn" },
-          { label: "Modernizacje", href: "/rozwiazania/modernizacje" },
-          { label: "Wynajem urządzeń", href: "/rozwiazania/wynajem" }
-        ]
-      }
-    ]
+    categories: "productNavigation from data/navigation.ts"
   },
-  { label: "Produkty", href: "/produkty" },
-  { label: "Realizacje", href: "/realizacje" },
-  { label: "Kontakt", href: "/#kontakt" }
+  {
+    label: "Usługi",
+    href: "/uslugi",
+    type: "mega",
+    items: "serviceNavigation from data/navigation.ts"
+  },
+  { label: "Kontakt", href: "/#kontakt" },
+  { label: "Szukaj", type: "search" }
 ]
 ```
 
@@ -122,7 +98,7 @@ export const homePage = {
 
 Current homepage composition:
 
-- `HomeHero` — opening image-led hero using `/głowna-01.png`.
+- `HomeHero` — full-screen four-slide front-page carousel based on `homeHeroSlides` in `data/home.ts`. Every slide has an art-directed desktop and mobile image variant under `public/images/hero/crops/`, including explicit dimensions and focal positions. `HomeHero` renders the variants through `<picture>` and switches to the mobile source below `lg`; the overlay slides use portrait mobile crops suited to the full-height viewport. The sequence remains: Termospec headquarters, underground cooling equipment, a central mine cooling installation, then machining/laser-cutting capabilities. The first three slides use clean photographic sources without embedded marketing copy. The machining slide keeps its 40/60 desktop split, but its media is now a faithful crop of only the photographic machine area of the supplied infographic, so no duplicate headings, icon copy, or masked text remains behind the HTML content. Below `lg`, it becomes an image-above/content-below composition with a dedicated square crop. Both hero actions use the same burgundy project button with white text; navigation uses two compact arrow buttons overlaid in the lower-right corner. The carousel supports automatic navigation, previous/next controls, interaction pause, and `prefers-reduced-motion`.
 - `HomePartners` — partner/cooperation strip based on `homePartners` in `data/home.ts`; currently renders twelve presentation placeholders so the desktop layout forms two complete rows. Replace placeholder names with verified partner names/logos before publication.
 - `HomeScope` — offer/scope section based on `homeScopeItems` in `data/home.ts`; its current heading/lead plus three-card grid layout is preserved, while the section background is split visually on desktop with a decorative Unsplash industrial image filling the right half.
 - `HomeProcess` — technical process section based on `homeProcessSteps` in `data/home.ts`.
@@ -131,13 +107,15 @@ Current homepage composition:
 
 ## Current Global Navigation
 
-- `SiteHeader` renders links for `strona główna`, `produkty`, `o firmie`, the linked funding image pointing to `/dofinansowania`, language controls, and the `zapytaj o ofertę` contact CTA.
-- Desktop `produkty` is a Nuxt UI `UNavigationMenu` trigger with a custom `ProductMegaMenu` panel.
-- `ProductMegaMenu` uses the `products` Nuxt Content collection as its source of truth and displays a fixed 3-column white grid of product-family cards with product names and technical sketches.
-- Product mega menu links point to existing catalogue anchors such as `/produkty#produkt-chlodziarki-bezposredniego-dzialania`; individual product detail routes are still not planned.
-- On mobile, `produkty` remains a direct `/produkty` link until the mobile off-canvas menu is confirmed.
+- `SiteHeader` follows the confirmed order `O firmie`, `Produkty`, `Usługi`, `Kontakt`, `Szukaj`; the logo links home and `Aktualności` has been removed.
+- `data/navigation.ts` is the single source for the confirmed product taxonomy and five service categories across desktop, mobile, and `/uslugi`.
+- Desktop `Produkty` and `Usługi` use Nuxt UI `UNavigationMenu` triggers with custom `ProductMegaMenu` and `ServiceMegaMenu` panels.
+- `ProductMegaMenu` presents all nine uppercase product categories, their uppercase subcategories, exact models or series, and future-development notes. Optional render fields exist for each main category and uppercase subcategory, but no fake placeholders are shown before client assets arrive.
+- The `Zbiorniki ciśnieniowe` → `Parowniki` cross-reference scrolls to the `Parowniki` category inside the menu rather than duplicating that catalogue branch.
+- Service links target the five anchored sections on `/uslugi`; individual service routes are not planned yet.
+- Below `xl`, the same confirmed order and complete hierarchies are available in the full-screen off-canvas panel. Search is the final main-menu row; funding, PL/EN controls, and the contact CTA remain in the utility area.
 
-Current homepage hero offer cards:
+Current homepage scope cards:
 
 - `Klimatyzacja` — `Produkcja urządzeń chłodniczych dla kopalń podziemnych oraz tuneli.` / `Projektowanie, obsługa oraz serwis układów klimatyzacji kopalń.`
 - `Wentylacja` — `Produkcja i serwis wentylatorów oraz tam wentylacyjnych dla kopalń.`
@@ -151,6 +129,7 @@ Current root markdown search-index entries:
 
 - `content/index.md` mirrors the currently rendered homepage sections: scope, partners, realizations, homepage contact form, global navigation labels, and interface labels.
 - `content/produkty.md` mirrors the visible product catalogue UI plus all current product-family YAML fields that are relevant to search: title, category, lead, short description, specs, applications, components, features, service scope, related realizations, technical sections, and image alt text.
+- `content/uslugi.md` mirrors the five confirmed service categories and the `/uslugi` index page.
 - `content/o-firmie.md` mirrors the company page copy plus current team YAML names and visible roles.
 - `content/dofinansowania.md` mirrors the funding projects page and the EU/regional project copy rendered from `data/dofinansowania.ts`.
 - `content/rodo.md` mirrors the RODO information clause rendered from `data/rodo.ts`.
@@ -164,7 +143,7 @@ Current `/dofinansowania` composition:
 Current `/o-firmie` composition:
 
 - `data/about.ts` stores the page hero and fact strip. The facts now include the owner-provided legacy claims about 25 years of experience, 500 MW total cooling capacity, underground mine/tunnel applications, and international mine deliveries.
-- `app/pages/o-firmie.vue` renders an editorial industrial company page: image-led hero using `/budynek-termospec.png` in color across the full right column of a two-column opening grid, a separate four-cell fact strip directly below the hero, a dark scope section reusing `homeScopeItems`, a process grid reusing `homeProcessSteps`, the simplified `TeamGrid`, a full-width three-image realization gallery, and the shared `HomeContactForm` contact section from the homepage at the bottom. The hero does not show top route padding, CTA buttons, the former eyebrow badge, decorative background grid, or bottom image caption strip, and its main heading uses the same `text-4xl` scale as the current first homepage heading with a small inner top offset in the left column.
+- `app/pages/o-firmie.vue` renders an editorial industrial company page: image-led hero using `/budynek-termospec.png` in color across the full right column of a two-column opening grid, a separate four-cell fact strip directly below the hero, a dark scope section reusing `homeScopeItems`, a process grid reusing `homeProcessSteps`, the simplified `TeamGrid`, a full-width three-image realization gallery, and the shared `HomeContactForm` contact section from the homepage at the bottom. The hero does not show CTA buttons, the former eyebrow badge, decorative background grid, or bottom image caption strip. Its left copy column now follows the same responsive `24px`/`40px` page axis as the metrics and later sections, while the building image remains full-bleed on the right desktop half. On mobile/tablet the redundant hero logo is hidden and explicit header-aware top spacing keeps the opening heading clear of the fixed navigation.
 - `TeamGrid` now uses a full-width deep navy section with the visible heading `Poznaj nasz zespół`, the same inner gutters, and `max-w-[96rem]` content width as adjacent `/o-firmie` sections. The visible inset photo-card grid shows a team member photo, name, and role directly on the image; department grouping, profile counters, bios, and email links are not shown in the section UI.
 - The bottom contact section is the same shared `HomeContactForm` used on `/`, including map/contact details and the visual form shell backed by `homeContactTopics`.
 - The realization gallery between team and contact reuses the first three `homeRealizationPhotos` from `data/home.ts`, rendered as a full-width image grid with `gap-px`.
@@ -175,9 +154,9 @@ Current `/o-firmie` composition:
 Current supplemental search quick links:
 
 - `Kariera` → `/#kontakt`
-- `Serwis i wsparcie techniczne` → `/#kontakt`
+- `Serwis i wsparcie techniczne` → `/uslugi#serwis-24-7`
 - `O firmie` → `/o-firmie`
-- `Zakres działalności` → `/#zakres`
+- `Zakres działalności` → `/uslugi`
 - `Realizacje` → `/#realizacje`
 - `Formularz kontaktowy` → `/#kontakt`
 - `Dofinansowania i dotacje` → `/dofinansowania`
@@ -265,6 +244,22 @@ For each detail page:
 }
 ```
 
+## Confirmed Product Navigation Taxonomy
+
+The client-confirmed navigation tree is stored in `data/navigation.ts` and currently includes:
+
+1. `Agregaty chłodnicze` — piston-compressor TS-150–TS-400 models, screw-compressor TS-300–TS-800 models, two-compressor TS-500/600/700 models, high-power TS-990/1200/2000/2500/3000 models, the TS1–TS60 low-power series, and mobile cooling devices marked for later expansion.
+2. `Chłodnice powietrza` — CP-250/300/400/500 plus individual 10–1000 kW units.
+3. `Parowniki` — TS-150/PB–TS/PB-900 air series and TS-150/PP–TS/PP-900 water series.
+4. `Chłodnice wyparne wody` — CWW-200/300/450 plus individual 100–1000 kW units.
+5. `Systemy redukcji ciśnienia` — low/high-pressure valves, pressure-reduction stations, and the 6–35 MW three-chamber pump feeder.
+6. `Zbiorniki ciśnieniowe` — 10–4000 kW condensers, a cross-reference to `Parowniki`, and heat exchangers.
+7. `Systemy sterownicze` — marked for later expansion.
+8. `Wentylatory` — marked for later expansion.
+9. `Inne` — cooling points/chilled-water distributors, ventilation dams, and hydrogen-sulfide reduction installations.
+
+This navigation taxonomy coexists with the five current `content/products/*.yml` catalogue sheets. Mapping the confirmed models and branches into final `/produkty` sheets belongs to the later catalogue-development phase.
+
 ## Product Family Content Model
 
 Products are managed as product families in `content/products/*.yml`, not as individual SKU/model records. Each family is rendered automatically on `/produkty`; individual product detail routes are not planned in the current project scope.
@@ -273,7 +268,6 @@ Required fields for a new product family:
 
 ```yml
 title: ""
-slug: "url-safe-slug-without-polish-characters"
 category: ""
 status: "draft"
 order: 100
@@ -312,6 +306,8 @@ relatedProjects:
     imageAlt: ""
     scope: []
 ```
+
+The product slug is derived automatically from its YAML filename. Use a unique lowercase kebab-case filename such as `wentylator-osiowy.yml`; Nuxt Studio duplicates such as `wentylator-osiowy-copy.yml` therefore receive a distinct technical slug and do not collide in the Nuxt Content database. The legacy `slug` property may still exist in older YAML files but is no longer queried or indexed.
 
 Product entries on `/produkty` are full catalogue sheets, not links to product subpages.
 
@@ -388,6 +384,7 @@ Current search-index files:
 
 - `content/index.md` -> `/`
 - `content/produkty.md` -> `/produkty`
+- `content/uslugi.md` -> `/uslugi`
 - `content/o-firmie.md` -> `/o-firmie`
 - Contact search content is indexed through `content/index.md` and `content/o-firmie.md`; there is no standalone `/kontakt` content page.
 - `content/dofinansowania.md` -> `/dofinansowania`
@@ -413,5 +410,6 @@ For `/produkty`, product headings use explicit anchors matching the catalogue an
 - Are heat pumps still a current offer or legacy subsite only?
 - Are there real product names, catalogues, certificates, or realizations to publish?
 - Which product-specific realizations or project references should be assigned to each product family in the catalogue?
+- Which final client renders should be assigned to each uppercase product category and subcategory in the navigation?
 - Should the site include downloads?
 - Should there be a blog/knowledge base?

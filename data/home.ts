@@ -9,13 +9,26 @@ export type HomeHeroLink = {
   href: string;
 };
 
-export type HomeHero = {
+export type HomeHeroSlide = {
+  number: string;
   eyebrow: string;
   title: string;
   lead: string;
+  presentation?: "overlay" | "split";
   image: {
-    src: string;
     alt: string;
+    desktop: {
+      src: string;
+      width: number;
+      height: number;
+      position: string;
+    };
+    mobile: {
+      src: string;
+      width: number;
+      height: number;
+      position: string;
+    };
   };
   caption: {
     label: string;
@@ -54,27 +67,141 @@ export type HomeContactTopic = {
   value: string;
 };
 
-export const homeHero: HomeHero = {
-  eyebrow: "Termospec / technika przemysłowa",
-  title: "Systemy chłodzenia i wentylacji dla przemysłu.",
-  lead: "Projektowanie, produkcja i serwis rozwiązań technicznych dla górnictwa, tuneli oraz infrastruktury przemysłowej pracującej w wymagających warunkach.",
-  image: {
-    src: "/głowna-01.png",
-    alt: "Przemysłowe urządzenie chłodnicze Termospec",
+export const homeHeroSlides: HomeHeroSlide[] = [
+  {
+    number: "01",
+    eyebrow: "Termospec / producent",
+    title: "Od projektu do utrzymania instalacji.",
+    lead: "Łączymy zaplecze projektowe, produkcję urządzeń, uruchomienia oraz obsługę serwisową rozwiązań przemysłowych.",
+    image: {
+      alt: "Siedziba i zakład produkcyjny Termospec",
+      desktop: {
+        src: "/images/hero/crops/siedziba-termospec-desktop.jpg",
+        width: 1600,
+        height: 900,
+        position: "center center",
+      },
+      mobile: {
+        src: "/images/hero/crops/siedziba-termospec-mobile.jpg",
+        width: 540,
+        height: 960,
+        position: "center center",
+      },
+    },
+    caption: {
+      label: "Termospec",
+      text: "projektowanie / produkcja / serwis",
+    },
+    primaryLink: {
+      label: "zobacz produkty",
+      href: "/produkty",
+    },
+    secondaryLink: {
+      label: "poznaj firmę",
+      href: "/o-firmie",
+    },
   },
-  caption: {
-    label: "obszary pracy",
-    text: "górnictwo / tunele / przemysł",
+  {
+    number: "02",
+    eyebrow: "Systemy klimatyzacji i wentylacji",
+    title: "Systemy dla górnictwa i przemysłu.",
+    lead: "Projektujemy i produkujemy rozwiązania techniczne przeznaczone do pracy w wymagających warunkach podziemnych.",
+    image: {
+      alt: "Urządzenia chłodnicze Termospec w wyrobisku podziemnym",
+      desktop: {
+        src: "/images/hero/crops/systemy-gornictwo-desktop.jpg",
+        width: 1600,
+        height: 900,
+        position: "center center",
+      },
+      mobile: {
+        src: "/images/hero/crops/systemy-gornictwo-mobile.jpg",
+        width: 529,
+        height: 940,
+        position: "center center",
+      },
+    },
+    caption: {
+      label: "obszar",
+      text: "górnictwo / przemysł",
+    },
+    primaryLink: {
+      label: "zobacz produkty",
+      href: "/produkty",
+    },
+    secondaryLink: {
+      label: "zobacz realizacje",
+      href: "#realizacje",
+    },
   },
-  primaryLink: {
-    label: "zakres działalności",
-    href: "#zakres",
+  {
+    number: "03",
+    eyebrow: "Klimatyzacja centralna kopalń",
+    title: "Kontrola warunków pracy pod ziemią.",
+    lead: "Projektujemy i obsługujemy układy klimatyzacji centralnej kopalń oraz systemy redukcji ciśnienia wody.",
+    image: {
+      alt: "Instalacja chłodnicza Termospec w wyrobisku podziemnym",
+      desktop: {
+        src: "/images/hero/crops/klimatyzacja-centralna-desktop.jpg",
+        width: 1600,
+        height: 900,
+        position: "center center",
+      },
+      mobile: {
+        src: "/images/hero/crops/klimatyzacja-centralna-mobile.jpg",
+        width: 529,
+        height: 940,
+        position: "center center",
+      },
+    },
+    caption: {
+      label: "rozwiązanie",
+      text: "klimatyzacja centralna",
+    },
+    primaryLink: {
+      label: "zakres działalności",
+      href: "#zakres",
+    },
+    secondaryLink: {
+      label: "skontaktuj się",
+      href: "/#kontakt",
+    },
   },
-  secondaryLink: {
-    label: "realizacje",
-    href: "#realizacje",
+  {
+    number: "04",
+    eyebrow: "Obróbka skrawaniem / technologia",
+    title: "Profesjonalna obróbka stali.",
+    lead: "Realizujemy obróbkę skrawaniem oraz wycinanie i wykrawanie laserowe z wykorzystaniem nowoczesnego parku maszynowego.",
+    presentation: "split",
+    image: {
+      alt: "Park maszynowy Termospec do obróbki stali",
+      desktop: {
+        src: "/images/hero/crops/obrobka-stali-desktop.jpg",
+        width: 884,
+        height: 806,
+        position: "center center",
+      },
+      mobile: {
+        src: "/images/hero/crops/obrobka-stali-mobile.jpg",
+        width: 512,
+        height: 512,
+        position: "center center",
+      },
+    },
+    caption: {
+      label: "zaplecze",
+      text: "park maszynowy",
+    },
+    primaryLink: {
+      label: "zapytaj o ofertę",
+      href: "/#kontakt",
+    },
+    secondaryLink: {
+      label: "poznaj firmę",
+      href: "/o-firmie",
+    },
   },
-};
+];
 
 export const homePartners: HomePartner[] = [
   {

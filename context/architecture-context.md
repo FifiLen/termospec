@@ -41,7 +41,10 @@ Recommended separation:
 - Search index pages: root-level `content/*.md` entries for existing public routes, consumed by Nuxt UI `UContentSearch` through `queryCollectionNavigation` and `queryCollectionSearchSections`.
 - Root `content/*.md` page entries should mirror the current public page content closely enough for global search. When visible copy changes in Vue components, `data/home.ts`, product YAML, team YAML, or footer/header UI, update the matching markdown index entry in the same work unit.
 - Supplemental search quick links: `data/search.ts` contains visible UI/footer labels that should be searchable but do not yet have dedicated content pages. These quick links must point only to existing routes or anchors until standalone pages are confirmed.
-- Current static marketing routes `/`, `/produkty`, `/o-firmie`, `/dofinansowania`, and `/rodo` are prerendered through Nuxt `routeRules`; legacy `/o-nas` redirects to `/o-firmie`, and legacy `/kontakt` redirects to the homepage contact form at `/#kontakt`.
+- Confirmed product and service navigation: `data/navigation.ts` is the single source of truth for desktop mega menus, the mobile navigation hierarchy, and the `/uslugi` index.
+- Product-family identity on `/produkty` comes from the unique YAML filename (`content/products/<slug>.yml`) rather than a duplicated `slug` field. This keeps Nuxt Studio file duplication safe: copied filenames produce distinct catalogue anchors without violating a database uniqueness constraint.
+- `npm run dev:studio` explicitly clears production GitHub OAuth credentials for the child dev process so local editing always uses Nuxt Studio's direct filesystem mode. Open the regular local site URL and use the floating Studio button; the configured `/_studio` route remains relevant to authenticated production deployments.
+- Current static marketing routes `/`, `/produkty`, `/uslugi`, `/o-firmie`, `/dofinansowania`, and `/rodo` are prerendered through Nuxt `routeRules`; legacy `/o-nas` redirects to `/o-firmie`, and legacy `/kontakt` redirects to the homepage contact form at `/#kontakt`.
 
 Do not hardcode repeated contact details, offer labels, or product groups in many components.
 
@@ -54,12 +57,14 @@ Recommended routes:
 - `/rozwiazania`
 - `/rozwiazania/[slug]`
 - `/produkty`
+- `/uslugi`
 - `/realizacje`
 - `/baza-wiedzy`
 - `/do-pobrania`
 
 Routes can be reduced if scope is smaller, but should not become inconsistent with navigation.
 Current product scope uses `/produkty` only; product detail pages are not planned.
+The confirmed service categories use one index route, `/uslugi`, with anchored sections; service detail routes are not planned yet.
 There is no standalone contact page in the current implementation; contact CTAs target `/#kontakt`.
 
 ## SEO Model
@@ -99,6 +104,8 @@ Pages should be composed from reusable sections:
 
 - `SiteHeader`
 - `MegaMenu`
+- `ProductMegaMenu`
+- `ServiceMegaMenu`
 - `SiteFooter`
 - `HeroSection`
 - `SectionHeader`

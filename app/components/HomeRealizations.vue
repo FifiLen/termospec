@@ -139,13 +139,13 @@ onBeforeUnmount(() => {
             class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.025]"
           />
 
-          <div
+          <figcaption
             class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/75 via-ink/20 to-transparent p-5 md:p-7"
           >
-            <figcaption class="text-sm font-bold tracking-tight text-white">
+            <span class="text-sm font-bold tracking-tight text-white">
               {{ photo.label }}
-            </figcaption>
-          </div>
+            </span>
+          </figcaption>
         </figure>
       </div>
     </div>

@@ -16,7 +16,7 @@ export const searchQuickLinks: SearchQuickLink[] = [
     label: "Serwis i wsparcie techniczne",
     description:
       "Utrzymanie ruchu, serwis urządzeń oraz zgłoszenia przeglądów i awarii.",
-    to: "/#kontakt",
+    to: "/uslugi#serwis-24-7",
   },
   {
     label: "O firmie",
@@ -27,8 +27,8 @@ export const searchQuickLinks: SearchQuickLink[] = [
   {
     label: "Zakres działalności",
     description:
-      "Klimatyzacja, wentylacja, energia odnawialna oraz obsługa techniczna instalacji.",
-    to: "/#zakres",
+      "Projektowanie, serwis, remonty, obróbka metali oraz konstrukcje stalowe.",
+    to: "/uslugi",
   },
   {
     label: "Realizacje",

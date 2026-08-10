@@ -31,6 +31,7 @@ export default defineNuxtConfig({
       include: [
         '@vue/devtools-core',
         '@vue/devtools-kit',
+        'gsap',
         'lenis',
       ],
     },
@@ -47,6 +48,7 @@ export default defineNuxtConfig({
   routeRules: {
     '/': { prerender: true },
     '/produkty': { prerender: true },
+    '/uslugi': { prerender: true },
     '/o-firmie': { prerender: true },
     '/o-nas': { redirect: { to: '/o-firmie', statusCode: 301 } },
     '/kontakt': { redirect: { to: '/#kontakt', statusCode: 301 } },

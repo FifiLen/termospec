@@ -31,6 +31,14 @@ const normalizeText = (value: string) => {
     .replace(/[\u0300-\u036f]/g, "");
 };
 
+const productSlugFromStem = (stem: string) => {
+  const filename = stem.split("/").pop() || stem;
+
+  return normalizeText(filename)
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+};
+
 const { data: products } = await useAsyncData<ProductFamily[]>(
   "products",
   async () => {
@@ -40,9 +48,9 @@ const { data: products } = await useAsyncData<ProductFamily[]>(
 
     const toArray = <T,>(value: T[] | undefined | null) => value ?? [];
 
-    return entries.map((entry) => ({
+    return entries.map((entry, index) => ({
       title: entry.title,
-      slug: entry.slug,
+      slug: productSlugFromStem(entry.stem) || `produkt-${index + 1}`,
       category: entry.category,
       order: entry.order ?? 100,
       isFeatured: entry.isFeatured ?? false,

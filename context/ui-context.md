@@ -163,16 +163,22 @@ Navigation is critical.
 
 Current product mega menu implementation:
 
-- Desktop `Produkty` uses Nuxt UI `UNavigationMenu` for the hover/focus trigger and viewport behavior.
-- The menu content is a fixed 3-column white card grid backed by `content/products/*.yml`: each product-family card shows only the product name and its technical sketch.
-- Menu links point to existing `/produkty#produkt-*` anchors because product detail routes are not planned.
-- Mobile keeps a direct `/produkty` link until a confirmed off-canvas mobile menu is implemented.
+- Desktop navigation follows the confirmed order `O firmie`, `Produkty`, `Usługi`, `Kontakt`, `Szukaj`; `Aktualności` is removed and the logo remains the home link.
+- `Produkty` and `Usługi` use Nuxt UI `UNavigationMenu` for hover/focus trigger and viewport behavior.
+- `ProductMegaMenu` is a three-column technical index sourced from `data/navigation.ts`. It shows all nine confirmed uppercase product categories, uppercase subcategories, exact model lists or series, and italic future-development notes.
+- Main categories and uppercase subcategories have optional render slots. Do not show invented image placeholders while final client renders are unavailable.
+- `ServiceMegaMenu` lists the five confirmed service categories and links them to anchored sections on `/uslugi`.
+- Global search uses the existing Nuxt UI/Nuxt Content search dialog as the final desktop navigation item instead of a separate floating search action.
+- Below the `xl` breakpoint, the desktop header is replaced by a compact logo/menu bar and a full-screen off-canvas navigation panel.
 
 ### Mobile
 
-- Simple off-canvas menu.
-- Product groups must remain accessible.
-- Avoid hiding core offer pages behind too many taps.
+- Use the implemented full-screen off-canvas menu from `SiteHeader`: main navigation on the left/full width and a secondary utility column on tablets.
+- Keep the confirmed order `O firmie`, `Produkty`, `Usługi`, `Kontakt`, `Szukaj`; do not restore `Aktualności`.
+- `Produkty` expands to the complete hierarchy from `data/navigation.ts` and includes a direct `Pełny katalog` link.
+- `Usługi` expands to the five confirmed categories and includes a direct `/uslugi` index link.
+- Search is the final main-menu row; funding, languages, and the offer CTA sit in the menu utility area.
+- Lock background scroll and remove the underlying page from keyboard interaction while the menu is open.
 
 ## Imagery
 
@@ -180,6 +186,7 @@ Current product mega menu implementation:
 - Avoid generic smiling business stock photos.
 - If real photos are low quality, use them selectively and support them with strong layout/typography.
 - Do not overuse decorative gradients.
+- Homepage hero media is art-directed per breakpoint: each slide defines a desktop and mobile source plus its focal position in `data/home.ts`, and `HomeHero` selects them through `<picture>`. Keep headings, descriptions, CTAs, and explanatory labels in HTML rather than baking them into hero images.
 
 ## Motion
 

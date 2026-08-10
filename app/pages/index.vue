@@ -8,7 +8,7 @@ useSeoMeta({
 
 <template>
   <main aria-label="Strona główna" class="bg-surface text-ink">
-    <!-- <HomeHero /> -->
+    <HomeHero />
     <HomeScope />
     <HomePartners />
 

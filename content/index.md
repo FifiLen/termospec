@@ -9,7 +9,11 @@ navigation:
 
 Systemy chłodzenia i wentylacji dla przemysłu, górnictwa oraz infrastruktury technicznej. Termospec projektuje, produkuje, serwisuje i utrzymuje systemy wykorzystywane w wymagających instalacjach przemysłowych.
 
-Strona główna zawiera aktualnie sekcje: zakres działalności, partnerzy i współpraca, wybrane realizacje oraz formularz kontaktowy pod adresem `/#kontakt`. Nawigacja globalna prowadzi do strony głównej, produktów, strony o firmie, dofinansowań oraz formularza kontaktowego na stronie głównej. Desktopowe menu produktów pokazuje prostą białą siatkę kart w układzie trzech kolumn: nazwy rodzin produktowych oraz szkice techniczne, z linkami do sekcji katalogu na `/produkty`. Dostępne etykiety interfejsu obejmują: szukaj, zapytaj o ofertę, pełny katalog, PL, EN, Dofinansowanie.
+Strona główna zawiera aktualnie dynamiczną sekcję frontową, zakres działalności, partnerów i współpracę, wybrane realizacje oraz formularz kontaktowy pod adresem `/#kontakt`. Główna nawigacja ma kolejność: O firmie, Produkty, Usługi, Kontakt i Szukaj. Zakładka Aktualności została usunięta. Produkty otwierają techniczny indeks dziewięciu kategorii wraz z podkategoriami, modelami i typoszeregami przekazanymi przez klienta. Usługi otwierają pięć potwierdzonych kategorii i prowadzą do strony `/uslugi`. Na telefonach i tabletach te same pozycje są dostępne w pełnoekranowym menu, a wyszukiwarka jest jego ostatnią pozycją. Dofinansowania, języki PL/EN i zapytanie ofertowe pozostają w obszarze narzędziowym nagłówka.
+
+## Dynamiczna strona frontowa
+
+Pierwszy ekran jest pełnoekranową karuzelą czterech zdjęć z projektu. W ustalonej kolejności pokazuje siedzibę i zaplecze producenta, systemy klimatyzacji i wentylacji dla górnictwa i przemysłu, klimatyzację centralną kopalń z systemami redukcji ciśnienia wody oraz park maszynowy do obróbki stali. Karuzela zmienia slajdy automatycznie i udostępnia przyciski poprzedniego i następnego slajdu oraz bezpośredni wybór slajdu.
 
 ## Zakres działalności {#zakres}
 

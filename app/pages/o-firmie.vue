@@ -32,19 +32,19 @@ useSeoMeta({
   <main aria-label="O firmie" class="bg-surface text-ink">
     <section class="border-b border-line bg-white">
       <div class="relative overflow-hidden">
-        <div class="mx-auto max-w-[96rem] pr-6 lg:pr-10">
+        <div class="mx-auto max-w-[96rem] px-6 lg:px-10">
           <div class="grid lg:min-h-[46rem] lg:grid-cols-2">
-            <div class="pb-16 pt-10 lg:pb-20 lg:pt-44 lg:pr-12">
+            <div class="min-w-0 pb-16 pt-24 lg:pb-20 lg:pt-44 lg:pr-12">
               <div class="w-full max-w-2xl">
                 <NuxtImg
                   src="/termospec-logo.png"
                   alt="Termospec"
                   width="128"
-                  class="block h-auto"
+                  class="hidden h-auto lg:block"
                 />
 
                 <h1
-                  class="mt-10 max-w-xl font-heading text-4xl font-black leading-[0.98] tracking-[-0.05em] text-ink"
+                  class="max-w-xl font-heading text-4xl font-black leading-[0.98] tracking-[-0.05em] text-ink lg:mt-10"
                 >
                   {{ aboutHero.title }}
                 </h1>

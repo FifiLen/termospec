@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { searchQuickLinks } from "~~/data/search";
-import type { HeaderProductMenuItem } from "~~/types/navigation";
+import {
+  productNavigation,
+  serviceNavigation,
+} from "~~/data/navigation";
 
 const route = useRoute()
 
@@ -16,28 +19,6 @@ const { data: searchFiles } = useLazyAsyncData('search-files', () => {
   server: false,
 })
 
-const { data: headerProducts } = await useAsyncData<HeaderProductMenuItem[]>(
-  "header-products",
-  async () => {
-    const entries = await queryCollection("products")
-      .order("order", "ASC")
-      .all();
-
-    return entries.map((entry) => ({
-      title: entry.title,
-      slug: entry.slug,
-      category: entry.category,
-      shortDescription: entry.shortDescription,
-      powerRange: entry.powerRange ?? "",
-      heroImage: entry.heroImage ?? "",
-      imageAlt: entry.imageAlt ?? "",
-      headerSketch: entry.headerSketch ?? null,
-    }));
-  },
-);
-
-const productMenuItems = computed(() => headerProducts.value ?? []);
-
 const pageFrameClass = computed(() => {
   if (route.path === '/') {
     return 'relative z-[1] min-h-svh bg-surface'
@@ -51,7 +32,10 @@ const pageFrameClass = computed(() => {
   <UApp>
     <NuxtRouteAnnouncer />
     <div class="min-h-svh overflow-x-clip bg-surface">
-      <SiteHeader :products="productMenuItems" />
+      <SiteHeader
+        :product-categories="productNavigation"
+        :services="serviceNavigation"
+      />
       <FloatingHeaderActions />
       <div
         :class="pageFrameClass"

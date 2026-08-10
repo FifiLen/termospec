@@ -7,6 +7,73 @@ navigation:
 
 # Produkty
 
+## Potwierdzona struktura katalogu
+
+### Agregaty chłodnicze
+
+#### Agregaty chłodnicze ze sprężarką tłokową
+
+TS-150, TS-200, TS-250, TS-300, TS-350, TS-400.
+
+#### Agregaty chłodnicze ze sprężarką śrubową
+
+TS-300, TS-350, TS-400, TS-450, TS-500, TS-550, TS-600, TS-650, TS-700, TS-750, TS-800.
+
+#### Agregaty chłodnicze dwu-sprężarkowe
+
+TS-500, TS-600, TS-700.
+
+#### Agregaty chłodnicze dużych mocy
+
+TS-990, TS-1200, TS-2000, TS-2500, TS-3000.
+
+#### Agregaty klimatyzacyjne małych mocy
+
+Typoszereg TS1–TS60.
+
+#### Mobilne urządzenia chłodnicze
+
+Do dalszej rozbudowy.
+
+### Chłodnice powietrza
+
+CP-250, CP-300, CP-400, CP-500 oraz pozostałe moce w zakresie 10–1000 kW, według indywidualnych potrzeb klienta.
+
+### Parowniki
+
+- Parowniki powietrza: typoszereg TS-150/PB – TS/PB-900.
+- Parowniki wodne: typoszereg TS-150/PP – TS/PP-900.
+
+### Chłodnice wyparne wody
+
+CWW-200, CWW-300, CWW-450 oraz pozostałe moce w zakresie 100–1000 kW, według indywidualnych potrzeb klienta.
+
+### Systemy redukcji ciśnienia
+
+- Zawory redukcyjne niskiego i wysokiego ciśnienia.
+- Stacje redukcji ciśnień.
+- Trójkomorowy podajnik pompowy 6–35 MW.
+
+### Zbiorniki ciśnieniowe
+
+- Skraplacze o mocy 10–4000 kW.
+- Parowniki.
+- Wymienniki ciepła.
+
+### Systemy sterownicze
+
+Do dalszej rozbudowy.
+
+### Wentylatory
+
+Do dalszej rozbudowy.
+
+### Inne
+
+- Punkty klimatyzacyjne i rozdzielacze wody lodowej.
+- Tamy wentylacyjne.
+- Instalacje redukcji siarkowodoru.
+
 Katalog Termospec porządkuje rodziny urządzeń chłodniczych, chłodnic powietrza i chłodnic wyparnych według zastosowań, parametrów oraz zakresu obsługi technicznej.
 
 Widoczny układ katalogu zaczyna się bezpośrednio pod fixed headerem jako pełnoekranowa powierzchnia robocza: szerszy techniczny indeks po lewej stronie, lokalne wyszukiwanie z lupką i placeholderem: Szukaj produktów, kontrolki kategorii, szybka nawigacja po produktach oraz pełne arkusze rodzin produktowych na jednej stronie. Produkty można wyszukiwać po nazwie, kategorii, parametrach, zastosowaniach, komponentach, cechach, zakresie obsługi, opisach technicznych, materiałach i realizacjach. Aktywny produkt w indeksie jest sygnalizowany wyłącznie burgundowym kolorem tekstu. Każda widoczna karta rodziny produktu pokazuje granatowy pasek z kategorią i zakresem mocy, header z tytułem i krótkim leadem, dwie kolumny treści: Zastosowanie oraz Opis działania albo Budowa / charakterystyka, oraz pełnoszeroką, beznagłówkową siatkę sześciu zdjęć realizacji bez osobnego pasa KPI. Gdy filtr nie zwraca wyników, widoczny jest komunikat: Brak produktów pasujących do filtra.

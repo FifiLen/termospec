@@ -1,101 +1,526 @@
 <script setup lang="ts">
-import { homeHero } from "~~/data/home";
+import { gsap } from "gsap";
+import { homeHeroSlides } from "~~/data/home";
+
+const heroRoot = ref<HTMLElement | null>(null);
+const activeIndex = ref(0);
+
+let animationContext: gsap.Context | null = null;
+let mediaQueries: gsap.MatchMedia | null = null;
+let transitionTimeline: gsap.core.Timeline | null = null;
+let autoplayCall: gsap.core.Tween | null = null;
+let reducedMotion = false;
+let interactionPaused = false;
+let isTransitioning = false;
+
+const autoplayDelay = 6.5;
+
+function getSlides() {
+  if (!heroRoot.value) {
+    return [];
+  }
+
+  return Array.from(
+    heroRoot.value.querySelectorAll<HTMLElement>("[data-hero-slide]"),
+  );
+}
+
+function cancelAutoplay() {
+  autoplayCall?.kill();
+  autoplayCall = null;
+}
+
+function scheduleAutoplay() {
+  cancelAutoplay();
+
+  if (
+    reducedMotion ||
+    interactionPaused ||
+    document.hidden ||
+    homeHeroSlides.length < 2
+  ) {
+    return;
+  }
+
+  autoplayCall = gsap.delayedCall(autoplayDelay, () => {
+    goToSlide((activeIndex.value + 1) % homeHeroSlides.length, 1);
+  });
+}
+
+function revealSlideImmediately(targetIndex: number) {
+  const slides = getSlides();
+
+  slides.forEach((slide, index) => {
+    gsap.set(slide, {
+      autoAlpha: index === targetIndex ? 1 : 0,
+      zIndex: index === targetIndex ? 2 : 1,
+    });
+
+    gsap.set(slide.querySelector("[data-hero-image]"), {
+      scale: 1,
+      xPercent: 0,
+    });
+
+    const revealElements = slide.querySelectorAll("[data-hero-reveal]");
+
+    if (revealElements.length) {
+      gsap.set(revealElements, {
+        autoAlpha: index === targetIndex ? 1 : 0,
+        y: 0,
+      });
+    }
+  });
+
+  activeIndex.value = targetIndex;
+}
+
+function goToSlide(targetIndex: number, direction = 1) {
+  if (
+    targetIndex === activeIndex.value ||
+    isTransitioning ||
+    targetIndex < 0 ||
+    targetIndex >= homeHeroSlides.length
+  ) {
+    scheduleAutoplay();
+    return;
+  }
+
+  cancelAutoplay();
+
+  if (reducedMotion) {
+    revealSlideImmediately(targetIndex);
+    return;
+  }
+
+  const slides = getSlides();
+  const currentSlide = slides[activeIndex.value];
+  const nextSlide = slides[targetIndex];
+
+  if (!currentSlide || !nextSlide) {
+    return;
+  }
+
+  const currentImage = currentSlide.querySelector("[data-hero-image]");
+  const currentContent = currentSlide.querySelectorAll("[data-hero-reveal]");
+  const nextImage = nextSlide.querySelector("[data-hero-image]");
+  const nextContent = nextSlide.querySelectorAll("[data-hero-reveal]");
+
+  isTransitioning = true;
+  activeIndex.value = targetIndex;
+  transitionTimeline?.kill();
+
+  gsap.set(nextSlide, { autoAlpha: 0, zIndex: 3 });
+  gsap.set(nextImage, { scale: 1.075, xPercent: direction * 1.5 });
+  if (nextContent.length) {
+    gsap.set(nextContent, { autoAlpha: 0, y: 24 });
+  }
+
+  transitionTimeline = gsap.timeline({
+    onComplete: () => {
+      gsap.set(currentSlide, { autoAlpha: 0, zIndex: 1 });
+      gsap.set(nextSlide, { zIndex: 2 });
+      isTransitioning = false;
+      transitionTimeline = null;
+      scheduleAutoplay();
+    },
+  });
+
+  if (currentContent.length) {
+    transitionTimeline.to(
+      currentContent,
+      {
+        autoAlpha: 0,
+        y: -14,
+        duration: 0.32,
+        stagger: 0.025,
+        ease: "power2.in",
+      },
+      0,
+    );
+  }
+
+  transitionTimeline
+    .to(
+      currentImage,
+      { scale: 1.035, duration: 0.9, ease: "power2.inOut" },
+      0,
+    )
+    .to(
+      currentSlide,
+      { autoAlpha: 0, duration: 0.62, ease: "power2.inOut" },
+      0.12,
+    )
+    .to(
+      nextSlide,
+      { autoAlpha: 1, duration: 0.74, ease: "power2.out" },
+      0.18,
+    )
+    .to(
+      nextImage,
+      {
+        scale: 1,
+        xPercent: 0,
+        duration: 1.15,
+        ease: "power3.out",
+      },
+      0.18,
+    );
+
+  if (nextContent.length) {
+    transitionTimeline.to(
+      nextContent,
+      {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.62,
+        stagger: 0.055,
+        ease: "power3.out",
+      },
+      0.4,
+    );
+  }
+}
+
+function showPreviousSlide() {
+  const targetIndex =
+    (activeIndex.value - 1 + homeHeroSlides.length) % homeHeroSlides.length;
+  goToSlide(targetIndex, -1);
+}
+
+function showNextSlide() {
+  goToSlide((activeIndex.value + 1) % homeHeroSlides.length, 1);
+}
+
+function pauseAutoplay() {
+  interactionPaused = true;
+  cancelAutoplay();
+}
+
+function resumeAutoplay() {
+  interactionPaused = false;
+  scheduleAutoplay();
+}
+
+function handleFocusOut(event: FocusEvent) {
+  const nextTarget = event.relatedTarget;
+
+  if (
+    nextTarget instanceof Node &&
+    heroRoot.value?.contains(nextTarget)
+  ) {
+    return;
+  }
+
+  resumeAutoplay();
+}
+
+function handleVisibilityChange() {
+  if (document.hidden) {
+    cancelAutoplay();
+  } else {
+    scheduleAutoplay();
+  }
+}
+
+onMounted(() => {
+  if (!heroRoot.value) {
+    return;
+  }
+
+  const slides = getSlides();
+
+  animationContext = gsap.context(() => {
+    gsap.set(slides, { autoAlpha: 0, zIndex: 1 });
+    gsap.set(
+      slides.flatMap((slide) =>
+        Array.from(slide.querySelectorAll("[data-hero-reveal]")),
+      ),
+      { autoAlpha: 0, y: 24 },
+    );
+    gsap.set(
+      slides
+        .slice(1)
+        .map((slide) => slide.querySelector("[data-hero-image]")),
+      { scale: 1.075 },
+    );
+    gsap.set(slides[0], { autoAlpha: 1, zIndex: 2 });
+    gsap.set(slides[0]?.querySelector("[data-hero-image]"), { scale: 1 });
+
+    gsap
+      .timeline({ defaults: { ease: "power3.out" } })
+      .to(slides[0]?.querySelectorAll("[data-hero-reveal]") ?? [], {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.72,
+        stagger: 0.07,
+      });
+  }, heroRoot.value);
+
+  mediaQueries = gsap.matchMedia();
+  mediaQueries.add(
+    {
+      reduceMotion: "(prefers-reduced-motion: reduce)",
+      allowMotion: "(prefers-reduced-motion: no-preference)",
+    },
+    (context) => {
+      reducedMotion = Boolean(context.conditions?.reduceMotion);
+
+      if (reducedMotion) {
+        revealSlideImmediately(activeIndex.value);
+        cancelAutoplay();
+      } else {
+        scheduleAutoplay();
+      }
+    },
+    heroRoot.value,
+  );
+
+  document.addEventListener("visibilitychange", handleVisibilityChange);
+});
+
+onUnmounted(() => {
+  document.removeEventListener("visibilitychange", handleVisibilityChange);
+  cancelAutoplay();
+  transitionTimeline?.kill();
+  mediaQueries?.revert();
+  animationContext?.revert();
+});
 </script>
 
 <template>
   <section
-    class="relative isolate flex min-h-[calc(100svh-4rem)] items-center justify-start overflow-hidden border-b border-ink/10 bg-surface"
+    ref="heroRoot"
+    aria-label="Najważniejsze obszary działalności Termospec"
+    aria-roledescription="karuzela"
+    class="relative isolate min-h-[100svh] overflow-hidden bg-ink text-white"
+    @mouseenter="pauseAutoplay"
+    @mouseleave="resumeAutoplay"
+    @focusin="pauseAutoplay"
+    @focusout="handleFocusOut"
   >
-    <!-- Pełnowymiarowe zdjęcie w tle z techniczną obróbką (grayscale/contrast) -->
-    <div class="absolute inset-0 z-[-2] h-full w-full bg-ink/5">
-      <NuxtImg
-        :src="homeHero.image.src"
-        :alt="homeHero.image.alt"
-        width="1920"
-        height="1080"
-        sizes="100vw"
-        class="h-full w-full object-cover grayscale opacity-40 contrast-125 mix-blend-multiply"
-      />
-    </div>
-
-    <!-- Nakładka z siatką konstrukcyjną (Blueprint overlay) rozpięta nad zdjęciem -->
-    <div
-      aria-hidden="true"
-      class="absolute inset-0 z-[-1] opacity-[0.2] [background-image:linear-gradient(rgba(8,8,63,.08)_1px,transparent_1px),linear-gradient(90deg,rgba(8,8,63,.08)_1px,transparent_1px)] [background-size:3rem_3rem]"
-    />
-
-    <!-- Linie graniczne wyznaczające przestrzeń roboczą (HUD lines) -->
-    <div
-      class="absolute top-10 left-0 right-0 border-t border-ink/5 pointer-events-none"
-    />
-    <div
-      class="absolute bottom-10 left-0 right-0 border-t border-ink/5 pointer-events-none"
-    />
-    <div
-      class="absolute left-10 top-0 bottom-0 border-l border-ink/5 pointer-events-none hidden lg:block"
-    />
-
-    <!-- Główny kontener pozycjonujący -->
-    <div class="mx-auto w-full max-w-[96rem] px-6 py-20 lg:px-10">
-      <!-- Płaski, ostro ścięty panel z treścią (Zero cieni, czytelność przez backdrop-blur i solidny border) -->
-      <div
-        class="relative max-w-2xl border border-ink/15 bg-surface/85 p-8 backdrop-blur-xl sm:p-12 lg:p-16"
+    <div class="absolute inset-0">
+      <article
+        v-for="(slide, index) in homeHeroSlides"
+        :key="slide.number"
+        data-hero-slide
+        :aria-hidden="activeIndex !== index"
+        class="invisible absolute inset-0"
       >
-        <!-- Peryferyjne znaczniki techniczne montowane na rogach panelu -->
         <div
-          class="absolute -top-px -left-px font-mono text-[10px] text-brand translate-x-1 translate-y-1"
+          v-if="slide.presentation === 'split'"
+          class="absolute inset-x-0 top-16 bottom-0 grid grid-rows-2 bg-ink lg:grid-cols-5 lg:grid-rows-1"
         >
-          ⌥
+          <div class="order-2 flex items-center px-6 py-6 sm:px-8 lg:order-1 lg:col-span-2 lg:px-10 lg:py-12">
+            <div class="max-w-2xl">
+              <h1
+                data-hero-reveal
+                class="max-w-[12ch] font-heading text-[clamp(2.1rem,4.2vw,4.5rem)] font-black leading-[0.92] tracking-[-0.055em] text-white"
+              >
+                {{ slide.title }}
+              </h1>
+
+              <p
+                data-hero-reveal
+                class="mt-4 max-w-xl text-sm leading-6 text-white/75 sm:text-base sm:leading-7 lg:mt-6 lg:text-lg lg:leading-8"
+              >
+                {{ slide.lead }}
+              </p>
+
+              <div
+                data-hero-reveal
+                class="mt-5 flex flex-wrap items-center gap-2 lg:mt-8 lg:gap-4"
+              >
+                <NuxtLink
+                  :to="slide.primaryLink.href"
+                  class="inline-flex min-h-12 items-center gap-6 bg-brand px-5 font-mono text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-white hover:text-ink"
+                >
+                  <span>{{ slide.primaryLink.label }}</span>
+                  <span aria-hidden="true">→</span>
+                </NuxtLink>
+
+                <NuxtLink
+                  :to="slide.secondaryLink.href"
+                  class="inline-flex min-h-12 items-center gap-6 bg-brand px-5 font-mono text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-white hover:text-ink"
+                >
+                  <span>{{ slide.secondaryLink.label }}</span>
+                  <span aria-hidden="true">↗</span>
+                </NuxtLink>
+              </div>
+            </div>
+          </div>
+
+          <div class="relative order-1 overflow-hidden lg:order-2 lg:col-span-3">
+            <picture class="block h-full w-full">
+              <source
+                media="(max-width: 1023px)"
+                :srcset="slide.image.mobile.src"
+                :width="slide.image.mobile.width"
+                :height="slide.image.mobile.height"
+              />
+              <img
+                data-hero-image
+                :src="slide.image.desktop.src"
+                :alt="slide.image.alt"
+                :width="slide.image.desktop.width"
+                :height="slide.image.desktop.height"
+                :loading="index === 0 ? 'eager' : 'lazy'"
+                :fetchpriority="index === 0 ? 'high' : 'auto'"
+                decoding="async"
+                class="hero-media h-full w-full object-cover"
+                :style="{
+                  '--hero-position-mobile': slide.image.mobile.position,
+                  '--hero-position-desktop': slide.image.desktop.position,
+                }"
+              />
+            </picture>
+            <div
+              aria-hidden="true"
+              class="absolute inset-y-0 left-0 hidden w-1/4 bg-gradient-to-r from-ink/45 to-transparent lg:block"
+            />
+          </div>
         </div>
-        <div
-          class="absolute top-3 right-4 font-mono text-[9px] tracking-widest text-ink/30 uppercase select-none"
-        >
-          [ sec_ctrl_01 ]
-        </div>
 
-        <p
-          class="font-mono text-xs font-bold uppercase tracking-[0.3em] text-brand"
-        >
-          // {{ homeHero.eyebrow }}
-        </p>
+        <template v-else>
+          <div class="absolute inset-0">
+            <picture class="block h-full w-full">
+              <source
+                media="(max-width: 1023px)"
+                :srcset="slide.image.mobile.src"
+                :width="slide.image.mobile.width"
+                :height="slide.image.mobile.height"
+              />
+              <img
+                data-hero-image
+                :src="slide.image.desktop.src"
+                :alt="slide.image.alt"
+                :width="slide.image.desktop.width"
+                :height="slide.image.desktop.height"
+                :loading="index === 0 ? 'eager' : 'lazy'"
+                :fetchpriority="index === 0 ? 'high' : 'auto'"
+                decoding="async"
+                class="hero-media h-full w-full object-cover"
+                :style="{
+                  '--hero-position-mobile': slide.image.mobile.position,
+                  '--hero-position-desktop': slide.image.desktop.position,
+                }"
+              />
+            </picture>
+          </div>
+          <div
+            aria-hidden="true"
+            class="hero-image-shade absolute inset-0"
+          />
 
-        <h1
-          class="mt-6 font-heading text-[clamp(2.4rem,4.8vw,4.8rem)] font-black leading-[0.95] tracking-[-0.05em] text-ink uppercase"
-        >
-          {{ homeHero.title }}
-        </h1>
-
-        <p class="mt-6 text-base leading-7 text-ink/75 sm:text-lg sm:leading-8">
-          {{ homeHero.lead }}
-        </p>
-
-        <!-- Dolna sekcja panelu zintegrowana z przyciskami -->
-        <div class="mt-10 grid grid-cols-1 gap-px bg-ink/10 sm:grid-cols-2">
-          <NuxtLink
-            :to="homeHero.primaryLink.href"
-            class="flex min-h-12 items-center justify-between bg-ink px-5 font-mono text-xs font-bold uppercase tracking-wider text-surface transition-colors hover:bg-brand"
+          <div
+            class="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-[96rem] items-end px-6 pt-32 pb-36 sm:px-8 sm:pb-40 lg:items-center lg:px-10 lg:pt-28 lg:pb-32"
           >
-            <span>{{ homeHero.primaryLink.label }}</span>
-            <span>→</span>
-          </NuxtLink>
+            <div class="max-w-3xl">
+              <h1
+                data-hero-reveal
+                class="max-w-[13ch] font-heading text-[clamp(2.25rem,4.7vw,4.75rem)] font-black leading-[0.9] tracking-[-0.06em] text-white"
+              >
+                {{ slide.title }}
+              </h1>
 
-          <NuxtLink
-            :to="homeHero.secondaryLink.href"
-            class="flex min-h-12 items-center justify-between bg-surface px-5 font-mono text-xs font-bold uppercase tracking-wider text-ink transition-colors hover:bg-ink/5"
+              <p
+                data-hero-reveal
+                class="mt-6 max-w-2xl text-base leading-7 text-white/80 sm:text-lg sm:leading-8"
+              >
+                {{ slide.lead }}
+              </p>
+
+              <div
+                data-hero-reveal
+                class="mt-8 flex flex-wrap items-center gap-4"
+              >
+                <NuxtLink
+                  :to="slide.primaryLink.href"
+                  class="inline-flex min-h-12 items-center gap-8 bg-brand px-5 font-mono text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-white hover:text-ink"
+                >
+                  <span>{{ slide.primaryLink.label }}</span>
+                  <span aria-hidden="true">→</span>
+                </NuxtLink>
+
+                <NuxtLink
+                  :to="slide.secondaryLink.href"
+                  class="inline-flex min-h-12 items-center gap-8 bg-brand px-5 font-mono text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-white hover:text-ink"
+                >
+                  <span>{{ slide.secondaryLink.label }}</span>
+                  <span aria-hidden="true">↗</span>
+                </NuxtLink>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="absolute right-6 bottom-24 z-10 hidden font-mono text-[0.64rem] uppercase tracking-widest text-white/55 sm:block lg:right-10"
           >
-            <span>{{ homeHero.secondaryLink.label }}</span>
-            <span class="text-ink/30">//</span>
-          </NuxtLink>
-        </div>
-      </div>
+            {{ slide.caption.label }} /
+            <span class="font-bold text-white/85">{{ slide.caption.text }}</span>
+          </div>
+        </template>
+      </article>
     </div>
 
-    <!-- Dyskretny pasek z podpisem zdjęcia zakotwiczony w dolnej krawędzi ekranu -->
-    <div
-      class="absolute bottom-0 right-0 border-t border-l border-ink/10 bg-surface/90 px-4 py-2 font-mono text-[10px] tracking-tight text-ink/50 backdrop-blur-sm hidden sm:block"
-    >
-      {{ homeHero.caption.label }}:
-      <span class="font-bold text-ink">{{ homeHero.caption.text }}</span>
+    <div class="absolute right-6 bottom-6 z-20 flex items-center gap-2 lg:right-10 lg:bottom-10">
+      <button
+        type="button"
+        aria-label="Poprzedni slajd"
+        class="grid size-12 place-items-center border border-white/25 bg-ink/80 text-xl text-white transition-colors hover:border-white hover:bg-white hover:text-ink"
+        @click="showPreviousSlide"
+      >
+        <span aria-hidden="true">←</span>
+      </button>
+      <button
+        type="button"
+        aria-label="Następny slajd"
+        class="grid size-12 place-items-center border border-white/25 bg-ink/80 text-xl text-white transition-colors hover:border-white hover:bg-white hover:text-ink"
+        @click="showNextSlide"
+      >
+        <span aria-hidden="true">→</span>
+      </button>
     </div>
+
+    <p class="sr-only" aria-live="polite">
+      Slajd {{ activeIndex + 1 }} z {{ homeHeroSlides.length }}:
+      {{ homeHeroSlides[activeIndex]?.title }}
+    </p>
   </section>
 </template>
+
+<style scoped>
+.hero-media {
+  object-position: var(--hero-position-mobile, center);
+}
+
+@media (min-width: 64rem) {
+  .hero-media {
+    object-position: var(--hero-position-desktop, center);
+  }
+}
+
+.hero-image-shade {
+  background:
+    linear-gradient(
+      90deg,
+      rgb(18 11 56 / 0.92) 0%,
+      rgb(18 11 56 / 0.74) 36%,
+      rgb(18 11 56 / 0.24) 72%,
+      rgb(18 11 56 / 0.14) 100%
+    ),
+    linear-gradient(0deg, rgb(18 11 56 / 0.62) 0%, transparent 48%);
+}
+
+@media (max-width: 63.999rem) {
+  .hero-image-shade {
+    background:
+      linear-gradient(
+        0deg,
+        rgb(18 11 56 / 0.93) 0%,
+        rgb(18 11 56 / 0.58) 58%,
+        rgb(18 11 56 / 0.18) 100%
+      ),
+      linear-gradient(90deg, rgb(18 11 56 / 0.4), transparent 72%);
+  }
+}
+</style>
