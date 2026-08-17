@@ -3,6 +3,12 @@ export interface ProductSpec {
   value: string;
 }
 
+export interface ProductTechnicalDataRow {
+  label: string;
+  value: string;
+  unit: string;
+}
+
 export interface ProductSection {
   title: string;
   body: string;
@@ -24,9 +30,15 @@ export interface ProductRelatedProject {
   scope: string[];
 }
 
+export interface ProductDocument {
+  title: string;
+  file: string;
+}
+
 export interface ProductFamily {
   title: string;
   slug: string;
+  modelCode: string;
   category: string;
   order: number;
   isFeatured: boolean;
@@ -38,11 +50,15 @@ export interface ProductFamily {
   features: string[];
   serviceScope: string[];
   specs: ProductSpec[];
+  technicalData: ProductTechnicalDataRow[];
+  technicalNotes: string[];
+  relatedProducts: string[];
   sections: ProductSection[];
   heroImage: string;
   imageAlt: string;
   headerSketch: ProductMedia | null;
   gallery: ProductMedia[];
+  documents: ProductDocument[];
   relatedProjects: ProductRelatedProject[];
 }
 

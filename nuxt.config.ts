@@ -33,6 +33,7 @@ export default defineNuxtConfig({
         '@vue/devtools-kit',
         'gsap',
         'lenis',
+        'zod/v4',
       ],
     },
     plugins: [
@@ -41,6 +42,9 @@ export default defineNuxtConfig({
   },
   studio: {
     route: '/_studio',
+    i18n: {
+      defaultLocale: 'pl',
+    },
   },
   image: {
     domains: ['images.unsplash.com'],

@@ -1,33 +1,82 @@
 hero:
-  title: Kontrola temperatury w wymagających środowiskach
-  description: Rozwiązania chłodnicze i klimatyzacyjne dla podziemnych wyrobisk górniczych, tuneli oraz instalacji przemysłowych.
-  ctaLabel: Produkty
-  ctaHref: /produkty
-  image: ""
-sections:
-  intro:
-    eyebrow: Zakres
-    title: Chłodzenie, wentylacja i bezpieczeństwo pracy
-    description: Strona porządkuje ofertę wokół urządzeń chłodniczych, układów klimatyzacji kopalń oraz obsługi instalacji pracujących w trudnych warunkach.
-  about:
-    title: Techniczne rozwiązania dla przemysłu
-    description: Treści produktowe pozostają oparte na rodzinach urządzeń, parametrach, zastosowaniach i opisach działania. Nie dodajemy niepotwierdzonych certyfikatów, realizacji ani deklaracji.
-  services:
-    title: Obszary oferty
-    items:
-      - title: Urządzenia bezpośredniego działania
-        description: Tymczasowa rodzina katalogowa dla urządzeń chłodzących powietrze bezpośrednio w wyrobisku.
-      - title: Urządzenia pośredniego działania
-        description: Tymczasowa rodzina katalogowa dla układów chłodzenia wody zasilającej chłodnice powietrza.
-      - title: Chłodnice powietrza CP(N)
-        description: Chłodnice CP(N) do współpracy z systemami klimatyzacji centralnej lub grupowej.
-      - title: Chłodnice wyparne CWW
-        description: Urządzenia CWW do chłodzenia wody w układach skraplaczy i instalacjach pomocniczych.
-  team:
-    title: Zespół techniczny
-    description: Dane zespołu wymagają potwierdzenia przed publikacją.
-  contact:
-    title: Zapytanie techniczne
-    description: Przekaż wymagania instalacji, zakres mocy i środowisko pracy.
-    ctaLabel: Kontakt
-    ctaHref: /#kontakt
+  slides:
+    - title: Od projektu do utrzymania instalacji.
+      lead: Łączymy zaplecze projektowe, produkcję urządzeń, uruchomienia oraz obsługę serwisową rozwiązań przemysłowych.
+      presentation: nakladka
+      image:
+        alt: Siedziba i zakład produkcyjny Termospec
+        desktop:
+          src: /images/hero/crops/siedziba-termospec-desktop.jpg
+          position: center center
+        mobile:
+          src: /images/hero/crops/siedziba-termospec-mobile.jpg
+          position: center center
+      caption:
+        label: Termospec
+        text: projektowanie / produkcja / serwis
+      primaryLink:
+        label: zobacz produkty
+        href: /produkty
+      secondaryLink:
+        label: poznaj firmę
+        href: /o-firmie
+    - title: Systemy dla górnictwa i przemysłu.
+      lead: Projektujemy i produkujemy rozwiązania techniczne przeznaczone do pracy w wymagających warunkach podziemnych.
+      presentation: nakladka
+      image:
+        alt: Urządzenia chłodnicze Termospec w wyrobisku podziemnym
+        desktop:
+          src: /images/hero/crops/systemy-gornictwo-desktop.jpg
+          position: center center
+        mobile:
+          src: /images/hero/crops/systemy-gornictwo-mobile.jpg
+          position: center center
+      caption:
+        label: obszar
+        text: górnictwo / przemysł
+      primaryLink:
+        label: zobacz produkty
+        href: /produkty
+      secondaryLink:
+        label: zobacz realizacje
+        href: "#realizacje"
+    - title: Kontrola warunków pracy pod ziemią.
+      lead: Projektujemy i obsługujemy układy klimatyzacji centralnej kopalń oraz systemy redukcji ciśnienia wody.
+      presentation: nakladka
+      image:
+        alt: Instalacja chłodnicza Termospec w wyrobisku podziemnym
+        desktop:
+          src: /images/hero/crops/klimatyzacja-centralna-desktop.jpg
+          position: center center
+        mobile:
+          src: /images/hero/crops/klimatyzacja-centralna-mobile.jpg
+          position: center center
+      caption:
+        label: rozwiązanie
+        text: klimatyzacja centralna
+      primaryLink:
+        label: zakres działalności
+        href: "#zakres"
+      secondaryLink:
+        label: skontaktuj się
+        href: /#kontakt
+    - title: Profesjonalna obróbka stali.
+      lead: Realizujemy obróbkę skrawaniem oraz wycinanie i wykrawanie laserowe z wykorzystaniem nowoczesnego parku maszynowego.
+      presentation: podzial
+      image:
+        alt: Park maszynowy Termospec do obróbki stali
+        desktop:
+          src: /images/hero/crops/obrobka-stali-desktop.jpg
+          position: center center
+        mobile:
+          src: /images/hero/crops/obrobka-stali-mobile.jpg
+          position: center center
+      caption:
+        label: zaplecze
+        text: park maszynowy
+      primaryLink:
+        label: zapytaj o ofertę
+        href: /#kontakt
+      secondaryLink:
+        label: poznaj firmę
+        href: /o-firmie

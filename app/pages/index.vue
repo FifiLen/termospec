@@ -1,4 +1,10 @@
 <script setup lang="ts">
+const { data: home } = await useAsyncData("home-page", () => {
+  return queryCollection("home").first();
+});
+
+const heroSlides = computed(() => home.value?.hero.slides ?? []);
+
 useSeoMeta({
   title: "Termospec — systemy chłodzenia i wentylacji dla przemysłu",
   description:
@@ -8,7 +14,7 @@ useSeoMeta({
 
 <template>
   <main aria-label="Strona główna" class="bg-surface text-ink">
-    <HomeHero />
+    <HomeHero v-if="heroSlides.length" :slides="heroSlides" />
     <HomeScope />
     <HomePartners />
 

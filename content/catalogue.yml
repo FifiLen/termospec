@@ -1,0 +1,166 @@
+categories:
+  - number: "01"
+    label: Agregaty chłodnicze
+    slug: agregaty-chlodnicze
+    entries: []
+    groups:
+      - label: Agregaty chłodnicze ze sprężarką tłokową
+        slug: agregaty-sprezarka-tlokowa
+        render:
+          src: /images/products/catalogue-renders/agregaty-sprezarka-tlokowa.jpg
+          alt: Agregat chłodniczy Termospec ze sprężarką tłokową
+        entries:
+          - { label: TS-150, kind: model }
+          - { label: TS-200, kind: model }
+          - { label: TS-250, kind: model }
+          - { label: TS-300, kind: model }
+          - { label: TS-350, kind: model }
+          - { label: TS-400, kind: model }
+      - label: Agregaty chłodnicze ze sprężarką śrubową
+        slug: agregaty-sprezarka-srubowa
+        render:
+          src: /images/products/catalogue-renders/agregaty-sprezarka-srubowa.jpg
+          alt: Agregat chłodniczy Termospec ze sprężarką śrubową
+        entries:
+          - { label: TS-300, kind: model }
+          - { label: TS-350, kind: model }
+          - { label: TS-400, kind: model }
+          - { label: TS-450, kind: model }
+          - { label: TS-500, kind: model }
+          - { label: TS-550, kind: model }
+          - { label: TS-600, kind: model }
+          - { label: TS-650, kind: model }
+          - { label: TS-700, kind: model }
+          - { label: TS-750, kind: model }
+          - { label: TS-800, kind: model }
+      - label: Agregaty chłodnicze dwu-sprężarkowe
+        slug: agregaty-dwu-sprezarkowe
+        render:
+          src: /images/products/catalogue-renders/agregaty-dwu-sprezarkowe.jpg
+          alt: Dwu-sprężarkowy agregat chłodniczy Termospec
+        entries:
+          - { label: TS-500, kind: model }
+          - { label: TS-600, kind: model }
+          - { label: TS-700, kind: model }
+      - label: Agregaty chłodnicze dużych mocy
+        slug: agregaty-duzych-mocy
+        render:
+          src: /images/products/catalogue-renders/agregaty-duzych-mocy.jpg
+          alt: Agregat chłodniczy Termospec dużej mocy
+        entries:
+          - { label: TS-990, kind: model }
+          - { label: TS-1200, kind: model }
+          - { label: TS-2000, kind: model }
+          - { label: TS-2500, kind: model }
+          - { label: TS-3000, kind: model }
+      - label: Agregaty klimatyzacyjne małych mocy
+        slug: agregaty-malych-mocy
+        render:
+          src: /images/products/catalogue-renders/agregaty-malych-mocy.jpg
+          alt: Agregat klimatyzacyjny Termospec małej mocy
+        entries:
+          - { label: Typoszereg TS1–TS60, kind: series }
+      - label: Mobilne urządzenia chłodnicze
+        slug: mobilne-urzadzenia-chlodnicze
+        note: do dalszej rozbudowy
+        render:
+          src: /images/products/catalogue-renders/mobilne-urzadzenia-chlodnicze.jpg
+          alt: Mobilne urządzenie chłodnicze Termospec
+        entries: []
+  - number: "02"
+    label: Chłodnice powietrza
+    slug: chlodnice-powietrza
+    render:
+      src: /images/products/catalogue-renders/chlodnice-powietrza.jpg
+      alt: Chłodnica powietrza Termospec
+    entries:
+      - { label: CP-250, kind: model }
+      - { label: CP-300, kind: model }
+      - { label: CP-400, kind: model }
+      - { label: CP-500, kind: model }
+      - { label: CPO-30, kind: model }
+      - { label: CPO-50, kind: model }
+      - label: Inne moce w zakresie 10–1000 kW, według indywidualnych potrzeb klienta
+        kind: description
+    groups: []
+  - number: "03"
+    label: Parowniki
+    slug: parowniki
+    entries: []
+    groups:
+      - number: 03A
+        label: Parowniki powietrza
+        slug: parowniki-powietrza
+        render:
+          src: /images/products/catalogue-renders/parowniki-powietrza.jpg
+          alt: Parownik powietrza bezpośredniego działania Termospec
+        entries:
+          - { label: Typoszereg TS-150/PB – TS/PB-900, kind: series }
+      - number: 03B
+        label: Parowniki wodne
+        slug: parowniki-wodne
+        render:
+          src: /images/products/catalogue-renders/parowniki-wodne.jpg
+          alt: Parownik wodny Termospec
+        entries:
+          - { label: Typoszereg TS-150/PP – TS/PP-900, kind: series }
+  - number: "04"
+    label: Chłodnice wyparne wody
+    slug: chlodnice-wyparne-wody
+    render:
+      src: /images/products/catalogue-renders/chlodnice-wyparne-wody.jpg
+      alt: Chłodnica wyparna wody Termospec
+    entries:
+      - { label: CWW-200, kind: model }
+      - { label: CWW-300, kind: model }
+      - { label: CWW-450, kind: model }
+      - label: Inne moce w zakresie 100–1000 kW, według indywidualnych potrzeb klienta
+        kind: description
+    groups: []
+  - number: "05"
+    label: Systemy redukcji ciśnienia
+    slug: systemy-redukcji-cisnienia
+    entries:
+      - { label: Zawory redukcyjne niskiego i wysokiego ciśnienia, kind: description }
+      - { label: Stacje redukcji ciśnień, kind: description }
+      - { label: Trójkomorowy podajnik pompowy (6–35 MW), kind: description }
+    groups: []
+  - number: "06"
+    label: Zbiorniki ciśnieniowe
+    slug: zbiorniki-cisnieniowe
+    render:
+      src: /images/products/catalogue-renders/wymienniki-ciepla.jpg
+      alt: Wymienniki ciepła Termospec w kategorii zbiorników ciśnieniowych
+    entries:
+      - { label: Skraplacze o mocy 10–4000 kW, kind: description }
+      - label: Parowniki — przejdź do kategorii 03
+        kind: description
+        targetSlug: parowniki
+      - { label: Wymienniki ciepła, kind: description }
+    groups: []
+  - number: "07"
+    label: Systemy sterownicze
+    slug: systemy-sterownicze
+    note: do dalszej rozbudowy
+    render:
+      src: /images/products/catalogue-renders/systemy-sterownicze.jpg
+      alt: System sterowniczy Termospec
+    entries: []
+    groups: []
+  - number: "08"
+    label: Wentylatory
+    slug: wentylatory
+    note: do dalszej rozbudowy
+    render:
+      src: /images/products/catalogue-renders/wentylatory.jpg
+      alt: Wentylator przemysłowy Termospec
+    entries: []
+    groups: []
+  - number: "09"
+    label: Inne
+    slug: inne
+    entries:
+      - { label: Punkty klimatyzacyjne / rozdzielacze wody lodowej, kind: description }
+      - { label: Tamy wentylacyjne, kind: description }
+      - { label: Instalacje redukcji siarkowodoru, kind: description }
+    groups: []

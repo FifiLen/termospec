@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { searchQuickLinks } from "~~/data/search";
-import {
-  productNavigation,
-  serviceNavigation,
-} from "~~/data/navigation";
+import { serviceNavigation } from "~~/data/navigation";
 
 const route = useRoute()
 
@@ -12,6 +9,14 @@ const searchTerm = ref('')
 const { data: searchNavigation } = await useAsyncData('search-navigation', () => {
   return queryCollectionNavigation('pages')
 })
+
+const { data: productCatalogue } = await useAsyncData(
+  'global-product-catalogue',
+  () => queryCollection('catalogue').first(),
+)
+
+const baseProductNavigation = computed(() => productCatalogue.value?.categories ?? [])
+const productNavigation = useProductCatalogue(baseProductNavigation)
 
 const { data: searchFiles } = useLazyAsyncData('search-files', () => {
   return queryCollectionSearchSections('pages')
@@ -46,6 +51,8 @@ const pageFrameClass = computed(() => {
     </div>
 
     <ClientOnly>
+      <ProductJsonImporter :catalogue="baseProductNavigation" />
+
       <LazyUContentSearch
         v-model:search-term="searchTerm"
         :links="searchQuickLinks"

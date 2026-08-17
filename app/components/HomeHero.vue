@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { gsap } from "gsap";
-import { homeHeroSlides } from "~~/data/home";
+import type { HomeHeroSlide } from "~~/types/home";
+
+const props = defineProps<{
+  slides: HomeHeroSlide[];
+}>();
 
 const heroRoot = ref<HTMLElement | null>(null);
 const activeIndex = ref(0);
@@ -37,13 +41,13 @@ function scheduleAutoplay() {
     reducedMotion ||
     interactionPaused ||
     document.hidden ||
-    homeHeroSlides.length < 2
+    props.slides.length < 2
   ) {
     return;
   }
 
   autoplayCall = gsap.delayedCall(autoplayDelay, () => {
-    goToSlide((activeIndex.value + 1) % homeHeroSlides.length, 1);
+    goToSlide((activeIndex.value + 1) % props.slides.length, 1);
   });
 }
 
@@ -79,7 +83,7 @@ function goToSlide(targetIndex: number, direction = 1) {
     targetIndex === activeIndex.value ||
     isTransitioning ||
     targetIndex < 0 ||
-    targetIndex >= homeHeroSlides.length
+    targetIndex >= props.slides.length
   ) {
     scheduleAutoplay();
     return;
@@ -183,12 +187,12 @@ function goToSlide(targetIndex: number, direction = 1) {
 
 function showPreviousSlide() {
   const targetIndex =
-    (activeIndex.value - 1 + homeHeroSlides.length) % homeHeroSlides.length;
+    (activeIndex.value - 1 + props.slides.length) % props.slides.length;
   goToSlide(targetIndex, -1);
 }
 
 function showNextSlide() {
-  goToSlide((activeIndex.value + 1) % homeHeroSlides.length, 1);
+  goToSlide((activeIndex.value + 1) % props.slides.length, 1);
 }
 
 function pauseAutoplay() {
@@ -222,12 +226,33 @@ function handleVisibilityChange() {
   }
 }
 
+watch(
+  () => props.slides.length,
+  async (slideCount) => {
+    cancelAutoplay();
+
+    if (!slideCount) {
+      activeIndex.value = 0;
+      return;
+    }
+
+    activeIndex.value = Math.min(activeIndex.value, slideCount - 1);
+    await nextTick();
+    revealSlideImmediately(activeIndex.value);
+    scheduleAutoplay();
+  },
+);
+
 onMounted(() => {
   if (!heroRoot.value) {
     return;
   }
 
   const slides = getSlides();
+
+  if (!slides.length) {
+    return;
+  }
 
   animationContext = gsap.context(() => {
     gsap.set(slides, { autoAlpha: 0, zIndex: 1 });
@@ -300,14 +325,14 @@ onUnmounted(() => {
   >
     <div class="absolute inset-0">
       <article
-        v-for="(slide, index) in homeHeroSlides"
-        :key="slide.number"
+        v-for="(slide, index) in props.slides"
+        :key="index"
         data-hero-slide
         :aria-hidden="activeIndex !== index"
         class="invisible absolute inset-0"
       >
         <div
-          v-if="slide.presentation === 'split'"
+          v-if="slide.presentation === 'podzial'"
           class="absolute inset-x-0 top-16 bottom-0 grid grid-rows-2 bg-ink lg:grid-cols-5 lg:grid-rows-1"
         >
           <div class="order-2 flex items-center px-6 py-6 sm:px-8 lg:order-1 lg:col-span-2 lg:px-10 lg:py-12">
@@ -354,15 +379,11 @@ onUnmounted(() => {
               <source
                 media="(max-width: 1023px)"
                 :srcset="slide.image.mobile.src"
-                :width="slide.image.mobile.width"
-                :height="slide.image.mobile.height"
               />
               <img
                 data-hero-image
                 :src="slide.image.desktop.src"
                 :alt="slide.image.alt"
-                :width="slide.image.desktop.width"
-                :height="slide.image.desktop.height"
                 :loading="index === 0 ? 'eager' : 'lazy'"
                 :fetchpriority="index === 0 ? 'high' : 'auto'"
                 decoding="async"
@@ -386,15 +407,11 @@ onUnmounted(() => {
               <source
                 media="(max-width: 1023px)"
                 :srcset="slide.image.mobile.src"
-                :width="slide.image.mobile.width"
-                :height="slide.image.mobile.height"
               />
               <img
                 data-hero-image
                 :src="slide.image.desktop.src"
                 :alt="slide.image.alt"
-                :width="slide.image.desktop.width"
-                :height="slide.image.desktop.height"
                 :loading="index === 0 ? 'eager' : 'lazy'"
                 :fetchpriority="index === 0 ? 'high' : 'auto'"
                 decoding="async"
@@ -453,16 +470,22 @@ onUnmounted(() => {
           </div>
 
           <div
+            v-if="slide.caption.label || slide.caption.text"
             class="absolute right-6 bottom-24 z-10 hidden font-mono text-[0.64rem] uppercase tracking-widest text-white/55 sm:block lg:right-10"
           >
-            {{ slide.caption.label }} /
+            <template v-if="slide.caption.label">
+              {{ slide.caption.label }} /
+            </template>
             <span class="font-bold text-white/85">{{ slide.caption.text }}</span>
           </div>
         </template>
       </article>
     </div>
 
-    <div class="absolute right-6 bottom-6 z-20 flex items-center gap-2 lg:right-10 lg:bottom-10">
+    <div
+      v-if="props.slides.length > 1"
+      class="absolute right-6 bottom-6 z-20 flex items-center gap-2 lg:right-10 lg:bottom-10"
+    >
       <button
         type="button"
         aria-label="Poprzedni slajd"
@@ -482,8 +505,8 @@ onUnmounted(() => {
     </div>
 
     <p class="sr-only" aria-live="polite">
-      Slajd {{ activeIndex + 1 }} z {{ homeHeroSlides.length }}:
-      {{ homeHeroSlides[activeIndex]?.title }}
+      Slajd {{ activeIndex + 1 }} z {{ props.slides.length }}:
+      {{ props.slides[activeIndex]?.title }}
     </p>
   </section>
 </template>

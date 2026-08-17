@@ -1,15 +1,19 @@
 <script setup lang="ts">
-import type { ProductFamily } from "~~/types/products";
+import type {
+  ProductNavigationCategory,
+  ProductNavigationGroup,
+} from "~~/types/navigation";
 
-interface ProductCatalogueGroup {
-  category: string;
-  products: ProductFamily[];
-}
+const { data: catalogue } = await useAsyncData(
+  "product-catalogue-page",
+  () => queryCollection("catalogue").first(),
+);
 
-interface ProductCatalogueAccordionItem extends ProductCatalogueGroup {
-  label: string;
-  value: string;
-}
+const baseProductNavigation = computed<ProductNavigationCategory[]>(() => {
+  return catalogue.value?.categories ?? [];
+});
+
+const productNavigation = useProductCatalogue(baseProductNavigation);
 
 const polishLetters: Record<string, string> = {
   ą: "a",
@@ -31,342 +35,212 @@ const normalizeText = (value: string) => {
     .replace(/[\u0300-\u036f]/g, "");
 };
 
-const productSlugFromStem = (stem: string) => {
-  const filename = stem.split("/").pop() || stem;
+const filterGroup = (
+  group: ProductNavigationGroup,
+  query: string,
+): ProductNavigationGroup | null => {
+  const groupHeadingMatches = normalizeText(group.label).includes(query);
 
-  return normalizeText(filename)
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+  if (groupHeadingMatches) {
+    return group;
+  }
+
+  const matchingEntries = group.entries.filter((entry) => {
+    return normalizeText(entry.label).includes(query);
+  });
+
+  return matchingEntries.length
+    ? {
+        ...group,
+        entries: matchingEntries,
+      }
+    : null;
 };
-
-const { data: products } = await useAsyncData<ProductFamily[]>(
-  "products",
-  async () => {
-    const entries = await queryCollection("products")
-      .order("order", "ASC")
-      .all();
-
-    const toArray = <T,>(value: T[] | undefined | null) => value ?? [];
-
-    return entries.map((entry, index) => ({
-      title: entry.title,
-      slug: productSlugFromStem(entry.stem) || `produkt-${index + 1}`,
-      category: entry.category,
-      order: entry.order ?? 100,
-      isFeatured: entry.isFeatured ?? false,
-      lead: entry.lead,
-      shortDescription: entry.shortDescription,
-      powerRange: entry.powerRange ?? "",
-      applications: toArray(entry.applications),
-      components: toArray(entry.components),
-      features: toArray(entry.features),
-      serviceScope: toArray(entry.serviceScope),
-      specs: toArray(entry.specs),
-      sections: toArray(entry.sections).map((section) => ({
-        title: section.title,
-        body: section.body,
-        items: toArray(section.items),
-      })),
-      heroImage: entry.heroImage ?? "",
-      imageAlt: entry.imageAlt ?? "",
-      headerSketch: entry.headerSketch ?? null,
-      gallery: toArray(entry.gallery),
-      relatedProjects: toArray(entry.relatedProjects).map((project) => ({
-        number: project.number,
-        category: project.category,
-        title: project.title,
-        body: project.body,
-        image: project.image,
-        imageAlt: project.imageAlt,
-        scope: toArray(project.scope),
-      })),
-    }));
-  },
-);
 
 const searchQuery = ref("");
-const activeProductSlug = ref("");
-const manuallyExpandedCategories = ref<string[]>([]);
-const catalogueAside = ref<HTMLElement | null>(null);
-
-const productList = computed(() => products.value ?? []);
+const activeCategorySlug = ref(productNavigation.value[0]?.slug ?? "");
+const expandedCategorySlug = ref(activeCategorySlug.value);
 const normalizedSearch = computed(() => normalizeText(searchQuery.value.trim()));
 
-const filteredProducts = computed(() => {
+interface CatalogueNavigationChild {
+  label: string;
+  targetSlug: string;
+}
+
+const categoryNavigationChildren = (
+  category: ProductNavigationCategory,
+): CatalogueNavigationChild[] => {
+  if (category.groups.length) {
+    const groups = category.groups.map((group) => ({
+      label: group.label,
+      targetSlug: group.slug,
+    }));
+    const categoryProducts = category.entries.flatMap((entry) => {
+      return entry.details
+        ? [{
+            label: entry.label,
+            targetSlug: `produkt-${entry.details.slug}`,
+          }]
+        : [];
+    });
+
+    return [...groups, ...categoryProducts];
+  }
+
+  return category.entries
+    .filter((entry) => entry.kind !== "description")
+    .map((entry, index) => ({
+      label: entry.label,
+      targetSlug: `${category.slug}-types-tab-${index}`,
+    }));
+};
+
+const filteredCategories = computed<ProductNavigationCategory[]>(() => {
   const query = normalizedSearch.value;
 
-  return productList.value.filter((product) => {
-    if (!query) {
-      return true;
-    }
-
-    const searchableContent = [
-      product.title,
-      product.category,
-      product.lead,
-      product.shortDescription,
-      product.powerRange,
-      ...product.applications,
-      ...product.components,
-      ...product.features,
-      ...product.serviceScope,
-      ...product.specs.flatMap((spec) => [spec.label, spec.value]),
-      ...product.sections.flatMap((section) => [
-        section.title,
-        section.body,
-        ...section.items,
-      ]),
-      product.imageAlt,
-      product.headerSketch?.alt ?? "",
-      product.headerSketch?.src ?? "",
-      ...product.gallery.flatMap((media) => [media.alt, media.src]),
-      ...product.relatedProjects.flatMap((project) => [
-        project.number,
-        project.category,
-        project.title,
-        project.body,
-        project.imageAlt,
-        ...project.scope,
-      ]),
-    ].join(" ");
-
-    return normalizeText(searchableContent).includes(query);
-  });
-});
-
-const groupedProducts = computed<ProductCatalogueGroup[]>(() => {
-  const groups = new Map<string, ProductFamily[]>();
-
-  for (const product of filteredProducts.value) {
-    const groupProducts = groups.get(product.category) ?? [];
-    groupProducts.push(product);
-    groups.set(product.category, groupProducts);
+  if (!query) {
+    return productNavigation.value;
   }
 
-  return Array.from(groups.entries()).map(([category, groupProducts]) => ({
-    category,
-    products: groupProducts,
-  }));
-});
+  return productNavigation.value.flatMap((category) => {
+    const categoryHeadingMatches = normalizeText(category.label).includes(query);
 
-const accordionItems = computed<ProductCatalogueAccordionItem[]>(() => {
-  return groupedProducts.value.map((group) => ({
-    ...group,
-    label: group.category,
-    value: group.category,
-  }));
-});
-
-const activeProduct = computed(() => {
-  return productList.value.find((product) => {
-    return product.slug === activeProductSlug.value;
-  });
-});
-
-const activeCategory = computed(() => activeProduct.value?.category ?? "");
-
-const openCategories = computed(() => {
-  const open = new Set<string>();
-
-  if (activeCategory.value) {
-    open.add(activeCategory.value);
-  }
-
-  if (normalizedSearch.value) {
-    for (const group of groupedProducts.value) {
-      open.add(group.category);
-    }
-  }
-
-  for (const category of manuallyExpandedCategories.value) {
-    if (groupedProducts.value.some((group) => group.category === category)) {
-      open.add(category);
-    }
-  }
-
-  return open;
-});
-
-const accordionValue = computed({
-  get() {
-    return Array.from(openCategories.value);
-  },
-  set(value: string | string[] | undefined) {
-    const requestedCategories = Array.isArray(value)
-      ? value
-      : value
-        ? [value]
-        : [];
-    const categoriesKeptOpen = new Set<string>();
-
-    if (activeCategory.value) {
-      categoriesKeptOpen.add(activeCategory.value);
+    if (categoryHeadingMatches) {
+      return [category];
     }
 
-    if (normalizedSearch.value) {
-      for (const group of groupedProducts.value) {
-        categoriesKeptOpen.add(group.category);
-      }
-    }
-
-    manuallyExpandedCategories.value = requestedCategories.filter((category) => {
-      return !categoriesKeptOpen.has(category);
+    const matchingEntries = category.entries.filter((entry) => {
+      return normalizeText(entry.label).includes(query);
     });
-  },
+    const matchingGroups = category.groups
+      .map((group) => filterGroup(group, query))
+      .filter((group): group is ProductNavigationGroup => Boolean(group));
+
+    if (!matchingEntries.length && !matchingGroups.length) {
+      return [];
+    }
+
+    return [
+      {
+        ...category,
+        entries: matchingEntries,
+        groups: matchingGroups,
+      },
+    ];
+  });
 });
 
-const productAnchor = (slug: string) => {
-  return `produkt-${slug}`;
+const setActiveCategory = (slug: string) => {
+  activeCategorySlug.value = slug;
 };
 
-const productGlobalIndex = (product: ProductFamily) => {
-  const index = productList.value.findIndex((item) => {
-    return item.slug === product.slug;
-  });
-
-  return index > -1 ? index : 0;
+const setExpandedCategory = (slug: string, open: boolean) => {
+  expandedCategorySlug.value = open ? slug : "";
 };
 
-const setActiveProduct = (product: ProductFamily) => {
-  if (activeProductSlug.value === product.slug) {
-    return;
-  }
-
-  activeProductSlug.value = product.slug;
-};
-
-const syncActiveProductFromScroll = () => {
-  if (!import.meta.client || !filteredProducts.value.length) {
-    return;
-  }
-
-  const activationLine = 64 + Math.min(window.innerHeight * 0.24, 240);
-  const headerBoundary = 64;
-  let currentProduct = filteredProducts.value[0];
-
-  for (const product of filteredProducts.value) {
-    const element = document.getElementById(productAnchor(product.slug));
-
-    if (!element) {
-      continue;
-    }
-
-    const rect = element.getBoundingClientRect();
-
-    if (rect.top <= activationLine && rect.bottom > headerBoundary) {
-      currentProduct = product;
-      continue;
-    }
-
-    if (rect.top > activationLine) {
-      break;
-    }
-  }
-
-  if (currentProduct) {
-    setActiveProduct(currentProduct);
-  }
-};
-
-let activeScrollFrame: number | undefined;
-
-const requestActiveProductSync = () => {
-  if (!import.meta.client || activeScrollFrame !== undefined) {
-    return;
-  }
-
-  activeScrollFrame = window.requestAnimationFrame(() => {
-    activeScrollFrame = undefined;
-    syncActiveProductFromScroll();
-  });
-};
-
-const scrollActiveNavigationItemIntoView = async () => {
-  if (!import.meta.client || !activeProductSlug.value) {
-    return;
-  }
-
-  await nextTick();
-
-  const aside = catalogueAside.value;
-  const activeLink = Array.from(
-    aside?.querySelectorAll<HTMLElement>("[data-product-nav]") ?? [],
-  ).find((link) => link.dataset.productNav === activeProductSlug.value);
-
-  if (!aside || !activeLink) {
-    return;
-  }
-
-  const asideRect = aside.getBoundingClientRect();
-  const linkRect = activeLink.getBoundingClientRect();
-  const topBoundary = asideRect.top + 96;
-  const bottomBoundary = asideRect.bottom - 24;
-
-  if (linkRect.top < topBoundary) {
-    aside.scrollBy({
-      top: linkRect.top - topBoundary,
-      behavior: "smooth",
-    });
-  } else if (linkRect.bottom > bottomBoundary) {
-    aside.scrollBy({
-      top: linkRect.bottom - bottomBoundary,
-      behavior: "smooth",
-    });
-  }
-};
-
-const scrollToProduct = async (product: ProductFamily) => {
-  setActiveProduct(product);
+const scrollToCatalogueTarget = async (
+  targetSlug: string,
+  categorySlug: string,
+) => {
+  setActiveCategory(categorySlug);
+  expandedCategorySlug.value = categorySlug;
   await nextTick();
 
   if (!import.meta.client) {
     return;
   }
 
-  const target = document.getElementById(productAnchor(product.slug));
+  const target = document.getElementById(targetSlug);
 
-  if (target) {
-    target.scrollIntoView({ behavior: "smooth", block: "start" });
-    window.history.replaceState(null, "", `#${productAnchor(product.slug)}`);
-    requestActiveProductSync();
+  if (!target) {
+    return;
+  }
+
+  if (target.getAttribute("role") === "tab" && target instanceof HTMLButtonElement) {
+    target.click();
+  }
+
+  if (target instanceof HTMLDetailsElement) {
+    target.open = true;
+  }
+
+  target.scrollIntoView({ behavior: "smooth", block: "start" });
+  window.history.replaceState(null, "", `#${targetSlug}`);
+};
+
+const syncActiveCategoryFromScroll = () => {
+  if (!import.meta.client || !filteredCategories.value.length) {
+    return;
+  }
+
+  const activationLine = 64 + Math.min(window.innerHeight * 0.24, 220);
+  let currentCategory = filteredCategories.value[0];
+
+  for (const category of filteredCategories.value) {
+    const element = document.getElementById(category.slug);
+
+    if (!element) {
+      continue;
+    }
+
+    if (element.getBoundingClientRect().top <= activationLine) {
+      currentCategory = category;
+      continue;
+    }
+
+    break;
+  }
+
+  if (currentCategory) {
+    setActiveCategory(currentCategory.slug);
   }
 };
 
-watch(
-  filteredProducts,
-  async (visibleProducts) => {
-    const firstProduct = visibleProducts[0];
+let activeScrollFrame: number | undefined;
 
-    if (firstProduct) {
-      setActiveProduct(firstProduct);
-    } else {
-      activeProductSlug.value = "";
+const requestActiveCategorySync = () => {
+  if (!import.meta.client || activeScrollFrame !== undefined) {
+    return;
+  }
+
+  activeScrollFrame = window.requestAnimationFrame(() => {
+    activeScrollFrame = undefined;
+    syncActiveCategoryFromScroll();
+  });
+};
+
+watch(
+  filteredCategories,
+  async (categories) => {
+    activeCategorySlug.value = categories[0]?.slug ?? "";
+
+    if (normalizedSearch.value) {
+      expandedCategorySlug.value = categories[0]?.slug ?? "";
     }
 
     await nextTick();
-    syncActiveProductFromScroll();
-    scrollActiveNavigationItemIntoView();
+    requestActiveCategorySync();
   },
-  { immediate: true },
 );
-
-watch(activeProductSlug, scrollActiveNavigationItemIntoView);
 
 onMounted(() => {
   const hash = window.location.hash.replace("#", "");
-  const hashProduct = productList.value.find(
-    (product) => productAnchor(product.slug) === hash,
-  );
+  const hashCategory = productNavigation.value.find((category) => {
+    return (
+      category.slug === hash ||
+      category.groups.some((group) => group.slug === hash)
+    );
+  });
 
-  if (hashProduct) {
-    setActiveProduct(hashProduct);
+  if (hashCategory) {
+    setActiveCategory(hashCategory.slug);
   }
 
-  requestActiveProductSync();
-  window.addEventListener("scroll", requestActiveProductSync, {
+  requestActiveCategorySync();
+  window.addEventListener("scroll", requestActiveCategorySync, {
     passive: true,
   });
-  window.addEventListener("resize", requestActiveProductSync);
+  window.addEventListener("resize", requestActiveCategorySync);
 });
 
 onBeforeUnmount(() => {
@@ -374,157 +248,128 @@ onBeforeUnmount(() => {
     window.cancelAnimationFrame(activeScrollFrame);
   }
 
-  window.removeEventListener("scroll", requestActiveProductSync);
-  window.removeEventListener("resize", requestActiveProductSync);
+  window.removeEventListener("scroll", requestActiveCategorySync);
+  window.removeEventListener("resize", requestActiveCategorySync);
 });
 
 useSeoMeta({
   title: "Produkty | Termospec",
   description:
-    "Katalog rodzin produktowych Termospec: urządzenia bezpośredniego działania, urządzenia pośredniego działania, chłodnice powietrza CP(N) i chłodnice wyparne CWW.",
+    "Katalog produktów Termospec: agregaty chłodnicze, chłodnice powietrza, parowniki, chłodnice wyparne, systemy redukcji ciśnienia, zbiorniki, sterowanie i wentylatory.",
 });
 </script>
 
 <template>
   <main class="min-h-[100svh] bg-line pt-16 text-ink">
+    <h1 class="sr-only">Katalog produktów</h1>
+
     <section
-      class="grid min-h-[calc(100svh-4rem)] gap-px bg-line lg:grid-cols-[21rem_minmax(0,1fr)] lg:items-start"
+      class="grid min-h-[calc(100svh-4rem)] gap-px bg-line sm:grid-cols-[18rem_minmax(0,1fr)] sm:items-start"
       aria-label="Katalog produktów"
     >
       <aside
-        ref="catalogueAside"
-        class="bg-white lg:sticky lg:top-16 lg:h-[calc(100svh-4rem)] lg:overflow-y-auto"
+        class="bg-white sm:sticky sm:top-16 sm:h-[calc(100svh-4rem)] sm:overflow-y-auto"
         aria-label="Indeks katalogu produktów"
       >
-        <div class="border-b border-line">
-          <div class="bg-ink px-2 py-4">
-            <h2 class="whitespace-nowrap text-base font-black leading-none text-white">
-              Katalog produktów
-            </h2>
-          </div>
-
-          <div class="border-t border-line px-2 py-3">
-            <div class="relative">
-              <UIcon
-                name="i-lucide-search"
-                class="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-brand"
-                aria-hidden="true"
-              />
-              <input
-                id="product-search"
-                v-model="searchQuery"
-                type="search"
-                class="h-9 w-full border border-line bg-white pl-9 pr-3 text-sm font-bold text-ink outline-none transition placeholder:text-ink/42 focus:border-brand focus:text-ink"
-                placeholder="Szukaj produktów"
-                autocomplete="off"
-                aria-label="Szukaj produktu w katalogu"
-              />
-            </div>
+        <div class="border-b border-line px-5 py-4">
+          <label for="product-search" class="sr-only">
+            Szukaj w katalogu produktów
+          </label>
+          <div class="relative">
+            <UIcon
+              name="i-lucide-search"
+              class="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-brand"
+              aria-hidden="true"
+            />
+            <input
+              id="product-search"
+              v-model="searchQuery"
+              type="search"
+              class="h-11 w-full border border-line bg-white pl-10 pr-3 text-sm font-bold text-ink outline-none transition placeholder:text-ink/42 focus:border-brand"
+              placeholder="Szukaj typu lub kategorii"
+              autocomplete="off"
+            />
           </div>
         </div>
 
-        <nav
-          v-if="accordionItems.length"
-          class="py-3"
-          aria-label="Grupy produktów w katalogu"
-        >
-          <UAccordion
-            v-model="accordionValue"
-            :items="accordionItems"
-            type="multiple"
-            :ui="{
-              root: 'divide-y divide-line',
-              item: 'border-b-0 py-1.5',
-              header: 'flex',
-              trigger:
-                'group grid min-h-11 w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-none px-2 py-2 text-left text-sm transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand',
-              label: 'min-w-0 truncate',
-              trailingIcon: 'hidden',
-              content:
-                'data-[state=open]:animate-[accordion-down_200ms_ease-out] data-[state=closed]:animate-[accordion-up_160ms_ease-out] data-[state=closed]:overflow-hidden focus:outline-none',
-              body: 'p-0',
-            }"
+        <nav aria-label="Główne kategorie produktów">
+          <div
+            v-for="category in filteredCategories"
+            :key="category.slug"
+            class="border-b border-line"
           >
-            <template #default="{ item }">
-              <span
-                class="block min-w-0 truncate text-sm leading-5"
-                :class="
-                  activeCategory === item.category
-                    ? 'font-bold text-brand'
-                    : 'font-bold text-ink/62 group-hover:text-brand'
-                "
-              >
-                {{ item.category }}
-              </span>
-            </template>
-
-            <template #trailing="{ item, open }">
-              <span class="flex items-center gap-2">
-                <span class="text-xs font-bold text-ink/34">
-                  {{ item.products.length }}
-                </span>
-                <span
-                  class="grid h-5 w-5 place-items-center text-ink/36 transition-transform duration-200"
+            <UCollapsible
+              :open="expandedCategorySlug === category.slug"
+              :unmount-on-hide="false"
+              :ui="{
+                content:
+                  'overflow-hidden motion-reduce:animate-none motion-reduce:transition-none',
+              }"
+              @update:open="setExpandedCategory(category.slug, $event)"
+            >
+              <template #default="{ open }">
+                <button
+                  type="button"
+                  :data-category-nav="category.slug"
+                  class="group grid w-full grid-cols-[1.75rem_minmax(0,1fr)_1rem] items-center gap-2 px-4 py-3.5 text-left transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand"
                   :class="
-                    open
-                      ? 'rotate-90'
-                      : ''
+                    activeCategorySlug === category.slug || open
+                      ? 'text-brand'
+                      : 'text-ink/58 hover:text-brand'
                   "
-                  aria-hidden="true"
+                  :aria-current="activeCategorySlug === category.slug ? 'location' : undefined"
                 >
-                  <span class="h-1.5 w-1.5 rotate-[-45deg] border-r border-b border-current"></span>
-                </span>
-              </span>
-            </template>
+                  <span class="font-mono text-[0.62rem] font-bold">
+                    {{ category.number }}
+                  </span>
+                  <span class="whitespace-nowrap text-[0.68rem] font-black uppercase leading-5">
+                    {{ category.label }}
+                  </span>
+                  <UIcon
+                    name="i-lucide-chevron-down"
+                    class="size-3.5 transition-transform duration-200 motion-reduce:transition-none"
+                    :class="open ? 'rotate-180' : ''"
+                    aria-hidden="true"
+                  />
+                </button>
+              </template>
 
-            <template #content="{ item }">
-              <div class="pb-2 pl-2">
-                <div class="border-l border-line/80">
-                  <a
-                    v-for="product in item.products"
-                    :key="`${product.slug}-quick-nav`"
-                    :href="`#${productAnchor(product.slug)}`"
-                    :data-product-nav="product.slug"
-                    class="block w-full py-2 pl-4 pr-2 text-left transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-                    :class="
-                      activeProductSlug === product.slug
-                        ? 'text-brand'
-                        : 'text-ink/60 hover:text-brand'
-                    "
-                    :aria-current="
-                      activeProductSlug === product.slug
-                        ? 'location'
-                        : undefined
-                    "
-                    @click.prevent="scrollToProduct(product)"
+              <template #content>
+                <ul
+                  class="border-t border-line bg-soft py-1"
+                  :aria-label="`Produkty w kategorii ${category.label}`"
+                >
+                  <li
+                    v-for="child in categoryNavigationChildren(category)"
+                    :key="child.targetSlug"
                   >
-                    <span class="block min-w-0 text-sm font-bold leading-5">
-                      {{ product.title }}
-                    </span>
-                  </a>
-                </div>
-              </div>
-            </template>
-          </UAccordion>
+                    <button
+                      type="button"
+                      class="w-full py-2.5 pe-4 ps-12 text-left text-[0.68rem] font-bold leading-4 text-ink/62 transition-colors duration-200 hover:text-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand"
+                      @click="scrollToCatalogueTarget(child.targetSlug, category.slug)"
+                    >
+                      {{ child.label }}
+                    </button>
+                  </li>
+                </ul>
+              </template>
+            </UCollapsible>
+          </div>
         </nav>
       </aside>
 
       <div class="min-w-0 bg-white">
-        <template v-if="filteredProducts.length">
-          <ProductCatalogueSheet
-            v-for="product in filteredProducts"
-            :id="productAnchor(product.slug)"
-            :key="product.slug"
-            :product="product"
-            :index="productGlobalIndex(product)"
+        <template v-if="filteredCategories.length">
+          <ProductCatalogueCategory
+            v-for="category in filteredCategories"
+            :key="category.slug"
+            :category="category"
           />
         </template>
 
-        <div v-else class="bg-white p-6 md:p-8" role="status">
-          <p
-            class="border-l-2 border-brand pl-4 text-base font-extrabold text-ink/62"
-          >
-            Brak produktów pasujących do filtra.
+        <div v-else class="min-h-[22rem] bg-white p-6 md:p-8 lg:p-10" role="status">
+          <p class="border-s-2 border-brand ps-4 text-base font-extrabold text-ink/62">
+            Brak kategorii lub typów pasujących do wyszukiwania.
           </p>
         </div>
       </div>

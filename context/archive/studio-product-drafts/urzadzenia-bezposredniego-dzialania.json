@@ -1,0 +1,60 @@
+{
+  "title": "Urządzenia bezpośredniego działania — TESTOWY",
+  "applications": [
+    "Roboty przodkowe",
+    "Chodniki i przekopy",
+    "Ściany eksploatacyjne",
+    "Podziemne kopalnie węgla kamiennego"
+  ],
+  "cataloguePlacement": {
+    "categorySlug": "agregaty-chlodnicze",
+    "groupSlug": "agregaty-sprezarka-tlokowa",
+    "kind": "model"
+  },
+  "category": "Urządzenia chłodnicze TS",
+  "components": [
+    "Zespół maszynowy ze sprężarką, silnikiem i skraplaczem",
+    "Parownik pełniący funkcję chłodnicy powietrza",
+    "Obieg wody chłodzącej skraplacz"
+  ],
+  "features": [
+    "Bezpośrednie chłodzenie powietrza na parowniku",
+    "Praca z czynnikami chłodniczymi bez chlorowcowych HFC",
+    "Możliwość pracy z otwartym lub zamkniętym układem chłodzenia skraplacza",
+    "Zastosowanie w wyrobiskach zagrożonych wybuchem"
+  ],
+  "heroImage": "",
+  "imageAlt": "",
+  "isFeatured": false,
+  "lead": "Lokalne chłodziarki bezpośredniego działania do klimatyzacji robót przodkowych, chodników, przekopów i ścian eksploatacyjnych.",
+  "order": "100",
+  "powerRange": "150–450 kW",
+  "sections": [
+    {
+      "title": "Zastosowanie",
+      "body": "W podziemnych kopalniach węgla kamiennego stosuje się lokalne chłodziarki bezpośredniego działania do klimatyzacji robót przodkowych drążonych chodników, przekopów i ścian eksploatacyjnych.",
+      "items": []
+    },
+    {
+      "title": "Zasada działania",
+      "body": "W chłodziarce bezpośredniego działania parownik jest wykorzystywany do bezpośredniego chłodzenia powietrza jako chłodnica powietrza.",
+      "items": []
+    }
+  ],
+  "shortDescription": "",
+  "specs": [
+    {
+      "label": "Zakres mocy",
+      "value": "150–450 kW"
+    },
+    {
+      "label": "Typ chłodzenia",
+      "value": "Bezpośrednie chłodzenie powietrza"
+    },
+    {
+      "label": "Środowisko pracy",
+      "value": "Podziemne wyrobiska górnicze"
+    }
+  ],
+  "status": "published"
+}

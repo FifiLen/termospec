@@ -104,10 +104,14 @@ Use this direction when changing company/about pages:
 The product catalogue should be a functional B2B technical catalogue, not a landing-page hero, app dashboard, documentation template, or e-commerce listing.
 
 - Start `/produkty` directly below the fixed header with the catalogue workspace itself. Do not add a hero, compact intro, live counters, catalogue stats panel, or marketing preface above the index/content grid.
-- Treat `/produkty` as one complete catalogue surface: technical left-side index on desktop, local search, category controls, product quick navigation, full product-family sheets, service/support scope, and related realization context.
+- Treat `/produkty` as one complete catalogue surface: a narrow technical left-side product index from the `sm` breakpoint, local search, expandable category controls, product/family quick navigation, full product-family sheets, service/support scope, and related realization context.
 - On mobile, the left catalogue index becomes a full-width selector section above the product sheets; it must not become a cramped app-style sidebar.
 - Product-family entries should use the available page width to show a business-readable product overview, product media, parameters, applications, features, components, service/support scope, source-based technical descriptions, and related realizations without sending users to product detail routes.
-- The left panel should feel like an industrial catalogue index/spis produktów: thin separators, uppercase labels, visible local search with a magnifying-glass cue, and a restrained active state where only the current item text turns burgundy.
+- The left panel should feel like a classic industrial product index: approximately `18rem` wide, thin separators, uppercase main labels that do not wrap, visible local search, a restrained burgundy active category, and one expanded nested list showing the families or models that belong to that category.
+- Category rows use the existing Nuxt UI `UCollapsible` primitive for a restrained height reveal and chevron rotation. Opening a category only reveals its nested index; it must not scroll the page, and scroll-linked catalogue activity must not automatically open or close the user's chosen index section.
+- Nested index items navigate directly to the matching family, product disclosure, or model tab in the catalogue content; avoid counts, badges, decorative marks, and extra explanatory copy in this navigation.
+- The left catalogue index starts directly with local search; do not add a separate dark title strip above it.
+- Main category registers use a compact dark band (`min-h-24` without media); categories with a supplied render keep the same heading/image alignment in a reduced `min-h-40` stage.
 - Product entries must not show e-commerce language or purchase-style CTAs such as "kup teraz". A global product contact path may exist at the end of the catalogue, but it should read as technical inquiry support.
 - Keep the catalogue aligned with the current homepage direction: white industrial surfaces, burgundy technical accents, strong product and realization imagery where available, sharp line-based separators, restrained typography, square geometry, and no box shadows.
 - If final product photography or product-specific realization data is missing, do not invent named case studies. Use existing product media and visible realization materials, and keep final verification as an open question in `progress-tracker.md`.
@@ -165,7 +169,7 @@ Current product mega menu implementation:
 
 - Desktop navigation follows the confirmed order `O firmie`, `Produkty`, `Usługi`, `Kontakt`, `Szukaj`; `Aktualności` is removed and the logo remains the home link.
 - `Produkty` and `Usługi` use Nuxt UI `UNavigationMenu` for hover/focus trigger and viewport behavior.
-- `ProductMegaMenu` is a three-column technical index sourced from `data/navigation.ts`. It shows all nine confirmed uppercase product categories, uppercase subcategories, exact model lists or series, and italic future-development notes.
+- `ProductMegaMenu` is a three-column technical index sourced from Studio-editable `content/catalogue.yml`. It shows all nine confirmed uppercase product categories, uppercase subcategories, and exact model lists or series; editorial future-development notes stay hidden from the public menu.
 - Main categories and uppercase subcategories have optional render slots. Do not show invented image placeholders while final client renders are unavailable.
 - `ServiceMegaMenu` lists the five confirmed service categories and links them to anchored sections on `/uslugi`.
 - Global search uses the existing Nuxt UI/Nuxt Content search dialog as the final desktop navigation item instead of a separate floating search action.
@@ -186,7 +190,7 @@ Current product mega menu implementation:
 - Avoid generic smiling business stock photos.
 - If real photos are low quality, use them selectively and support them with strong layout/typography.
 - Do not overuse decorative gradients.
-- Homepage hero media is art-directed per breakpoint: each slide defines a desktop and mobile source plus its focal position in `data/home.ts`, and `HomeHero` selects them through `<picture>`. Keep headings, descriptions, CTAs, and explanatory labels in HTML rather than baking them into hero images.
+- Homepage hero media is art-directed per breakpoint: each slide defines a desktop and mobile source plus its focal position in Studio-editable `content/home.yml`, and `HomeHero` selects them through `<picture>`. Keep headings, descriptions, CTAs, and explanatory labels in HTML rather than baking them into hero images.
 
 ## Motion
 
@@ -221,11 +225,25 @@ The page should begin directly below the fixed header as a technical catalogue w
 Desktop layout:
 
 - left catalogue index column,
-- right product-family content column,
-- scroll-linked active state in the left index, including auto-opening the active product group accordion and marking the current product,
+- right confirmed category-taxonomy column,
+- scroll-linked active state in the left `01–09` index,
 - structural 1px lines between areas,
 - square geometry,
 - no shadows,
 - no large rounded cards.
 
 The catalogue is a working B2B product surface, not a landing page.
+
+Catalogue content treatment:
+
+- each main category uses a compact deep navy register with only its uppercase heading; category numbers remain in the left index, and the heading scales fluidly to stay on one line,
+- uppercase subcategories are plain typographic sections below their parent category, without decorative dashes or repeated numbering,
+- exact types are individual monospace entries; typoszereg and custom-range copy remain compact descriptive rows,
+- editorial notes from the client brief stay in Nuxt Studio data but are not rendered as public catalogue copy,
+- optional category/subcategory renders occupy a dedicated right-side media cell only when verified artwork exists,
+- verified category and subcategory renders use a larger product-family stage so the machine is legible before the model list,
+- placed `content/products/*` records use a compact title/lead disclosure at their taxonomy location; opening it reveals the full inline technical sheet with supplied media, specifications, authored sections, applications, features, components, and service scope, while empty fields disappear instead of producing placeholders,
+- category-only detailed records follow all of the category's family rows, so a category always opens with its taxonomy rather than a long product description,
+- family model/type entries form one compact horizontal tab strip below the family render instead of separate boxed grid cells; the tabs use the available width with even spacing, the active model is a solid burgundy field with white text matching the primary header CTA, and overflowing sets scroll horizontally,
+- selecting a model reveals its authored product details directly below the tab strip when a matching placed product record exists; a model without authored details changes selection without creating an empty placeholder,
+- do not show fake render placeholders before the client provides the August artwork.

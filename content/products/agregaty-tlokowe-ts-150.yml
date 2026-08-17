@@ -1,0 +1,71 @@
+title: TS-150
+applications:
+  - Roboty przodkowe
+  - Chodniki i przekopy
+  - Ściany eksploatacyjne
+  - Podziemne kopalnie węgla kamiennego
+cataloguePlacement:
+  categorySlug: agregaty-chlodnicze
+  groupSlug: agregaty-sprezarka-tlokowa
+  kind: model
+category: "Agregaty chłodnicze ze sprężarką tłokową "
+components:
+  - Zespół maszynowy ze sprężarką, silnikiem i skraplaczem
+  - Parownik pełniący funkcję chłodnicy powietrza
+  - Obieg wody chłodzącej skraplacz
+features:
+  - Bezpośrednie chłodzenie powietrza na parowniku
+  - Praca z czynnikami chłodniczymi bezchlorowcowymi HFC
+  - Możliwość pracy z otwartym lub zamkniętym układem chłodzenia skraplacza
+  - Zastosowanie w wyrobiskach zagrożonych wybuchem
+gallery:
+  - src: /images/products/chlodziarka-bezposredniego-dzialania-wyrobisko-ujecie-01.png
+    alt: Poglądowe ujęcie urządzenia chłodniczego w podziemnym wyrobisku
+  - src: /images/products/chlodziarka-bezposredniego-dzialania-wyrobisko-ujecie-02.png
+    alt: Poglądowe ujęcie urządzenia chłodniczego od strony wentylatora
+headerSketch:
+  src: /images/products/chlodziarka-bezposredniego-dzialania-schemat-liniowy.png
+  alt: Poglądowy schemat liniowy urządzenia chłodniczego
+heroImage: /images/products/catalogue-renders/agregaty-sprezarka-tlokowa.jpg
+imageAlt: Poglądowy render agregatu chłodniczego Termospec ze sprężarką tłokową
+lead: Lokalne urządzenie chłodnicze do klimatyzacji robót przodkowych, chodników, przekopów i ścian eksploatacyjnych.
+modelCode: ""
+powerRange: 150–450 kW
+relatedProjects:
+  - number: R/01
+    category: klimatyzacja kopalń
+    title: Układ chłodzenia dla wyrobisk podziemnych
+    body: Dobór i obsługa rozwiązania chłodniczego dla infrastruktury pracującej w wymagających warunkach eksploatacyjnych.
+    image: /images/realizations/uklad-chlodzenia-wyrobisko-podziemne.png
+    imageAlt: Przemysłowy układ chłodzenia w wyrobisku podziemnym
+    scope:
+      - analiza warunków
+      - dobór urządzeń
+      - serwis układu
+sections:
+  - title: Zastosowanie
+    body: W podziemnych kopalniach węgla kamiennego stosuje się lokalne urządzenia chłodnicze do klimatyzacji robót przodkowych, drążonych chodników, przekopów i ścian eksploatacyjnych.
+    items: []
+  - title: Zasada działania
+    body: Parownik jest wykorzystywany do bezpośredniego chłodzenia powietrza jako chłodnica powietrza. Przepływające przez parownik powietrze o temperaturze powyżej 26 °C chłodzone jest o 10–14 °C.
+    items: []
+  - title: Obieg chłodzenia
+    body: Woda ciepła z obiegu chłodzenia skraplacza jest chłodzona w chłodnicach wyparnych wody. Stosowany może być również system bezpośredniego chłodzenia skraplacza wodą technologiczną.
+    items: []
+seo:
+  title: TS-150 | Termospec
+  description: Urządzenie chłodnicze TS-150 do chłodzenia powietrza w podziemnych wyrobiskach górniczych.
+serviceScope:
+  - Dobór mocy chłodniczej i konfiguracji urządzenia do warunków wyrobiska
+  - Produkcja i przygotowanie urządzenia do pracy w wymagającym środowisku kopalnianym
+  - Wsparcie uruchomienia oraz integracji z obiegiem chłodzenia skraplacza
+  - Serwis, przeglądy i modernizacje elementów układu chłodniczego
+shortDescription: Urządzenie przeznaczone do bezpośredniego chłodzenia powietrza w podziemnych wyrobiskach górniczych.
+specs:
+  - label: Zakres mocy
+    value: 150–450 kW
+  - label: Typ chłodzenia
+    value: Bezpośrednie chłodzenie powietrza
+  - label: Środowisko pracy
+    value: Podziemne wyrobiska górnicze
+status: published

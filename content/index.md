@@ -73,7 +73,7 @@ Zdjęcia w karuzeli: chłodziarka bezpośredniego działania, układ chłodzenia
 
 Skontaktuj się z nami. Prześlij podstawowe informacje o instalacji, obiekcie lub zakresie prac. Wiadomość trafi bezpośrednio do inżyniera odpowiedzialnego za kontakt techniczny.
 
-Termospec Sp. z o.o., ul. Górnicza 10, 44-240 Żory. E-mail: biuro@termospec.pl. Telefon: +48 (32) 435 80 50. Fax: +48 (32) 435 80 50 wew. 16. Serwis 24h: +48 603 899 165.
+Termospec Sp. z o.o., ul. Górnicza 10, 44-240 Żory. E-mail: <biuro@termospec.pl>. Telefon: +48 (32) 435 80 50. Fax: +48 (32) 435 80 50 wew. 16. Serwis 24h: +48 603 899 165.
 
 Pola formularza: imię i nazwisko, firma, e-mail, telefon, zakres zapytania technicznego, lokalizacja obiektu lub instalacji, opis instalacji lub zakresu prac, zgoda na kontakt i politykę prywatności, wyślij.
 

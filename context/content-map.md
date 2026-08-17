@@ -20,7 +20,7 @@ export const navigation = [
     label: "Produkty",
     href: "/produkty",
     type: "mega",
-    categories: "productNavigation from data/navigation.ts"
+    categories: "categories from content/catalogue.yml"
   },
   {
     label: "Usługi",
@@ -108,9 +108,9 @@ Current homepage composition:
 ## Current Global Navigation
 
 - `SiteHeader` follows the confirmed order `O firmie`, `Produkty`, `Usługi`, `Kontakt`, `Szukaj`; the logo links home and `Aktualności` has been removed.
-- `data/navigation.ts` is the single source for the confirmed product taxonomy and five service categories across desktop, mobile, and `/uslugi`.
+- `content/catalogue.yml` is the Studio-editable source for the fixed product taxonomy across desktop, mobile, and `/produkty`; published `content/products/*` records are inserted into that taxonomy according to `cataloguePlacement`. `data/navigation.ts` remains the source for the five service categories across desktop, mobile, and `/uslugi`.
 - Desktop `Produkty` and `Usługi` use Nuxt UI `UNavigationMenu` triggers with custom `ProductMegaMenu` and `ServiceMegaMenu` panels.
-- `ProductMegaMenu` presents all nine uppercase product categories, their uppercase subcategories, exact models or series, and future-development notes. Optional render fields exist for each main category and uppercase subcategory, but no fake placeholders are shown before client assets arrive.
+- `ProductMegaMenu` presents all nine uppercase product categories, their uppercase subcategories, and exact models or series. Editorial future-development notes remain in Studio data but are hidden publicly. Optional render fields exist for each main category and uppercase subcategory, but no fake placeholders are shown before client assets arrive.
 - The `Zbiorniki ciśnieniowe` → `Parowniki` cross-reference scrolls to the `Parowniki` category inside the menu rather than duplicating that catalogue branch.
 - Service links target the five anchored sections on `/uslugi`; individual service routes are not planned yet.
 - Below `xl`, the same confirmed order and complete hierarchies are available in the full-screen off-canvas panel. Search is the final main-menu row; funding, PL/EN controls, and the contact CTA remain in the utility area.
@@ -120,6 +120,14 @@ Current homepage scope cards:
 - `Klimatyzacja` — `Produkcja urządzeń chłodniczych dla kopalń podziemnych oraz tuneli.` / `Projektowanie, obsługa oraz serwis układów klimatyzacji kopalń.`
 - `Wentylacja` — `Produkcja i serwis wentylatorów oraz tam wentylacyjnych dla kopalń.`
 - `Energia odnawialna` — `Projektowanie, montaż, serwis oraz obsługa systemów opartych na odnawialnych źródłach energii.`
+
+## Homepage Studio Structure
+
+- `content/home.yml` is the active Nuxt Studio source for the homepage carousel only. The ordered `hero.slides` array supports adding, deleting, and reordering slides without editing Vue code.
+- Every slide stores a title, short lead, layout (`nakladka` or `podzial`), accessible image description, separate desktop/mobile sources and focal positions, optional caption, and primary/secondary links.
+- `schemas/home.ts` validates this structure and requests textarea and media-picker controls. `app/pages/index.vue` queries the single `home` data record and passes its slides to `HomeHero`.
+- Autoplay remains a presentation behavior in the component rather than client content: slides advance every 6.5 seconds, pause during pointer/focus interaction, retain arrow navigation, and respect reduced-motion preferences.
+- Other homepage sections are intentionally still sourced from `data/home.ts`. They should move to Studio individually after their client-facing field structure is agreed, rather than exposing unused or ambiguous fields all at once.
 
 ## Search Quick Links
 
@@ -246,10 +254,10 @@ For each detail page:
 
 ## Confirmed Product Navigation Taxonomy
 
-The client-confirmed navigation tree is stored in `data/navigation.ts` and currently includes:
+The client-confirmed navigation tree is stored in `content/catalogue.yml` and currently includes:
 
 1. `Agregaty chłodnicze` — piston-compressor TS-150–TS-400 models, screw-compressor TS-300–TS-800 models, two-compressor TS-500/600/700 models, high-power TS-990/1200/2000/2500/3000 models, the TS1–TS60 low-power series, and mobile cooling devices marked for later expansion.
-2. `Chłodnice powietrza` — CP-250/300/400/500 plus individual 10–1000 kW units.
+2. `Chłodnice powietrza` — CP-250/300/400/500, CPO-30/50 plus individual 10–1000 kW units.
 3. `Parowniki` — TS-150/PB–TS/PB-900 air series and TS-150/PP–TS/PP-900 water series.
 4. `Chłodnice wyparne wody` — CWW-200/300/450 plus individual 100–1000 kW units.
 5. `Systemy redukcji ciśnienia` — low/high-pressure valves, pressure-reduction stations, and the 6–35 MW three-chamber pump feeder.
@@ -258,17 +266,22 @@ The client-confirmed navigation tree is stored in `data/navigation.ts` and curre
 8. `Wentylatory` — marked for later expansion.
 9. `Inne` — cooling points/chilled-water distributors, ventilation dams, and hydrogen-sulfide reduction installations.
 
-This navigation taxonomy coexists with the five current `content/products/*.yml` catalogue sheets. Mapping the confirmed models and branches into final `/produkty` sheets belongs to the later catalogue-development phase.
+This confirmed taxonomy now drives the visible `/produkty` catalogue directly. The older `content/products/*.yml` family records remain available in Nuxt Studio as detailed product-content drafts for later catalogue development, but they no longer replace or reduce the nine-category public index.
 
 ## Product Family Content Model
 
-Products are managed as product families in `content/products/*.yml`, not as individual SKU/model records. Each family is rendered automatically on `/produkty`; individual product detail routes are not planned in the current project scope.
+Detailed product-family drafts are managed in `content/products/*.yml`; individual product detail routes are not planned in the current project scope. The public `/produkty` index and its confirmed model/series hierarchy are managed separately in Studio-editable `content/catalogue.yml` so all nine client-approved categories remain visible while detailed product content is developed gradually.
 
-Required fields for a new product family:
+Blank client-facing product template (fields may remain empty unless the schema requires them):
 
 ```yml
 title: ""
+modelCode: ""
 category: ""
+cataloguePlacement:
+  categorySlug: ""
+  groupSlug: ""
+  kind: "model"
 status: "draft"
 order: 100
 isFeatured: false
@@ -285,6 +298,12 @@ serviceScope: []
 specs:
   - label: ""
     value: ""
+technicalData:
+  - label: ""
+    value: ""
+    unit: ""
+technicalNotes: []
+relatedProducts: []
 sections:
   - title: ""
     body: ""
@@ -297,6 +316,9 @@ headerSketch:
 gallery:
   - src: ""
     alt: ""
+documents:
+  - title: ""
+    file: ""
 relatedProjects:
   - number: ""
     category: ""
@@ -307,35 +329,39 @@ relatedProjects:
     scope: []
 ```
 
+`specs` contains only the few headline values shown near the top of a product panel. `technicalData` is the complete verified parameter table, with the value and unit stored separately. Measurement conditions and qualifications belong in `technicalNotes`; compatible or complementary devices belong in `relatedProducts`. `documents` accepts product-specific downloads such as catalogue cards, instructions, and certificates. All of these sections are optional and are rendered publicly only when the client has authored valid content.
+
 The product slug is derived automatically from its YAML filename. Use a unique lowercase kebab-case filename such as `wentylator-osiowy.yml`; Nuxt Studio duplicates such as `wentylator-osiowy-copy.yml` therefore receive a distinct technical slug and do not collide in the Nuxt Content database. The legacy `slug` property may still exist in older YAML files but is no longer queried or indexed.
 
-Product entries on `/produkty` are full catalogue sheets, not links to product subpages.
+Product entries on `/produkty` form one anchored catalogue taxonomy, not links to product subpages.
 
 Current `/produkty` page state:
 
 - The visible page starts directly below the fixed header with the catalogue workspace itself: no hero, no compact intro, no stats/counter panel, and no outer max-width route container.
-- The desktop layout is a full-viewport-width two-column technical catalogue: a sticky left index with search, category controls, and quick in-page navigation; the right side renders full product-family sheets. During scroll, the left index follows the active product sheet, opens the active category accordion automatically, and marks the current product item.
-- On mobile, the index becomes a full-width selector/search section above the product sheets.
-- `Urządzenia chłodnicze TS` is treated as old-site introductory context, not as a product category or product name. Until the client confirms the final catalogue hierarchy, each current category has one temporary product-family record with the same visible title as the category.
-- Each product-family sheet now follows a simple repeatable CMS-ready structure: a deep navy category register with category and power range, a product header with title, short lead, and optional right-side `headerSketch` rendered with `object-contain` inside the full header frame so differently proportioned sketches are not clipped; two content columns for `Zastosowanie` and `Opis działania` or `Budowa / charakterystyka`; and an unheaded full-width realization photo grid without the previous deep navy KPI strip. The previous two side-by-side product photos are no longer rendered as a separate media band above the description.
-- The sheet intentionally no longer renders the large side product code, the three-column applications/features/components grid, the dark technical-support block, the numbered support grid, the internal gallery thumbnails, or long stacked technical sections.
-- The route uses native Vue/template markup for the catalogue surface instead of Nuxt UI page/dashboard primitives, so the visual rhythm follows the current homepage: white surfaces, thin lines, burgundy accents, square geometry, and strong industrial imagery.
+- From the `sm` breakpoint, the catalogue uses a full-viewport-width two-column layout with an approximately `18rem` sticky product index. The index starts directly with search and continues into categories `01–09`; clicking a category smoothly expands its family names, or its direct model/series entries when no families exist. Nested entries navigate directly to the corresponding family, model tab, or detailed product disclosure. The removed dark `Katalog produktów` title strip is not rendered. The right side renders every confirmed main category, uppercase subcategory, exact model list, compact series label, and technical capability line from the client taxonomy. During scroll, the left index marks the current main category without replacing the user's expanded section.
+- Below the `sm` breakpoint, the index remains a full-width search/navigation section above the complete category register.
+- Each main category and uppercase subcategory accepts an optional `render` object (`src`, `alt`). Every main category now uses the same full-width navy title band without embedded media; a supplied main-category render appears in its own white stage immediately below. Subcategory rows remain white and pair the subcategory title with its render above the corresponding model/series tabs. Until the client supplies missing artwork, the page omits that image region rather than showing an invented placeholder.
+- A published `content/products/*` record with `cataloguePlacement` is attached to its taxonomy location as a compact, closed product disclosure. Opening it reveals the complete inline technical sheet. A category-level record is placed after that category's family list; a group-level record stays inside its group. Nuxt Studio additionally previews placed drafts with a visible `Szkic` marker. The sheet renders only authored fields: title/model code, lead/short description, supplied media, headline specifications, the full technical-data table and notes, descriptive sections, applications, features, components, related devices, service scope, and downloads. The current experimental sheet is treated as a designed full-width technical document: its opening places product identity and headline specifications on one neutral `surface` card beside a single primary render, followed by numbered narrative sections and a quiet supporting column. A second authored image is used contextually below the `Obieg chłodzenia` section instead of competing with the main render in the opening. Typographic hierarchy and whitespace organize the content; divider lines are reserved for genuine tabular data.
+- Model and series entries within a category or family are interactive horizontal tabs. The first entry is selected by default, the active label uses a solid burgundy background with white text instead of an underline, and a matching detailed product record is rendered as that tab's panel. While the selected product sheet is in view, its tab row remains sticky below the global header. Selecting another model from a scrolled position replaces the product and smoothly reveals the beginning of its sheet, so the visitor does not need to return manually to the original tab position. Model labels without detailed records remain valid selectors and do not produce placeholder copy.
+- Exact product types are displayed individually. Range-only branches use one compact `Typoszereg` line, and descriptive capabilities such as custom power ranges remain one full-width line instead of appearing as product models.
+- The `Zbiorniki ciśnieniowe` entry for `Parowniki` links to main category `03`, as requested by the client.
+- The route uses native Vue/template markup for the catalogue surface instead of Nuxt UI page/dashboard primitives, so the visual rhythm follows the current homepage: white surfaces, thin lines, burgundy accents, square geometry, and strong industrial imagery. The narrow product index uses Nuxt UI `UCollapsible` only as its accessible animated disclosure primitive; category clicks reveal their child navigation without moving the catalogue page.
 - The page intentionally avoids product detail routes, product-card links, product-level purchase/contact CTAs, prices, ratings, carts, and promotional ecommerce badges.
-- Search is diacritic-insensitive and matches product names, categories, descriptions, parameters, applications, components, features, service scope, technical sections, media alt text, and related realization content.
+- Search is diacritic-insensitive and filters the complete hierarchy by main category, subcategory, exact type, series, and descriptive capability. Client brief notes such as `do dalszej rozbudowy` remain editable in `content/catalogue.yml` but are intentionally hidden from the public catalogue, navigation menus, and search index.
 
-Current initial product families:
+Current detailed product records and archive:
 
-- `chlodziarki-bezposredniego-dzialania` — category/title: `Urządzenia bezpośredniego działania`
-- `chlodziarki-posredniego-dzialania` — category/title: `Urządzenia pośredniego działania`
-- `chlodziarki-posredniego-dzialania-1-3mw` — category/title: `Urządzenia pośredniego działania 1-3 MW`
-- `chlodnice-powietrza-cpn` — category/title: `Chłodnice powietrza CP(N)`
-- `chlodnice-wyparne-cww` — category/title: `Chłodnice wyparne CWW`
+- Products may be stored as YAML or JSON under `content/products/`; both formats use the same generated Studio form and shared product schema.
+- When Nuxt Studio is authenticated and active, a compact global `Import produktu` editor control is available outside the catalogue content. It provides a blank template, a Draft-07 JSON Schema file, a ready-to-copy AI instruction, and catalogue category/group placement; validates pasted/uploaded JSON, prevents filename collisions, and creates a draft product record. The draft appears immediately in Studio preview with a `szkic` marker. Public visitors see only products whose `status` is `published`.
+- `content/products/` contains one published minimal record for each of the 37 confirmed model or series entries in `content/catalogue.yml`. Every record has a title and exact `cataloguePlacement`, so all confirmed products are visible and editable in Nuxt Studio and each existing model/series tab resolves to a product panel. Unapproved descriptions, parameters, and media remain empty.
+- Earlier YAML product drafts, duplication-test files, the explicit test product, and the fully authored `Urządzenia bezpośredniego działania — TESTOWY` preview are preserved outside the active content collection under `context/archive/studio-product-drafts/`. They remain implementation references but do not appear in Nuxt Studio's Products collection or the public catalogue.
 
 Product media policy:
 
+- Use the `render` field in `content/catalogue.yml` for the category and uppercase-subcategory artwork requested by the client.
 - Use supplied local Termospec media first; temporary reference images must stay clearly marked in product YAML until clean final product and realization images are available.
 - Use `headerSketch` for the optional technical sketch shown on the right side of a product-family header.
-- `/produkty` reuses `heroImage` plus `gallery` images in the `Realizacje` photo grid for each product sheet. Until final realization photos are supplied, the grid repeats the available product images to six visible cells.
+- The existing `heroImage`, `headerSketch`, and `gallery` fields are used by placed detailed product records in the public `01–09` catalogue; missing media fields do not create public placeholders.
 - Use `gallery` for additional product photos, technical visualizations, installation details, diagrams, or other verified product media.
 - Do not use screenshot crops as final catalogue assets.
 - Place final stable product files under `public/images/products/` and reference them with `/images/products/file-name.ext`.
@@ -411,5 +437,5 @@ For `/produkty`, product headings use explicit anchors matching the catalogue an
 - Are there real product names, catalogues, certificates, or realizations to publish?
 - Which product-specific realizations or project references should be assigned to each product family in the catalogue?
 - Which final client renders should be assigned to each uppercase product category and subcategory in the navigation?
-- Should the site include downloads?
+- Which verified product catalogues, instructions, and certificates should the client upload as product downloads?
 - Should there be a blog/knowledge base?

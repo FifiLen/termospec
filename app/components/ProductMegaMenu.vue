@@ -101,13 +101,6 @@ const handleEntry = (entry: ProductNavigationEntry) => {
                 />
               </div>
 
-              <p
-                v-if="category.note"
-                class="mt-2 font-mono text-[0.6rem] italic leading-4 text-ink/45"
-              >
-                {{ category.note }}
-              </p>
-
               <ul v-if="category.entries.length" class="mt-3 grid gap-1.5">
                 <li
                   v-for="entry in category.entries"
@@ -148,13 +141,6 @@ const handleEntry = (entry: ProductNavigationEntry) => {
                       class="ms-auto h-10 w-16 shrink-0 object-contain"
                     />
                   </div>
-
-                  <p
-                    v-if="group.note"
-                    class="mt-1 font-mono text-[0.58rem] italic leading-4 text-ink/42"
-                  >
-                    {{ group.note }}
-                  </p>
 
                   <ul v-if="group.entries.length" class="mt-2 flex flex-wrap gap-x-3 gap-y-1">
                     <li

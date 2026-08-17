@@ -417,8 +417,6 @@ onBeforeUnmount(() => {
                           <span class="font-mono text-[0.58rem] font-bold text-brand">{{ category.number }}</span>
                           <div>
                             <h3 class="text-xs font-black uppercase leading-5 text-white">{{ category.label }}</h3>
-                            <p v-if="category.note" class="mt-1 font-mono text-[0.56rem] italic text-white/38">{{ category.note }}</p>
-
                             <ul v-if="category.entries.length" class="mt-2 grid gap-1">
                               <li v-for="entry in category.entries" :key="entry.label" class="text-[0.7rem] font-bold leading-5 text-white/58">
                                 <button
@@ -436,7 +434,6 @@ onBeforeUnmount(() => {
                             <div v-if="category.groups.length" class="mt-3 grid gap-3">
                               <section v-for="group in category.groups" :key="group.slug" class="border-s border-white/15 ps-3">
                                 <h4 class="text-[0.64rem] font-black uppercase leading-4 text-white/72">{{ group.label }}</h4>
-                                <p v-if="group.note" class="mt-1 font-mono text-[0.54rem] italic text-white/35">{{ group.note }}</p>
                                 <p v-if="group.entries.length" class="mt-1 font-mono text-[0.58rem] font-bold leading-5 text-white/42">
                                   {{ group.entries.map((entry) => entry.label).join(" · ") }}
                                 </p>
