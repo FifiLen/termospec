@@ -60,7 +60,7 @@ serviceScope:
   - Produkcja i przygotowanie urządzenia do pracy w wymagającym środowisku kopalnianym
   - Wsparcie uruchomienia oraz integracji z obiegiem chłodzenia skraplacza
   - Serwis, przeglądy i modernizacje elementów układu chłodniczego
-shortDescription: Urządzenie przeznaczone do bezpośredniego chłodzenia powietrza w podziemnych wyrobiskach górniczych.
+shortDescription: Urządzenie przeznaczone do bezpośredniego chłodzenia powietrza w podziemnych wyrobiskach górniczych. Zmiana testowa.
 specs:
   - label: Zakres mocy
     value: 150–450 kW
