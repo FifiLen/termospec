@@ -1,30 +1,20 @@
 <script setup lang="ts">
-import { aboutHero, aboutMetrics } from "~~/data/about";
 import {
-  homeProcessSteps,
-  homeRealizationPhotos,
-  homeScopeItems,
-} from "~~/data/home";
+  aboutHero,
+  aboutMetrics,
+  aboutProfile,
+  aboutTimeline,
+} from "~~/data/about";
+import { homeProcessSteps, homeScopeItems } from "~~/data/home";
 
-const aboutRealizationPhotos = homeRealizationPhotos.slice(0, 3);
-
-const { data: teamMembers } = await useAsyncData("about-team", () => {
-  return queryCollection("team")
-    .order("order", "ASC")
-    .all()
-    .then((members) => {
-      return members.map((member) => ({
-        name: member.name,
-        role: member.role,
-        photo: member.photo,
-      }));
-    });
+const { data: teamMembers } = await useFetch("/api/content/team", {
+  key: "about-team",
 });
 
 useSeoMeta({
   title: "O firmie | Termospec",
   description:
-    "Od 25 lat Termospec oferuje rozwiązania zwalczające zagrożenia temperaturowe w kopalniach podziemnych oraz tunelach.",
+    "Od blisko 30 lat Termospec oferuje rozwiązania chłodnicze, klimatyzacyjne i wentylacyjne dla przemysłu, górnictwa oraz obiektów komercyjnych.",
 });
 </script>
 
@@ -107,6 +97,105 @@ useSeoMeta({
             </article>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section class="border-b border-line bg-white px-6 py-20 lg:px-10 lg:py-24">
+      <div class="mx-auto grid max-w-[96rem] gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-20">
+        <div>
+          <p class="font-mono text-xs font-bold uppercase tracking-[0.28em] text-brand">
+            profil firmy
+          </p>
+          <h2
+            class="mt-5 max-w-3xl font-heading text-4xl font-black leading-[0.98] tracking-[-0.05em] text-ink"
+          >
+            {{ aboutProfile.title }}
+          </h2>
+          <p class="mt-8 max-w-3xl text-base font-medium leading-8 text-ink/68">
+            {{ aboutProfile.intro }}
+          </p>
+
+          <div class="mt-10 grid gap-px bg-line md:grid-cols-2">
+            <article
+              v-for="section in aboutProfile.sections"
+              :key="section.title"
+              class="bg-surface p-6 md:p-8"
+            >
+              <h3 class="text-xl font-black leading-tight tracking-[-0.03em] text-ink">
+                {{ section.title }}
+              </h3>
+              <p class="mt-5 text-sm font-medium leading-7 text-ink/65">
+                {{ section.body }}
+              </p>
+            </article>
+          </div>
+
+          <div class="mt-10 bg-ink p-7 text-white md:p-9">
+            <p class="font-mono text-xs font-black uppercase tracking-[0.24em] text-brand">
+              Specjalizujemy się w
+            </p>
+            <ul class="mt-7 space-y-4">
+              <li
+                v-for="specialty in aboutProfile.specialties"
+                :key="specialty"
+                class="flex gap-4 border-b border-white/12 pb-4 text-sm font-bold leading-6 text-white/78 last:border-b-0 last:pb-0"
+              >
+                <span class="mt-2.5 h-1.5 w-1.5 shrink-0 bg-brand" aria-hidden="true" />
+                <span>{{ specialty }}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <aside
+          v-if="aboutTimeline.length"
+          class="lg:border-s lg:border-line lg:ps-14"
+          aria-labelledby="about-timeline-title"
+        >
+          <p class="font-mono text-xs font-bold uppercase tracking-[0.28em] text-brand">
+            historia firmy
+          </p>
+          <h3
+            id="about-timeline-title"
+            class="mt-4 font-heading text-2xl font-black tracking-[-0.04em] text-ink"
+          >
+            Kalendarium
+          </h3>
+          <p class="mt-4 max-w-xl text-sm font-medium leading-7 text-ink/62">
+            Najważniejsze etapy rozwoju firmy — od rozpoczęcia działalności po dzisiejszą skalę realizacji.
+          </p>
+
+          <ol class="mt-10">
+            <li
+              v-for="milestone in aboutTimeline"
+              :key="`${milestone.year}-${milestone.title}`"
+              class="group relative border-s border-line pb-10 ps-8 last:border-transparent last:pb-0"
+            >
+              <span
+                class="absolute -start-1.5 top-1 h-3 w-3 bg-brand transition-transform duration-300 group-hover:scale-125"
+                aria-hidden="true"
+              />
+              <div class="grid gap-3 xl:grid-cols-[7.5rem_minmax(0,1fr)] xl:gap-7">
+                <p class="font-mono text-xs font-black uppercase tracking-[0.14em] text-brand">
+                  {{ milestone.year }}
+                </p>
+                <div>
+                  <h4
+                    class="text-lg font-black leading-tight tracking-[-0.03em] text-ink transition-colors duration-300 group-hover:text-brand"
+                  >
+                    {{ milestone.title }}
+                  </h4>
+                  <p
+                    v-if="milestone.body"
+                    class="mt-3 max-w-xl text-sm font-medium leading-7 text-ink/62"
+                  >
+                    {{ milestone.body }}
+                  </p>
+                </div>
+              </div>
+            </li>
+          </ol>
+        </aside>
       </div>
     </section>
 
@@ -216,28 +305,6 @@ useSeoMeta({
     </section>
 
     <TeamGrid id="zespol" :members="teamMembers || []" />
-    <section
-      class="w-full border-y border-white bg-ink"
-      aria-label="Wybrane realizacje Termospec"
-    >
-      <div class="grid gap-px bg-white sm:grid-cols-2 lg:grid-cols-3">
-        <figure
-          v-for="photo in aboutRealizationPhotos"
-          :key="photo.src"
-          class="relative aspect-[3/4] overflow-hidden bg-ink sm:aspect-[4/5] lg:aspect-[3/4]"
-        >
-          <img
-            :src="photo.src"
-            :alt="photo.alt"
-            width="1280"
-            height="960"
-            loading="lazy"
-            decoding="async"
-            class="h-full w-full object-cover"
-          />
-        </figure>
-      </div>
-    </section>
     <HomeContactForm />
   </main>
 </template>

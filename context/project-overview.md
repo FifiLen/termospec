@@ -114,7 +114,7 @@ The product overview should include:
 - Real online payments
 - Complex CRM integration
 - Large custom backend unless later requested
-- Multilingual content unless confirmed
+- Public multilingual routing and translated shell content; the Studio product-translation workflow is prepared separately
 - Advanced product configurators unless confirmed
 
 ## Success Criteria

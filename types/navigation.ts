@@ -6,6 +6,7 @@ export interface NavigationMedia {
 }
 
 export interface ProductNavigationEntry {
+  id: string;
   label: string;
   targetSlug?: string;
   kind?: "model" | "series" | "description";
@@ -34,7 +35,6 @@ export interface ProductNavigationCategory {
 }
 
 export interface ServiceNavigationItem {
-  number: string;
   label: string;
   slug: string;
   href: string;

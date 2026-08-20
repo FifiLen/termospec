@@ -226,7 +226,7 @@ Desktop layout:
 
 - left catalogue index column,
 - right confirmed category-taxonomy column,
-- scroll-linked active state in the left `01–09` index,
+- controlled active state in the left nine-category index,
 - structural 1px lines between areas,
 - square geometry,
 - no shadows,
@@ -236,7 +236,7 @@ The catalogue is a working B2B product surface, not a landing page.
 
 Catalogue content treatment:
 
-- each main category uses a compact deep navy register with only its uppercase heading; category numbers remain in the left index, and the heading scales fluidly to stay on one line,
+- each main category uses a compact deep navy register with only its uppercase heading; the left index also shows category names without numeric prefixes, and the heading scales fluidly to stay on one line,
 - uppercase subcategories are plain typographic sections below their parent category, without decorative dashes or repeated numbering,
 - exact types are individual monospace entries; typoszereg and custom-range copy remain compact descriptive rows,
 - editorial notes from the client brief stay in Nuxt Studio data but are not rendered as public catalogue copy,
