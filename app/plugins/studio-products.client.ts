@@ -10,6 +10,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   let refreshTimer: number | undefined;
   let refreshPending = false;
+  let refreshErrorReported = false;
 
   const refreshStudioProducts = async () => {
     if (refreshPending) {
@@ -27,10 +28,24 @@ export default defineNuxtPlugin((nuxtApp) => {
     refreshPending = true;
 
     try {
-      isStudioPreview.value = true;
-      studioProducts.value = (await host.document.db.list()).filter((document) => {
+      const products = (await host.document.db.list()).filter((document) => {
         return document.fsPath?.startsWith("products/");
       });
+      studioProducts.value = products;
+      isStudioPreview.value = true;
+      refreshErrorReported = false;
+    } catch (error) {
+      if (!studioProducts.value.length) {
+        isStudioPreview.value = false;
+      }
+
+      if (!refreshErrorReported) {
+        console.warn(
+          "Nie udało się odświeżyć produktów ze Studio. Zachowano ostatnie dostępne dane.",
+          error,
+        );
+        refreshErrorReported = true;
+      }
     } finally {
       refreshPending = false;
     }

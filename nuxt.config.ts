@@ -13,6 +13,11 @@ export default defineNuxtConfig({
     ...(enableStudio ? ['nuxt-studio'] : []),
   ],
   plugins: enableStudio ? ['~/plugins/studio-products.client'] : [],
+  content: {
+    experimental: {
+      sqliteConnector: 'native',
+    },
+  },
   runtimeConfig: {
     studioLogin: {
       email: '',
