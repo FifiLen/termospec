@@ -14,6 +14,11 @@ export default defineNuxtConfig({
   ],
   plugins: enableStudio ? ['~/plugins/studio-products.client'] : [],
   runtimeConfig: {
+    studioLogin: {
+      email: '',
+      passwordHash: '',
+      displayName: 'Redaktor Termospec',
+    },
     public: {
       studioEnabled: enableStudio,
     },
@@ -57,7 +62,7 @@ export default defineNuxtConfig({
       tailwindcss(),
     ],
   },
-  // @ts-expect-error Nuxt Studio augments this config only in Studio-enabled builds.
+  // @ts-ignore Nuxt Studio augments this config only in Studio-enabled builds.
   studio: {
     route: '/_studio',
     i18n: {
@@ -84,6 +89,13 @@ export default defineNuxtConfig({
     },
   },
   nitro: {
+    handlers: enableStudio
+      ? [{
+          route: '/api/studio/login',
+          method: 'post',
+          handler: './server/studio/login.post.ts',
+        }]
+      : [],
     prerender: {
       ignore: [/^\/__nuxt_content\//],
     },
@@ -97,6 +109,12 @@ export default defineNuxtConfig({
     '/kontakt': { redirect: { to: '/#kontakt', statusCode: 301 } },
     '/dofinansowania': { prerender: true },
     '/rodo': { prerender: true },
+    '/studio-login': {
+      headers: {
+        'cache-control': 'no-store',
+        'x-robots-tag': 'noindex, nofollow',
+      },
+    },
   },
   compatibilityDate: '2024-04-03',
 })

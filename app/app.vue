@@ -17,6 +17,7 @@ const baseProductNavigation = computed(() => {
 })
 const productNavigation = useProductCatalogue(baseProductNavigation)
 const studioEnabled = computed(() => config.public.studioEnabled)
+const isStudioLogin = computed(() => route.path === '/studio-login')
 const searchNavigation = computed(() => siteContent.value?.navigation ?? [])
 const searchFiles = computed(() => siteContent.value?.searchSections ?? [])
 
@@ -31,7 +32,12 @@ const pageFrameClass = computed(() => {
 
 <template>
   <NuxtRouteAnnouncer />
-  <div class="min-h-svh overflow-x-clip bg-surface">
+  <NuxtPage v-if="isStudioLogin" />
+
+  <div
+    v-else
+    class="min-h-svh overflow-x-clip bg-surface"
+  >
     <SiteHeader
       :product-categories="productNavigation"
       :services="serviceNavigation"
@@ -45,7 +51,7 @@ const pageFrameClass = computed(() => {
     <SiteFooter />
   </div>
 
-  <ClientOnly>
+  <ClientOnly v-if="!isStudioLogin">
     <UiLocaleProvider>
       <LazyProductJsonImporter
         v-if="studioEnabled"

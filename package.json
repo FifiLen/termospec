@@ -15,6 +15,7 @@
     "dev:studio": "NUXT_STUDIO_ENABLED=1 STUDIO_GITHUB_CLIENT_ID= STUDIO_GITHUB_CLIENT_SECRET= nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
+    "studio:password": "node scripts/hash-studio-password.mjs",
     "typecheck": "nuxt typecheck",
     "test": "node --test tests/*.test.ts",
     "verify:build-output": "node scripts/verify-public-build.mjs"
