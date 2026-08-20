@@ -20,6 +20,11 @@ playwright-report
 output/playwright/
 tmp/
 
+# Generated client-guide QA artifacts
+docs/client-guide/rendered*/
+docs/client-guide/a11y-*.json
+docs/client-guide/style-*.json
+
 # Misc
 .DS_Store
 .fleet
