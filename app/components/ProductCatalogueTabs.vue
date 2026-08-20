@@ -5,6 +5,11 @@ const props = defineProps<{
   entries: ProductNavigationEntry[];
   idBase: string;
   label: string;
+  modelValue?: string;
+}>();
+
+const emit = defineEmits<{
+  select: [entryId: string];
 }>();
 
 const selectableEntries = computed(() => {
@@ -15,30 +20,40 @@ const descriptiveEntries = computed(() => {
   return props.entries.filter((entry) => entry.kind === "description");
 });
 
-const activeIndex = ref(0);
+const activeIndex = computed(() => {
+  const selectedIndex = selectableEntries.value.findIndex((entry) => {
+    return entry.id === props.modelValue;
+  });
+
+  return selectedIndex >= 0 ? selectedIndex : 0;
+});
 
 const activeEntry = computed(() => {
   return selectableEntries.value[activeIndex.value];
 });
 
-watch(selectableEntries, (entries) => {
-  if (activeIndex.value >= entries.length) {
-    activeIndex.value = 0;
-  }
-});
-
-const tabId = (index: number) => `${props.idBase}-tab-${index}`;
-const panelId = (index: number) => `${props.idBase}-panel-${index}`;
+const tabId = (entry: ProductNavigationEntry) => {
+  return `${props.idBase}-tab-${entry.id}`;
+};
+const panelId = (entry: ProductNavigationEntry) => {
+  return `${props.idBase}-panel-${entry.id}`;
+};
 
 const selectEntry = async (index: number, revealProduct = false) => {
-  activeIndex.value = index;
+  const entry = selectableEntries.value[index];
+
+  if (!entry) {
+    return;
+  }
+
+  emit("select", entry.id);
 
   if (!revealProduct || !import.meta.client) {
     return;
   }
 
   await nextTick();
-  document.getElementById(panelId(index))?.scrollIntoView({
+  document.getElementById(panelId(entry))?.scrollIntoView({
     behavior: "smooth",
     block: "start",
   });
@@ -81,14 +96,14 @@ const selectAdjacent = async (
         >
           <button
             v-for="(entry, index) in selectableEntries"
-            :id="tabId(index)"
-            :key="`${entry.label}-${index}`"
+            :id="tabId(entry)"
+            :key="entry.id"
             type="button"
             role="tab"
             :aria-selected="activeIndex === index"
-            :aria-controls="entry.details ? panelId(index) : undefined"
+            :aria-controls="entry.details ? panelId(entry) : undefined"
             :tabindex="activeIndex === index ? 0 : -1"
-            class="min-w-24 flex-1 shrink-0 px-4 py-3.5 font-mono text-sm font-bold transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-3px]"
+            class="min-w-28 flex-1 shrink-0 px-5 py-4 font-mono text-base font-bold transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-3px]"
             :class="
               activeIndex === index
                 ? 'bg-brand text-white focus-visible:outline-white'
@@ -134,9 +149,9 @@ const selectAdjacent = async (
 
     <div
       v-if="activeEntry?.details"
-      :id="panelId(activeIndex)"
+      :id="panelId(activeEntry)"
       role="tabpanel"
-      :aria-labelledby="tabId(activeIndex)"
+      :aria-labelledby="tabId(activeEntry)"
       class="scroll-mt-28 bg-white"
     >
       <ProductCatalogueDetail

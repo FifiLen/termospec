@@ -1,28 +1,24 @@
 <script setup lang="ts">
 import { searchQuickLinks } from "~~/data/search";
 import { serviceNavigation } from "~~/data/navigation";
+import { normalizeCatalogueCategories } from "~/utils/product-catalogue";
 
 const route = useRoute()
+const config = useRuntimeConfig()
 
 const searchTerm = ref('')
 
-const { data: searchNavigation } = await useAsyncData('search-navigation', () => {
-  return queryCollectionNavigation('pages')
+const { data: siteContent } = await useFetch('/api/content/site', {
+  key: 'site-content',
 })
 
-const { data: productCatalogue } = await useAsyncData(
-  'global-product-catalogue',
-  () => queryCollection('catalogue').first(),
-)
-
-const baseProductNavigation = computed(() => productCatalogue.value?.categories ?? [])
+const baseProductNavigation = computed(() => {
+  return normalizeCatalogueCategories(siteContent.value?.catalogue?.categories)
+})
 const productNavigation = useProductCatalogue(baseProductNavigation)
-
-const { data: searchFiles } = useLazyAsyncData('search-files', () => {
-  return queryCollectionSearchSections('pages')
-}, {
-  server: false,
-})
+const studioEnabled = computed(() => config.public.studioEnabled)
+const searchNavigation = computed(() => siteContent.value?.navigation ?? [])
+const searchFiles = computed(() => siteContent.value?.searchSections ?? [])
 
 const pageFrameClass = computed(() => {
   if (route.path === '/') {
@@ -34,24 +30,27 @@ const pageFrameClass = computed(() => {
 </script>
 
 <template>
-  <UApp>
-    <NuxtRouteAnnouncer />
-    <div class="min-h-svh overflow-x-clip bg-surface">
-      <SiteHeader
-        :product-categories="productNavigation"
-        :services="serviceNavigation"
-      />
-      <FloatingHeaderActions />
-      <div
-        :class="pageFrameClass"
-      >
-        <NuxtPage />
-      </div>
-      <SiteFooter />
+  <NuxtRouteAnnouncer />
+  <div class="min-h-svh overflow-x-clip bg-surface">
+    <SiteHeader
+      :product-categories="productNavigation"
+      :services="serviceNavigation"
+    />
+    <FloatingHeaderActions />
+    <div
+      :class="pageFrameClass"
+    >
+      <NuxtPage />
     </div>
+    <SiteFooter />
+  </div>
 
-    <ClientOnly>
-      <ProductJsonImporter :catalogue="baseProductNavigation" />
+  <ClientOnly>
+    <UiLocaleProvider>
+      <LazyProductJsonImporter
+        v-if="studioEnabled"
+        :catalogue="baseProductNavigation"
+      />
 
       <LazyUContentSearch
         v-model:search-term="searchTerm"
@@ -60,9 +59,11 @@ const pageFrameClass = computed(() => {
         :navigation="searchNavigation"
         :color-mode="false"
         shortcut="meta_k"
+        title="Wyszukiwarka"
+        description="Przeszukaj produkty, usługi i pozostałe treści serwisu."
         placeholder="Szukaj w serwisie"
         :fuse="{ fuseOptions: { ignoreDiacritics: true }, resultLimit: 30 }"
       />
-    </ClientOnly>
-  </UApp>
+    </UiLocaleProvider>
+  </ClientOnly>
 </template>

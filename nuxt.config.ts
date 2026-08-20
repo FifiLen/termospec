@@ -12,6 +12,12 @@ export default defineNuxtConfig({
     '@nuxt/image',
     ...(enableStudio ? ['nuxt-studio'] : []),
   ],
+  plugins: enableStudio ? ['~/plugins/studio-products.client'] : [],
+  runtimeConfig: {
+    public: {
+      studioEnabled: enableStudio,
+    },
+  },
   css: ['~/assets/css/main.css'],
   devtools: { enabled: true },
   app: {
@@ -27,6 +33,17 @@ export default defineNuxtConfig({
     },
   },
   vite: {
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes('/node_modules/tailwind-merge/')) {
+              return 'style-runtime'
+            }
+          },
+        },
+      },
+    },
     optimizeDeps: {
       include: [
         '@vue/devtools-core',
@@ -40,6 +57,7 @@ export default defineNuxtConfig({
       tailwindcss(),
     ],
   },
+  // @ts-expect-error Nuxt Studio augments this config only in Studio-enabled builds.
   studio: {
     route: '/_studio',
     i18n: {
@@ -48,6 +66,27 @@ export default defineNuxtConfig({
   },
   image: {
     domains: ['images.unsplash.com'],
+  },
+  icon: {
+    provider: 'none',
+    serverBundle: false,
+    clientBundle: {
+      scan: true,
+      icons: [
+        'lucide:accessibility',
+        'lucide:chevron-down',
+        'lucide:file',
+        'lucide:file-json',
+        'lucide:hash',
+        'lucide:search',
+        'lucide:x',
+      ],
+    },
+  },
+  nitro: {
+    prerender: {
+      ignore: [/^\/__nuxt_content\//],
+    },
   },
   routeRules: {
     '/': { prerender: true },

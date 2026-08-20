@@ -3,97 +3,56 @@ import type {
   ProductNavigationCategory,
   ProductNavigationGroup,
 } from "~~/types/navigation";
+import type { CatalogueProductRecord } from "~/utils/product-catalogue";
+import {
+  normalizeCatalogueText,
+  normalizeCatalogueCategories,
+  resolveCatalogueSelection,
+  selectableCatalogueEntries,
+} from "~/utils/product-catalogue";
 
-const { data: catalogue } = await useAsyncData(
-  "product-catalogue-page",
-  () => queryCollection("catalogue").first(),
-);
-
-const baseProductNavigation = computed<ProductNavigationCategory[]>(() => {
-  return catalogue.value?.categories ?? [];
+const { data: siteContent } = await useFetch("/api/content/site", {
+  key: "site-content",
 });
 
-const productNavigation = useProductCatalogue(baseProductNavigation);
+const baseProductNavigation = computed<ProductNavigationCategory[]>(() => {
+  return normalizeCatalogueCategories(siteContent.value?.catalogue?.categories);
+});
 
-const polishLetters: Record<string, string> = {
-  ą: "a",
-  ć: "c",
-  ę: "e",
-  ł: "l",
-  ń: "n",
-  ó: "o",
-  ś: "s",
-  ź: "z",
-  ż: "z",
-};
+const { data: publishedProducts } = await useFetch("/api/content/products", {
+  key: "product-catalogue-page-products",
+});
+
+const catalogueProducts = computed<CatalogueProductRecord[]>(() => {
+  return publishedProducts.value ?? [];
+});
+
+const productNavigation = useProductCatalogue(
+  baseProductNavigation,
+  catalogueProducts,
+);
 
 const normalizeText = (value: string) => {
-  return value
-    .toLocaleLowerCase("pl-PL")
-    .replace(/[ąćęłńóśźż]/g, (letter) => polishLetters[letter] ?? letter)
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
+  return normalizeCatalogueText(value);
 };
 
 const filterGroup = (
   group: ProductNavigationGroup,
   query: string,
 ): ProductNavigationGroup | null => {
-  const groupHeadingMatches = normalizeText(group.label).includes(query);
-
-  if (groupHeadingMatches) {
+  if (normalizeText(group.label).includes(query)) {
     return group;
   }
 
-  const matchingEntries = group.entries.filter((entry) => {
+  const entries = group.entries.filter((entry) => {
     return normalizeText(entry.label).includes(query);
   });
 
-  return matchingEntries.length
-    ? {
-        ...group,
-        entries: matchingEntries,
-      }
-    : null;
+  return entries.length ? { ...group, entries } : null;
 };
 
 const searchQuery = ref("");
-const activeCategorySlug = ref(productNavigation.value[0]?.slug ?? "");
-const expandedCategorySlug = ref(activeCategorySlug.value);
 const normalizedSearch = computed(() => normalizeText(searchQuery.value.trim()));
-
-interface CatalogueNavigationChild {
-  label: string;
-  targetSlug: string;
-}
-
-const categoryNavigationChildren = (
-  category: ProductNavigationCategory,
-): CatalogueNavigationChild[] => {
-  if (category.groups.length) {
-    const groups = category.groups.map((group) => ({
-      label: group.label,
-      targetSlug: group.slug,
-    }));
-    const categoryProducts = category.entries.flatMap((entry) => {
-      return entry.details
-        ? [{
-            label: entry.label,
-            targetSlug: `produkt-${entry.details.slug}`,
-          }]
-        : [];
-    });
-
-    return [...groups, ...categoryProducts];
-  }
-
-  return category.entries
-    .filter((entry) => entry.kind !== "description")
-    .map((entry, index) => ({
-      label: entry.label,
-      targetSlug: `${category.slug}-types-tab-${index}`,
-    }));
-};
 
 const filteredCategories = computed<ProductNavigationCategory[]>(() => {
   const query = normalizedSearch.value;
@@ -103,153 +62,242 @@ const filteredCategories = computed<ProductNavigationCategory[]>(() => {
   }
 
   return productNavigation.value.flatMap((category) => {
-    const categoryHeadingMatches = normalizeText(category.label).includes(query);
-
-    if (categoryHeadingMatches) {
+    if (normalizeText(category.label).includes(query)) {
       return [category];
     }
 
-    const matchingEntries = category.entries.filter((entry) => {
+    const entries = category.entries.filter((entry) => {
       return normalizeText(entry.label).includes(query);
     });
-    const matchingGroups = category.groups
+    const groups = category.groups
       .map((group) => filterGroup(group, query))
       .filter((group): group is ProductNavigationGroup => Boolean(group));
 
-    if (!matchingEntries.length && !matchingGroups.length) {
-      return [];
-    }
-
-    return [
-      {
-        ...category,
-        entries: matchingEntries,
-        groups: matchingGroups,
-      },
-    ];
+    return entries.length || groups.length
+      ? [{ ...category, entries, groups }]
+      : [];
   });
 });
 
-const setActiveCategory = (slug: string) => {
-  activeCategorySlug.value = slug;
-};
+const activeCategorySlug = ref("");
+const expandedCategorySlug = ref("");
+const activeGroupSlug = ref("");
+const expandedGroupSlug = ref("");
+const activeEntryId = ref("");
 
-const setExpandedCategory = (slug: string, open: boolean) => {
-  expandedCategorySlug.value = open ? slug : "";
-};
+const activeCategory = computed(() => {
+  return filteredCategories.value.find((category) => {
+    return category.slug === activeCategorySlug.value;
+  }) ?? filteredCategories.value[0];
+});
 
-const scrollToCatalogueTarget = async (
-  targetSlug: string,
-  categorySlug: string,
+const activeGroup = computed(() => {
+  const category = activeCategory.value;
+
+  if (!category?.groups.length) {
+    return undefined;
+  }
+
+  return category.groups.find((group) => {
+    return group.slug === activeGroupSlug.value;
+  }) ?? category.groups[0];
+});
+
+const firstEntryId = (
+  category: ProductNavigationCategory,
+  group?: ProductNavigationGroup,
 ) => {
-  setActiveCategory(categorySlug);
-  expandedCategorySlug.value = categorySlug;
+  const entries = selectableCatalogueEntries(group?.entries ?? category.entries);
+
+  return entries[0]?.id ?? "";
+};
+
+const replaceHash = (slug: string) => {
+  if (import.meta.client) {
+    window.history.replaceState(null, "", `#${slug}`);
+  }
+};
+
+const focusCatalogue = async () => {
   await nextTick();
 
-  if (!import.meta.client) {
+  if (!import.meta.client || !activeCategory.value) {
     return;
   }
 
-  const target = document.getElementById(targetSlug);
-
-  if (!target) {
-    return;
-  }
-
-  if (target.getAttribute("role") === "tab" && target instanceof HTMLButtonElement) {
-    target.click();
-  }
-
-  if (target instanceof HTMLDetailsElement) {
-    target.open = true;
-  }
-
-  target.scrollIntoView({ behavior: "smooth", block: "start" });
-  window.history.replaceState(null, "", `#${targetSlug}`);
-};
-
-const syncActiveCategoryFromScroll = () => {
-  if (!import.meta.client || !filteredCategories.value.length) {
-    return;
-  }
-
-  const activationLine = 64 + Math.min(window.innerHeight * 0.24, 220);
-  let currentCategory = filteredCategories.value[0];
-
-  for (const category of filteredCategories.value) {
-    const element = document.getElementById(category.slug);
-
-    if (!element) {
-      continue;
-    }
-
-    if (element.getBoundingClientRect().top <= activationLine) {
-      currentCategory = category;
-      continue;
-    }
-
-    break;
-  }
-
-  if (currentCategory) {
-    setActiveCategory(currentCategory.slug);
-  }
-};
-
-let activeScrollFrame: number | undefined;
-
-const requestActiveCategorySync = () => {
-  if (!import.meta.client || activeScrollFrame !== undefined) {
-    return;
-  }
-
-  activeScrollFrame = window.requestAnimationFrame(() => {
-    activeScrollFrame = undefined;
-    syncActiveCategoryFromScroll();
+  document.getElementById(activeCategory.value.slug)?.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
   });
+};
+
+const activateCategory = async (
+  categorySlug: string,
+  shouldFocus = true,
+) => {
+  const category = filteredCategories.value.find((item) => {
+    return item.slug === categorySlug;
+  });
+
+  if (!category) {
+    return;
+  }
+
+  activeCategorySlug.value = category.slug;
+  expandedCategorySlug.value = category.slug;
+  activeGroupSlug.value = category.groups[0]?.slug ?? "";
+  expandedGroupSlug.value = activeGroupSlug.value;
+  activeEntryId.value = firstEntryId(category, category.groups[0]);
+  replaceHash(activeGroupSlug.value || category.slug);
+
+  if (shouldFocus) {
+    await focusCatalogue();
+  }
+};
+
+const activateGroup = async (
+  categorySlug: string,
+  groupSlug: string,
+  shouldFocus = true,
+) => {
+  const category = filteredCategories.value.find((item) => {
+    return item.slug === categorySlug;
+  });
+  const group = category?.groups.find((item) => item.slug === groupSlug);
+
+  if (!category || !group) {
+    return;
+  }
+
+  activeCategorySlug.value = category.slug;
+  expandedCategorySlug.value = category.slug;
+  activeGroupSlug.value = group.slug;
+  expandedGroupSlug.value = group.slug;
+  activeEntryId.value = firstEntryId(category, group);
+  replaceHash(group.slug);
+
+  if (shouldFocus) {
+    await focusCatalogue();
+  }
+};
+
+const setCategoryExpanded = (
+  categorySlug: string,
+  open: boolean,
+) => {
+  expandedCategorySlug.value = open ? categorySlug : "";
+
+  if (open) {
+    void activateCategory(categorySlug, false);
+  }
+};
+
+const setGroupExpanded = (
+  categorySlug: string,
+  groupSlug: string,
+  open: boolean,
+) => {
+  expandedGroupSlug.value = open ? groupSlug : "";
+
+  if (open) {
+    void activateGroup(categorySlug, groupSlug, false);
+  }
+};
+
+const activateEntry = async (
+  categorySlug: string,
+  groupSlug: string,
+  entryId: string,
+) => {
+  if (groupSlug) {
+    await activateGroup(categorySlug, groupSlug, false);
+  } else {
+    await activateCategory(categorySlug, false);
+  }
+
+  activeEntryId.value = entryId;
+  replaceHash(entryId);
+  await focusCatalogue();
+};
+
+const syncSelectedEntry = (payload: {
+  groupSlug: string;
+  entryId: string;
+}) => {
+  activeEntryId.value = payload.entryId;
+  replaceHash(payload.entryId);
 };
 
 watch(
   filteredCategories,
-  async (categories) => {
-    activeCategorySlug.value = categories[0]?.slug ?? "";
+  (categories) => {
+    const selection = resolveCatalogueSelection(categories, {
+      categorySlug: activeCategorySlug.value,
+      groupSlug: activeGroupSlug.value,
+      entryId: activeEntryId.value,
+    });
 
-    if (normalizedSearch.value) {
-      expandedCategorySlug.value = categories[0]?.slug ?? "";
+    if (!selection) {
+      activeCategorySlug.value = "";
+      activeGroupSlug.value = "";
+      activeEntryId.value = "";
+      expandedCategorySlug.value = "";
+      expandedGroupSlug.value = "";
+      return;
     }
 
-    await nextTick();
-    requestActiveCategorySync();
+    const categoryChanged = selection.categorySlug !== activeCategorySlug.value;
+    const groupChanged = selection.groupSlug !== activeGroupSlug.value;
+
+    activeCategorySlug.value = selection.categorySlug;
+    activeGroupSlug.value = selection.groupSlug;
+    activeEntryId.value = selection.entryId;
+
+    if (categoryChanged) {
+      expandedCategorySlug.value = selection.categorySlug;
+    }
+
+    if (categoryChanged || groupChanged) {
+      expandedGroupSlug.value = selection.groupSlug;
+    }
   },
+  { immediate: true },
 );
 
 onMounted(() => {
   const hash = window.location.hash.replace("#", "");
-  const hashCategory = productNavigation.value.find((category) => {
-    return (
-      category.slug === hash ||
-      category.groups.some((group) => group.slug === hash)
-    );
+  const category = productNavigation.value.find((item) => {
+    return item.slug === hash
+      || item.entries.some((entry) => entry.id === hash)
+      || item.groups.some((group) => {
+        return group.slug === hash || group.entries.some((entry) => entry.id === hash);
+      });
   });
 
-  if (hashCategory) {
-    setActiveCategory(hashCategory.slug);
+  if (!category) {
+    return;
   }
 
-  requestActiveCategorySync();
-  window.addEventListener("scroll", requestActiveCategorySync, {
-    passive: true,
+  const group = category.groups.find((item) => item.slug === hash);
+  const entryGroup = category.groups.find((item) => {
+    return item.entries.some((entry) => entry.id === hash);
   });
-  window.addEventListener("resize", requestActiveCategorySync);
-});
 
-onBeforeUnmount(() => {
-  if (activeScrollFrame !== undefined) {
-    window.cancelAnimationFrame(activeScrollFrame);
+  if (entryGroup) {
+    void activateGroup(category.slug, entryGroup.slug, false).then(() => {
+      activeEntryId.value = hash;
+      replaceHash(hash);
+    });
+  } else if (category.entries.some((entry) => entry.id === hash)) {
+    void activateCategory(category.slug, false).then(() => {
+      activeEntryId.value = hash;
+      replaceHash(hash);
+    });
+  } else if (group) {
+    void activateGroup(category.slug, group.slug, false);
+  } else {
+    void activateCategory(category.slug, false);
   }
-
-  window.removeEventListener("scroll", requestActiveCategorySync);
-  window.removeEventListener("resize", requestActiveCategorySync);
 });
 
 useSeoMeta({
@@ -264,14 +312,14 @@ useSeoMeta({
     <h1 class="sr-only">Katalog produktów</h1>
 
     <section
-      class="grid min-h-[calc(100svh-4rem)] gap-px bg-line sm:grid-cols-[18rem_minmax(0,1fr)] sm:items-start"
+      class="grid min-h-[calc(100svh-4rem)] gap-px bg-line sm:grid-cols-[20rem_minmax(0,1fr)] sm:items-start"
       aria-label="Katalog produktów"
     >
       <aside
         class="bg-white sm:sticky sm:top-16 sm:h-[calc(100svh-4rem)] sm:overflow-y-auto"
         aria-label="Indeks katalogu produktów"
       >
-        <div class="border-b border-line px-5 py-4">
+        <div class="sticky top-0 z-20 border-b border-line bg-white px-4 py-4">
           <label for="product-search" class="sr-only">
             Szukaj w katalogu produktów
           </label>
@@ -285,7 +333,7 @@ useSeoMeta({
               id="product-search"
               v-model="searchQuery"
               type="search"
-              class="h-11 w-full border border-line bg-white pl-10 pr-3 text-sm font-bold text-ink outline-none transition placeholder:text-ink/42 focus:border-brand"
+              class="h-12 w-full border border-line bg-white pl-10 pr-3 text-base font-bold text-ink outline-none transition placeholder:text-ink/42 focus:border-brand"
               placeholder="Szukaj typu lub kategorii"
               autocomplete="off"
             />
@@ -305,29 +353,25 @@ useSeoMeta({
                 content:
                   'overflow-hidden motion-reduce:animate-none motion-reduce:transition-none',
               }"
-              @update:open="setExpandedCategory(category.slug, $event)"
+              @update:open="setCategoryExpanded(category.slug, $event)"
             >
               <template #default="{ open }">
                 <button
                   type="button"
-                  :data-category-nav="category.slug"
-                  class="group grid w-full grid-cols-[1.75rem_minmax(0,1fr)_1rem] items-center gap-2 px-4 py-3.5 text-left transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand"
+                  class="group grid w-full grid-cols-[minmax(0,1fr)_1rem] items-center gap-2 px-4 py-4 text-left transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand"
                   :class="
                     activeCategorySlug === category.slug || open
                       ? 'text-brand'
-                      : 'text-ink/58 hover:text-brand'
+                      : 'text-ink/62 hover:text-brand'
                   "
                   :aria-current="activeCategorySlug === category.slug ? 'location' : undefined"
                 >
-                  <span class="font-mono text-[0.62rem] font-bold">
-                    {{ category.number }}
-                  </span>
-                  <span class="whitespace-nowrap text-[0.68rem] font-black uppercase leading-5">
+                  <span class="whitespace-nowrap text-[0.8rem] font-black uppercase leading-5">
                     {{ category.label }}
                   </span>
                   <UIcon
                     name="i-lucide-chevron-down"
-                    class="size-3.5 transition-transform duration-200 motion-reduce:transition-none"
+                    class="size-4 transition-transform duration-200 motion-reduce:transition-none"
                     :class="open ? 'rotate-180' : ''"
                     aria-hidden="true"
                   />
@@ -335,23 +379,77 @@ useSeoMeta({
               </template>
 
               <template #content>
-                <ul
-                  class="border-t border-line bg-soft py-1"
-                  :aria-label="`Produkty w kategorii ${category.label}`"
-                >
-                  <li
-                    v-for="child in categoryNavigationChildren(category)"
-                    :key="child.targetSlug"
-                  >
-                    <button
-                      type="button"
-                      class="w-full py-2.5 pe-4 ps-12 text-left text-[0.68rem] font-bold leading-4 text-ink/62 transition-colors duration-200 hover:text-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand"
-                      @click="scrollToCatalogueTarget(child.targetSlug, category.slug)"
+                <div class="border-t border-line bg-soft py-1.5">
+                  <div v-if="category.groups.length">
+                    <UCollapsible
+                      v-for="group in category.groups"
+                      :key="group.slug"
+                      :open="expandedGroupSlug === group.slug"
+                      :unmount-on-hide="false"
+                      :ui="{
+                        content:
+                          'overflow-hidden motion-reduce:animate-none motion-reduce:transition-none',
+                      }"
+                      @update:open="setGroupExpanded(category.slug, group.slug, $event)"
                     >
-                      {{ child.label }}
-                    </button>
-                  </li>
-                </ul>
+                      <template #default="{ open }">
+                        <button
+                          type="button"
+                          class="grid w-full grid-cols-[minmax(0,1fr)_1rem] items-center gap-2 py-3 pe-4 ps-7 text-left text-[0.78rem] font-extrabold leading-5 transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand"
+                          :class="activeGroupSlug === group.slug ? 'text-brand' : 'text-ink/68 hover:text-brand'"
+                        >
+                          <span>{{ group.label }}</span>
+                          <UIcon
+                            name="i-lucide-chevron-down"
+                            class="size-3.5 transition-transform duration-200 motion-reduce:transition-none"
+                            :class="open ? 'rotate-180' : ''"
+                            aria-hidden="true"
+                          />
+                        </button>
+                      </template>
+
+                      <template #content>
+                        <ul
+                          class="border-y border-line/70 bg-white py-1.5"
+                          :aria-label="`Typy w podkategorii ${group.label}`"
+                        >
+                          <li
+                            v-for="entry in selectableCatalogueEntries(group.entries)"
+                            :key="entry.id"
+                          >
+                            <button
+                              type="button"
+                              class="w-full py-2 pe-4 ps-10 text-left font-mono text-xs font-bold leading-4 transition-colors duration-200 hover:text-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand"
+                              :class="activeEntryId === entry.id ? 'text-brand' : 'text-ink/58'"
+                              @click="activateEntry(category.slug, group.slug, entry.id)"
+                            >
+                              {{ entry.label }}
+                            </button>
+                          </li>
+                        </ul>
+                      </template>
+                    </UCollapsible>
+                  </div>
+
+                  <ul
+                    v-else
+                    :aria-label="`Typy w kategorii ${category.label}`"
+                  >
+                    <li
+                      v-for="entry in selectableCatalogueEntries(category.entries)"
+                      :key="entry.id"
+                    >
+                      <button
+                        type="button"
+                        class="w-full py-2.5 pe-4 ps-7 text-left font-mono text-xs font-bold leading-4 transition-colors duration-200 hover:text-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand"
+                        :class="activeEntryId === entry.id ? 'text-brand' : 'text-ink/60'"
+                        @click="activateEntry(category.slug, '', entry.id)"
+                      >
+                        {{ entry.label }}
+                      </button>
+                    </li>
+                  </ul>
+                </div>
               </template>
             </UCollapsible>
           </div>
@@ -359,13 +457,14 @@ useSeoMeta({
       </aside>
 
       <div class="min-w-0 bg-white">
-        <template v-if="filteredCategories.length">
-          <ProductCatalogueCategory
-            v-for="category in filteredCategories"
-            :key="category.slug"
-            :category="category"
-          />
-        </template>
+        <ProductCatalogueCategory
+          v-if="activeCategory"
+          :key="`${activeCategory.slug}-${activeGroup?.slug || 'category'}`"
+          :category="activeCategory"
+          :active-group-slug="activeGroup?.slug"
+          :active-entry-id="activeEntryId"
+          @select-entry="syncSelectedEntry"
+        />
 
         <div v-else class="min-h-[22rem] bg-white p-6 md:p-8 lg:p-10" role="status">
           <p class="border-s-2 border-brand ps-4 text-base font-extrabold text-ink/62">

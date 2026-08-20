@@ -1,6 +1,6 @@
 <script setup lang="ts">
-const { data: home } = await useAsyncData("home-page", () => {
-  return queryCollection("home").first();
+const { data: home } = await useFetch("/api/content/home", {
+  key: "home-page",
 });
 
 const heroSlides = computed(() => home.value?.hero.slides ?? []);

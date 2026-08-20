@@ -81,7 +81,7 @@ import { homeContactTopics } from "~~/data/home";
           <iframe
             src="https://maps.google.com/maps?q=Termospec%20Sp.%20z%20o.o.,%20G%C3%B3rnicza%2010,%20%C5%BBory&t=&z=15&ie=UTF8&iwloc=&output=embed"
             class="w-full h-full border-0"
-            allowfullscreen=""
+            :allowfullscreen="true"
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
           ></iframe>

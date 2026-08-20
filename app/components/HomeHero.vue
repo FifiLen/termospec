@@ -254,6 +254,12 @@ onMounted(() => {
     return;
   }
 
+  const firstSlide = slides[0];
+
+  if (!firstSlide) {
+    return;
+  }
+
   animationContext = gsap.context(() => {
     gsap.set(slides, { autoAlpha: 0, zIndex: 1 });
     gsap.set(
@@ -268,12 +274,17 @@ onMounted(() => {
         .map((slide) => slide.querySelector("[data-hero-image]")),
       { scale: 1.075 },
     );
-    gsap.set(slides[0], { autoAlpha: 1, zIndex: 2 });
-    gsap.set(slides[0]?.querySelector("[data-hero-image]"), { scale: 1 });
+    gsap.set(firstSlide, { autoAlpha: 1, zIndex: 2 });
+
+    const firstImage = firstSlide.querySelector("[data-hero-image]");
+
+    if (firstImage) {
+      gsap.set(firstImage, { scale: 1 });
+    }
 
     gsap
       .timeline({ defaults: { ease: "power3.out" } })
-      .to(slides[0]?.querySelectorAll("[data-hero-reveal]") ?? [], {
+      .to(firstSlide.querySelectorAll("[data-hero-reveal]"), {
         autoAlpha: 1,
         y: 0,
         duration: 0.72,

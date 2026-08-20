@@ -45,6 +45,31 @@ const mediaSchema = z.object({
   }),
 }).meta({ title: "Obraz" });
 
+export const productCatalogueCategorySlugs = [
+  "",
+  "agregaty-chlodnicze",
+  "chlodnice-powietrza",
+  "parowniki",
+  "chlodnice-wyparne-wody",
+  "systemy-redukcji-cisnienia",
+  "zbiorniki-cisnieniowe",
+  "systemy-sterownicze",
+  "wentylatory",
+  "inne",
+] as const;
+
+export const productCatalogueGroupSlugs = [
+  "",
+  "agregaty-sprezarka-tlokowa",
+  "agregaty-sprezarka-srubowa",
+  "agregaty-dwu-sprezarkowe",
+  "agregaty-duzych-mocy",
+  "agregaty-malych-mocy",
+  "mobilne-urzadzenia-chlodnicze",
+  "parowniki-powietrza",
+  "parowniki-wodne",
+] as const;
+
 export const productSchema = z.object({
   title: productField(
     z.string().trim().min(1, "Podaj nazwę produktu"),
@@ -62,32 +87,16 @@ export const productSchema = z.object({
     description: "Tekst kategorii wyświetlany przy produkcie.",
   }),
   cataloguePlacement: productField(z.object({
-    categorySlug: productField(z.enum([
-      "",
-      "agregaty-chlodnicze",
-      "chlodnice-powietrza",
-      "parowniki",
-      "chlodnice-wyparne-wody",
-      "systemy-redukcji-cisnienia",
-      "zbiorniki-cisnieniowe",
-      "systemy-sterownicze",
-      "wentylatory",
-      "inne",
-    ]).default(""), {
+    entryId: productField(z.string().default(""), {
+      label: "Identyfikator pozycji katalogowej",
+      description: "Stały identyfikator łączący kartę produktu z modelem lub typoszeregiem w katalogu.",
+      hidden: true,
+    }),
+    categorySlug: productField(z.enum(productCatalogueCategorySlugs).default(""), {
       label: "Kategoria katalogu",
       description: "Wybierz jedną z dziewięciu głównych kategorii.",
     }),
-    groupSlug: productField(z.enum([
-      "",
-      "agregaty-sprezarka-tlokowa",
-      "agregaty-sprezarka-srubowa",
-      "agregaty-dwu-sprezarkowe",
-      "agregaty-duzych-mocy",
-      "agregaty-malych-mocy",
-      "mobilne-urzadzenia-chlodnicze",
-      "parowniki-powietrza",
-      "parowniki-wodne",
-    ]).default(""), {
+    groupSlug: productField(z.enum(productCatalogueGroupSlugs).default(""), {
       label: "Podkategoria katalogu",
       description: "Pozostaw puste, jeżeli produkt należy bezpośrednio do kategorii głównej.",
     }),
@@ -98,7 +107,7 @@ export const productSchema = z.object({
         description: "Model oznacza pojedynczy produkt, series — typoszereg, description — opis możliwości.",
       },
     ),
-  }).default({ categorySlug: "", groupSlug: "", kind: "model" }), {
+  }).default({ entryId: "", categorySlug: "", groupSlug: "", kind: "model" }), {
     label: "Miejsce w katalogu",
     description: "Decyduje, w której kategorii i podkategorii pojawi się produkt.",
   }),
@@ -288,6 +297,7 @@ export const productTemplate: ProductInput = {
   modelCode: "",
   category: "Bez kategorii",
   cataloguePlacement: {
+    entryId: "",
     categorySlug: "",
     groupSlug: "",
     kind: "model",

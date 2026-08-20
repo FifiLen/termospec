@@ -58,7 +58,7 @@ CWW-200, CWW-300, CWW-450 oraz inne moce w zakresie 100–1000 kW, według indyw
 ## Zbiorniki ciśnieniowe
 
 - Skraplacze o mocy 10–4000 kW.
-- Parowniki — odwołanie do kategorii 03.
+- Parowniki — przejdź do kategorii 03.
 - Wymienniki ciepła.
 
 ## Systemy sterownicze
@@ -67,8 +67,8 @@ CWW-200, CWW-300, CWW-450 oraz inne moce w zakresie 100–1000 kW, według indyw
 
 ## Inne
 
-- Punkty klimatyzacyjne i rozdzielacze wody lodowej.
+- Punkty klimatyzacyjne / rozdzielacze wody lodowej.
 - Tamy wentylacyjne.
 - Instalacje redukcji siarkowodoru.
 
-Widoczny katalog zaczyna się bezpośrednio pod nagłówkiem strony. Na komputerze składa się z przyklejonego indeksu kategorii 01–09 po lewej i pełnej hierarchii kategorii, podkategorii, typów oraz typoszeregów po prawej. Wyszukiwarka filtruje całą strukturę katalogu. Dostarczone rendery Termospec są przypisane do odpowiadających im kategorii i podkategorii; render systemów redukcji ciśnienia pozostaje do uzupełnienia. Modele i typoszeregi działają jako poziome taby z burgundowym stanem aktywnym. Gdy wybrany model ma przypisany opublikowany rekord produktu, jego kompletna karta techniczna z parametrami, sekcjami i listami pojawia się bezpośrednio pod tabami. Rekordy przypisane tylko do kategorii pozostają zwartymi, rozwijanymi pozycjami po jej rodzinach.
+Widoczny katalog zaczyna się bezpośrednio pod nagłówkiem strony. Na komputerze składa się z przyklejonego indeksu dziewięciu kategorii po lewej oraz jednej aktywnej kategorii po prawej. Widoczne etykiety kategorii nie mają prefiksów liczbowych. Indeks rozwija podkategorie, modele i typoszeregi, a wyszukiwarka filtruje całą taksonomię. Dostarczone rendery Termospec są przypisane do odpowiadających im kategorii i podkategorii; render systemów redukcji ciśnienia pozostaje do uzupełnienia. Modele i typoszeregi działają jako poziome taby z burgundowym stanem aktywnym. Gdy wybrany model ma przypisany opublikowany rekord produktu, jego kompletna karta techniczna z parametrami, sekcjami i listami pojawia się bezpośrednio pod tabami. Wybór kategorii, podkategorii i modelu ma trwały identyfikator zapisywany w adresie strony i pozostaje stabilny podczas odświeżania danych w Studio.

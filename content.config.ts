@@ -1,6 +1,7 @@
 import { defineCollection, defineContentConfig, z } from '@nuxt/content'
 import { homeSchema } from './schemas/home'
 import { productSchema } from './schemas/product'
+import { productTranslationRecordSchema } from './schemas/product-translation'
 
 export default defineContentConfig({
   collections: {
@@ -22,6 +23,7 @@ export default defineContentConfig({
             alt: z.string(),
           }).nullable().optional(),
           entries: z.array(z.object({
+            id: z.string(),
             label: z.string(),
             targetSlug: z.string().optional(),
             kind: z.enum(['model', 'series', 'description']).optional(),
@@ -36,6 +38,7 @@ export default defineContentConfig({
               alt: z.string(),
             }).nullable().optional(),
             entries: z.array(z.object({
+              id: z.string(),
               label: z.string(),
               targetSlug: z.string().optional(),
               kind: z.enum(['model', 'series', 'description']).optional(),
@@ -51,6 +54,15 @@ export default defineContentConfig({
       indexes: [
         { columns: ['order'] },
         { columns: ['isFeatured', 'order'] },
+      ],
+    }),
+    productTranslations: defineCollection({
+      type: 'data',
+      source: 'product-translations/**/*.json',
+      schema: productTranslationRecordSchema,
+      indexes: [
+        { columns: ['entryId', 'locale'] },
+        { columns: ['locale', 'status'] },
       ],
     }),
     team: defineCollection({

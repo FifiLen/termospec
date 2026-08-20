@@ -1,6 +1,7 @@
 title: Typoszereg TS-150/PB – TS/PB-900
 category: Parowniki powietrza
 cataloguePlacement:
+  entryId: parowniki-powietrza-ts-pb
   categorySlug: parowniki
   groupSlug: "parowniki-powietrza"
   kind: series

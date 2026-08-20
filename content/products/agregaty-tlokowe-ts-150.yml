@@ -5,6 +5,7 @@ applications:
   - Ściany eksploatacyjne
   - Podziemne kopalnie węgla kamiennego
 cataloguePlacement:
+  entryId: agregaty-tlokowe-ts-150
   categorySlug: agregaty-chlodnicze
   groupSlug: agregaty-sprezarka-tlokowa
   kind: model

@@ -5,54 +5,77 @@ const props = defineProps<{
   product: ProductFamily;
   isDraft?: boolean;
   hideHeader?: boolean;
+  locale?: "pl" | "en";
 }>();
+
+const labels = computed(() => {
+  if (props.locale === "en") {
+    return {
+      applications: "Applications",
+      features: "Product features",
+      components: "Product components",
+      relatedProducts: "Related products",
+      serviceScope: "Support scope",
+      draft: "Draft",
+      technicalData: "Technical data",
+      parameter: "Parameter",
+      value: "Value",
+      unit: "Unit",
+      technicalNotes: "Technical data notes",
+      documents: "Downloads",
+    };
+  }
+
+  return {
+    applications: "Zastosowanie",
+    features: "Cechy urządzenia",
+    components: "Elementy urządzenia",
+    relatedProducts: "Urządzenia powiązane",
+    serviceScope: "Zakres wsparcia",
+    draft: "Szkic",
+    technicalData: "Dane techniczne",
+    parameter: "Parametr",
+    value: "Wartość",
+    unit: "Jednostka",
+    technicalNotes: "Uwagi do danych technicznych",
+    documents: "Dokumenty do pobrania",
+  };
+});
 
 const intro = computed(() => {
   return props.product.shortDescription || props.product.lead;
 });
 
-const media = computed<ProductMedia[]>(() => {
-  const items: ProductMedia[] = [];
-
+const primaryMedia = computed<ProductMedia | undefined>(() => {
   if (props.product.heroImage) {
-    items.push({
+    return {
       src: props.product.heroImage,
       alt: props.product.imageAlt || props.product.title,
-    });
+    };
   }
 
-  if (
-    props.product.headerSketch &&
-    !items.some((item) => item.src === props.product.headerSketch?.src)
-  ) {
-    items.push(props.product.headerSketch);
-  }
-
-  for (const item of props.product.gallery) {
-    if (!items.some((current) => current.src === item.src)) {
-      items.push(item);
-    }
-  }
-
-  return items.slice(0, 2);
+  return props.product.gallery[0];
 });
 
-const primaryMedia = computed(() => media.value[0]);
-const secondaryMedia = computed(() => media.value[1]);
+const sketchBackgroundStyle = computed(() => {
+  if (!props.product.headerSketch) {
+    return undefined;
+  }
 
-const coolingCircuitSectionIndex = computed(() => {
-  return props.product.sections.findIndex((section) =>
-    section.title.toLocaleLowerCase("pl-PL").includes("obieg chłodzenia"),
-  );
+  const source = props.product.headerSketch.src.replaceAll('"', '\\"');
+
+  return {
+    backgroundImage: `url("${source}")`,
+  };
 });
 
 const informationLists = computed(() => {
   return [
-    { title: "Zastosowanie", items: props.product.applications },
-    { title: "Cechy urządzenia", items: props.product.features },
-    { title: "Elementy urządzenia", items: props.product.components },
-    { title: "Urządzenia powiązane", items: props.product.relatedProducts },
-    { title: "Zakres wsparcia", items: props.product.serviceScope },
+    { title: labels.value.applications, items: props.product.applications },
+    { title: labels.value.features, items: props.product.features },
+    { title: labels.value.components, items: props.product.components },
+    { title: labels.value.relatedProducts, items: props.product.relatedProducts },
+    { title: labels.value.serviceScope, items: props.product.serviceScope },
   ].filter((item) => item.items.length);
 });
 
@@ -66,8 +89,15 @@ const hasSupportingDetails = computed(() => {
 </script>
 
 <template>
-  <article class="scroll-mt-28 bg-white">
-    <div class="w-full px-6 py-10 md:px-10 md:py-14 lg:px-12 lg:py-16">
+  <article class="relative isolate scroll-mt-28 overflow-hidden bg-white">
+    <div
+      v-if="props.product.headerSketch"
+      aria-hidden="true"
+      :style="sketchBackgroundStyle"
+      class="pointer-events-none absolute inset-0 z-0 bg-center bg-no-repeat opacity-[0.11] mix-blend-multiply [background-size:auto_24rem] sm:[background-size:auto_34rem] lg:[background-size:100%_auto]"
+    />
+
+    <div class="relative z-10 w-full px-6 py-10 md:px-10 md:py-14 lg:px-12 lg:py-16">
       <div
         v-if="!props.hideHeader || primaryMedia"
         class="grid items-center gap-10 lg:gap-14"
@@ -77,12 +107,12 @@ const hasSupportingDetails = computed(() => {
           v-if="!props.hideHeader"
           class="w-full bg-surface p-7 sm:p-9 lg:p-10 xl:p-12"
         >
-          <p class="text-sm font-black leading-6 text-ink/58">
+          <p class="max-w-[28ch] font-heading text-[clamp(1.5rem,2.5vw,2.25rem)] font-black leading-[1.08] tracking-tight text-ink">
             {{ props.product.category }}
           </p>
 
-          <div class="mt-3 flex flex-wrap items-end gap-x-5 gap-y-2">
-            <h3 class="font-heading text-5xl font-black leading-none tracking-tight text-ink md:text-6xl">
+          <div class="mt-5 flex flex-wrap items-end gap-x-5 gap-y-2">
+            <h3 class="font-mono text-[clamp(1.25rem,1.8vw,1.75rem)] font-bold leading-none tracking-tight text-brand">
               {{ props.product.title }}
             </h3>
             <span
@@ -95,7 +125,7 @@ const hasSupportingDetails = computed(() => {
               v-if="props.isDraft"
               class="pb-1 text-xs font-black uppercase text-brand"
             >
-              Szkic
+              {{ labels.draft }}
             </span>
           </div>
 
@@ -155,16 +185,16 @@ const hasSupportingDetails = computed(() => {
           <section v-if="props.product.technicalData.length">
             <p class="font-mono text-xs font-bold text-brand">00</p>
             <h4 class="mt-2 font-heading text-2xl font-black leading-tight text-ink">
-              Dane techniczne
+              {{ labels.technicalData }}
             </h4>
 
             <div class="mt-6 overflow-x-auto">
               <table class="w-full min-w-lg border-collapse text-start">
                 <thead>
                   <tr class="border-b border-line text-xs font-black uppercase tracking-wide text-ink/42">
-                    <th scope="col" class="py-3 pe-5 text-start">Parametr</th>
-                    <th scope="col" class="py-3 pe-5 text-start">Wartość</th>
-                    <th scope="col" class="py-3 text-start">Jednostka</th>
+                    <th scope="col" class="py-3 pe-5 text-start">{{ labels.parameter }}</th>
+                    <th scope="col" class="py-3 pe-5 text-start">{{ labels.value }}</th>
+                    <th scope="col" class="py-3 text-start">{{ labels.unit }}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -184,7 +214,7 @@ const hasSupportingDetails = computed(() => {
             <ul
               v-if="props.product.technicalNotes.length"
               class="mt-4 grid gap-2 text-xs leading-5 text-ink/58"
-              aria-label="Uwagi do danych technicznych"
+              :aria-label="labels.technicalNotes"
             >
               <li v-for="note in props.product.technicalNotes" :key="note">{{ note }}</li>
             </ul>
@@ -216,21 +246,6 @@ const hasSupportingDetails = computed(() => {
                 </li>
               </ul>
 
-              <figure
-                v-if="secondaryMedia && index === coolingCircuitSectionIndex"
-                class="mt-8"
-              >
-                <NuxtImg
-                  :src="secondaryMedia.src"
-                  :alt="secondaryMedia.alt"
-                  width="1500"
-                  height="500"
-                  sizes="100vw lg:70vw"
-                  loading="lazy"
-                  decoding="async"
-                  class="h-auto w-full object-contain mix-blend-multiply"
-                />
-              </figure>
             </div>
           </section>
         </div>
@@ -254,7 +269,7 @@ const hasSupportingDetails = computed(() => {
 
           <section v-if="props.product.documents.length">
             <h4 class="font-heading text-lg font-black leading-tight text-ink">
-              Dokumenty do pobrania
+              {{ labels.documents }}
             </h4>
             <ul class="mt-4 grid gap-3">
               <li v-for="document in props.product.documents" :key="document.file">

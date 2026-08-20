@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "entryId": "agregaty-tlokowe-ts-150",
+  "sourceLocale": "pl",
+  "locale": "en",
+  "sourceRevision": "v1-7e64fcc9",
+  "status": "draft",
+  "content": {
+    "title": "TS-150",
+    "category": "Refrigeration units with reciprocating compressor",
+    "lead": "Local refrigeration unit for air conditioning of development headings, roadways, crosscuts and longwall faces.",
+    "shortDescription": "Unit designed for direct air cooling in underground mine workings.",
+    "seo": {
+      "title": "TS-150 | Termospec",
+      "description": "TS-150 refrigeration unit for cooling air in underground mine workings."
+    },
+    "specs": [
+      {
+        "label": "Power range",
+        "value": "150–450 kW"
+      },
+      {
+        "label": "Cooling type",
+        "value": "Direct air cooling"
+      },
+      {
+        "label": "Operating environment",
+        "value": "Underground mine workings"
+      }
+    ],
+    "technicalData": [],
+    "technicalNotes": [],
+    "applications": [
+      "Development headings",
+      "Roadways and crosscuts",
+      "Longwall faces",
+      "Underground hard coal mines"
+    ],
+    "components": [
+      "Machinery unit with compressor, motor and condenser",
+      "Evaporator serving as an air cooler",
+      "Condenser cooling water circuit"
+    ],
+    "features": [
+      "Direct air cooling at the evaporator",
+      "Operation with chlorine-free HFC refrigerants",
+      "Option to operate with an open or closed condenser cooling system",
+      "Suitable for use in explosion-hazardous mine workings"
+    ],
+    "relatedProducts": [],
+    "serviceScope": [
+      "Selection of cooling capacity and unit configuration according to mine working conditions",
+      "Manufacturing and preparation of the unit for operation in demanding mining environments",
+      "Commissioning support and integration with the condenser cooling circuit",
+      "Service, inspections and upgrades of refrigeration system components"
+    ],
+    "sections": [
+      {
+        "title": "Application",
+        "body": "In underground hard coal mines, local refrigeration units are used for air conditioning of development headings, driven roadways, crosscuts and longwall faces.",
+        "items": []
+      },
+      {
+        "title": "Operating principle",
+        "body": "The evaporator is used for direct air cooling as an air cooler. Air flowing through the evaporator at a temperature above 26 °C is cooled by 10–14 °C.",
+        "items": []
+      },
+      {
+        "title": "Cooling circuit",
+        "body": "Warm water from the condenser cooling circuit is cooled in evaporative water coolers. A system for direct condenser cooling with process water may also be used.",
+        "items": []
+      }
+    ],
+    "imageAlt": "Illustrative render of a Termospec refrigeration unit with a reciprocating compressor",
+    "headerSketch": {
+      "alt": "Illustrative line diagram of the refrigeration unit"
+    },
+    "gallery": [
+      {
+        "alt": "Illustrative view of the refrigeration unit in an underground mine working"
+      },
+      {
+        "alt": "Illustrative view of the refrigeration unit from the fan side"
+      }
+    ],
+    "documents": [],
+    "relatedProjects": [
+      {
+        "category": "mine air conditioning",
+        "title": "Cooling system for underground mine workings",
+        "body": "Selection and servicing of a refrigeration solution for infrastructure operating under demanding mining conditions.",
+        "imageAlt": "Industrial cooling system in an underground mine working",
+        "scope": [
+          "conditions analysis",
+          "equipment selection",
+          "system servicing"
+        ]
+      }
+    ]
+  }
+}

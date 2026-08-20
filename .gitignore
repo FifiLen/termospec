@@ -16,6 +16,9 @@ logs
 # Test artifacts
 test-results
 playwright-report
+.playwright-cli/
+output/playwright/
+tmp/
 
 # Misc
 .DS_Store

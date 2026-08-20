@@ -6,7 +6,6 @@ import type {
 
 const props = defineProps<{
   categories: ProductNavigationCategory[];
-  close?: () => void;
 }>();
 
 const menuScrollArea = ref<HTMLElement | null>(null);
@@ -18,10 +17,6 @@ const menuColumns = computed(() => {
     props.categories.slice(5),
   ];
 });
-
-const closeMenu = () => {
-  props.close?.();
-};
 
 const scrollToCategory = (slug: string) => {
   const target = menuScrollArea.value?.querySelector<HTMLElement>(
@@ -56,7 +51,6 @@ const handleEntry = (entry: ProductNavigationEntry) => {
       <NuxtLink
         to="/produkty"
         class="inline-flex min-h-10 items-center gap-6 bg-brand px-4 font-mono text-[0.65rem] font-bold uppercase tracking-wider text-white transition-colors hover:bg-white hover:text-ink"
-        @click="closeMenu"
       >
         <span>Otwórz katalog</span>
         <span aria-hidden="true">→</span>
@@ -85,7 +79,7 @@ const handleEntry = (entry: ProductNavigationEntry) => {
 
             <div class="min-w-0">
               <div class="flex items-start gap-3">
-                <h3 class="text-sm font-black uppercase leading-5 text-ink">
+                <h3 class="text-base font-black uppercase leading-5 text-ink">
                   {{ category.label }}
                 </h3>
 
@@ -105,7 +99,7 @@ const handleEntry = (entry: ProductNavigationEntry) => {
                 <li
                   v-for="entry in category.entries"
                   :key="entry.label"
-                  class="text-xs font-bold leading-5 text-ink/62"
+                  class="text-sm font-bold leading-5 text-ink/62"
                 >
                   <button
                     v-if="entry.targetSlug"
@@ -126,7 +120,7 @@ const handleEntry = (entry: ProductNavigationEntry) => {
                   class="border-s border-line ps-3"
                 >
                   <div class="flex items-start gap-3">
-                    <h4 class="text-[0.7rem] font-black uppercase leading-4 text-ink/78">
+                    <h4 class="text-[0.8rem] font-black uppercase leading-5 text-ink/78">
                       {{ group.label }}
                     </h4>
 
@@ -146,7 +140,7 @@ const handleEntry = (entry: ProductNavigationEntry) => {
                     <li
                       v-for="entry in group.entries"
                       :key="entry.label"
-                      class="font-mono text-[0.64rem] font-bold leading-4 text-ink/55"
+                      class="font-mono text-xs font-bold leading-4 text-ink/55"
                     >
                       {{ entry.label }}
                     </li>
