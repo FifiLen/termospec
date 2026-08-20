@@ -3,13 +3,13 @@
   "entryId": "agregaty-tlokowe-ts-150",
   "sourceLocale": "pl",
   "locale": "en",
-  "sourceRevision": "v1-7e64fcc9",
+  "sourceRevision": "v1-08aafccc",
   "status": "draft",
   "content": {
     "title": "TS-150",
     "category": "Refrigeration units with reciprocating compressor",
     "lead": "Local refrigeration unit for air conditioning of development headings, roadways, crosscuts and longwall faces.",
-    "shortDescription": "Unit designed for direct air cooling in underground mine workings.",
+    "shortDescription": "Unit designed for direct air cooling in underground mine workings. Test change.",
     "seo": {
       "title": "TS-150 | Termospec",
       "description": "TS-150 refrigeration unit for cooling air in underground mine workings."
