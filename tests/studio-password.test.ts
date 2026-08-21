@@ -3,7 +3,9 @@ import { scryptSync } from "node:crypto";
 import test from "node:test";
 
 import {
+  isAllowedStudioEmail,
   normalizeStudioEmail,
+  parseStudioEmails,
   safeEqualStudioEmail,
   verifyStudioPassword,
 } from "../server/utils/studio-password.ts";
@@ -18,6 +20,16 @@ test("Studio email comparison is case-insensitive and trims whitespace", () => {
   assert.equal(normalizeStudioEmail(" REDAKTOR@Termospec.pl "), "redaktor@termospec.pl");
   assert.equal(safeEqualStudioEmail("redaktor@termospec.pl", "REDAKTOR@TERMOSPEC.PL"), true);
   assert.equal(safeEqualStudioEmail("inna@termospec.pl", "redaktor@termospec.pl"), false);
+});
+
+test("Studio email allowlist accepts multiple normalized addresses", () => {
+  const allowedEmails = parseStudioEmails(
+    " REDAKTOR@Termospec.pl, klient@termospec.pl;redaktor@termospec.pl ",
+  );
+
+  assert.deepEqual(allowedEmails, ["redaktor@termospec.pl", "klient@termospec.pl"]);
+  assert.equal(isAllowedStudioEmail(" KLIENT@TERMOSPEC.PL ", allowedEmails), true);
+  assert.equal(isAllowedStudioEmail("inna@termospec.pl", allowedEmails), false);
 });
 
 test("Studio password verifier accepts only the matching scrypt hash", async () => {

@@ -9,8 +9,9 @@ import {
 // @ts-ignore This server handler is registered only when nuxt-studio is enabled.
 import { setStudioUserSession } from "#imports";
 import {
+  isAllowedStudioEmail,
   normalizeStudioEmail,
-  safeEqualStudioEmail,
+  parseStudioEmails,
   verifyStudioPassword,
 } from "../utils/studio-password";
 import { requireSameOriginStudioRequest } from "../utils/studio-request";
@@ -62,11 +63,11 @@ export default defineEventHandler(async (event) => {
   requireSameOriginStudioRequest(event);
 
   const config = useRuntimeConfig(event);
-  const configuredEmail = String(config.studioLogin.email || "");
+  const configuredEmails = parseStudioEmails(String(config.studioLogin.email || ""));
   const configuredHash = String(config.studioLogin.passwordHash || "");
   const displayName = String(config.studioLogin.displayName || "Redaktor Termospec");
 
-  if (!configuredEmail || !configuredHash || !process.env.STUDIO_GITHUB_TOKEN) {
+  if (configuredEmails.length === 0 || !configuredHash || !process.env.STUDIO_GITHUB_TOKEN) {
     throw createError({
       statusCode: 503,
       message: "Logowanie do Studio nie zostało jeszcze skonfigurowane.",
@@ -79,13 +80,14 @@ export default defineEventHandler(async (event) => {
   const body = await readBody<StudioLoginBody>(event);
   const email = typeof body?.email === "string" ? body.email : "";
   const password = typeof body?.password === "string" ? body.password : "";
+  const normalizedEmail = normalizeStudioEmail(email);
 
   if (email.length > 254 || password.length > 1024) {
     throw createError({ statusCode: 401, message: "Nieprawidłowy e-mail lub hasło." });
   }
 
   const [emailMatches, passwordMatches] = await Promise.all([
-    Promise.resolve(safeEqualStudioEmail(email, configuredEmail)),
+    Promise.resolve(isAllowedStudioEmail(normalizedEmail, configuredEmails)),
     verifyStudioPassword(password, configuredHash),
   ]);
 
@@ -97,9 +99,9 @@ export default defineEventHandler(async (event) => {
   }
 
   await setStudioUserSession(event, {
-    providerId: `custom:${normalizeStudioEmail(configuredEmail)}`,
+    providerId: `custom:${normalizedEmail}`,
     name: displayName,
-    email: normalizeStudioEmail(configuredEmail),
+    email: normalizedEmail,
   });
 
   attempts.delete(ip);

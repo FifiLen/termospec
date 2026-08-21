@@ -22,6 +22,15 @@ export const normalizeStudioEmail = (value: string): string => {
   return value.trim().toLowerCase();
 };
 
+export const parseStudioEmails = (value: string): string[] => {
+  return [...new Set(
+    value
+      .split(/[\s,;]+/)
+      .map(normalizeStudioEmail)
+      .filter(Boolean),
+  )];
+};
+
 export const verifyStudioPassword = async (
   password: string,
   encodedHash: string,
@@ -53,4 +62,11 @@ export const safeEqualStudioEmail = (candidate: string, expected: string): boole
   }
 
   return timingSafeEqual(candidateBuffer, expectedBuffer);
+};
+
+export const isAllowedStudioEmail = (
+  candidate: string,
+  allowedEmails: readonly string[],
+): boolean => {
+  return allowedEmails.some((allowedEmail) => safeEqualStudioEmail(candidate, allowedEmail));
 };
