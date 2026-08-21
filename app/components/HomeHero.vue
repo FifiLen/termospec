@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { gsap } from "gsap";
+import { aboutMetrics } from "~~/data/about";
 import type { HomeHeroSlide } from "~~/types/home";
 
 const props = defineProps<{
@@ -8,6 +9,7 @@ const props = defineProps<{
 
 const heroRoot = ref<HTMLElement | null>(null);
 const activeIndex = ref(0);
+const heroFacts = aboutMetrics.slice(0, 3);
 
 let animationContext: gsap.Context | null = null;
 let mediaQueries: gsap.MatchMedia | null = null;
@@ -19,19 +21,39 @@ let isTransitioning = false;
 
 const autoplayDelay = 6.5;
 
-function getSlides() {
+function getContentSlides() {
   if (!heroRoot.value) {
     return [];
   }
 
   return Array.from(
-    heroRoot.value.querySelectorAll<HTMLElement>("[data-hero-slide]"),
+    heroRoot.value.querySelectorAll<HTMLElement>("[data-hero-content]"),
+  );
+}
+
+function getMediaSlides() {
+  if (!heroRoot.value) {
+    return [];
+  }
+
+  return Array.from(
+    heroRoot.value.querySelectorAll<HTMLElement>("[data-hero-media-slide]"),
   );
 }
 
 function cancelAutoplay() {
   autoplayCall?.kill();
   autoplayCall = null;
+}
+
+function getProgressBars() {
+  if (!heroRoot.value) {
+    return [];
+  }
+
+  return Array.from(
+    heroRoot.value.querySelectorAll<HTMLElement>("[data-hero-progress]"),
+  );
 }
 
 function scheduleAutoplay() {
@@ -46,23 +68,33 @@ function scheduleAutoplay() {
     return;
   }
 
-  autoplayCall = gsap.delayedCall(autoplayDelay, () => {
-    goToSlide((activeIndex.value + 1) % props.slides.length, 1);
+  const progressBars = getProgressBars();
+  const activeProgress = progressBars[0];
+
+  gsap.set(progressBars, { scaleX: 0, transformOrigin: "left" });
+
+  if (!activeProgress) {
+    return;
+  }
+
+  autoplayCall = gsap.to(activeProgress, {
+    scaleX: 1,
+    duration: autoplayDelay,
+    ease: "none",
+    onComplete: () => {
+      goToSlide((activeIndex.value + 1) % props.slides.length, 1);
+    },
   });
 }
 
 function revealSlideImmediately(targetIndex: number) {
-  const slides = getSlides();
+  const contentSlides = getContentSlides();
+  const mediaSlides = getMediaSlides();
 
-  slides.forEach((slide, index) => {
+  contentSlides.forEach((slide, index) => {
     gsap.set(slide, {
       autoAlpha: index === targetIndex ? 1 : 0,
       zIndex: index === targetIndex ? 2 : 1,
-    });
-
-    gsap.set(slide.querySelector("[data-hero-image]"), {
-      scale: 1,
-      xPercent: 0,
     });
 
     const revealElements = slide.querySelectorAll("[data-hero-reveal]");
@@ -73,6 +105,18 @@ function revealSlideImmediately(targetIndex: number) {
         y: 0,
       });
     }
+  });
+
+  mediaSlides.forEach((slide, index) => {
+    gsap.set(slide, {
+      autoAlpha: index === targetIndex ? 1 : 0,
+      zIndex: index === targetIndex ? 2 : 1,
+    });
+
+    gsap.set(slide.querySelector("[data-hero-image]"), {
+      scale: 1,
+      xPercent: 0,
+    });
   });
 
   activeIndex.value = targetIndex;
@@ -96,24 +140,28 @@ function goToSlide(targetIndex: number, direction = 1) {
     return;
   }
 
-  const slides = getSlides();
-  const currentSlide = slides[activeIndex.value];
-  const nextSlide = slides[targetIndex];
+  const contentSlides = getContentSlides();
+  const mediaSlides = getMediaSlides();
+  const currentContentSlide = contentSlides[activeIndex.value];
+  const nextContentSlide = contentSlides[targetIndex];
+  const currentMediaSlide = mediaSlides[activeIndex.value];
+  const nextMediaSlide = mediaSlides[targetIndex];
 
-  if (!currentSlide || !nextSlide) {
+  if (!currentContentSlide || !nextContentSlide || !currentMediaSlide || !nextMediaSlide) {
     return;
   }
 
-  const currentImage = currentSlide.querySelector("[data-hero-image]");
-  const currentContent = currentSlide.querySelectorAll("[data-hero-reveal]");
-  const nextImage = nextSlide.querySelector("[data-hero-image]");
-  const nextContent = nextSlide.querySelectorAll("[data-hero-reveal]");
+  const currentImage = currentMediaSlide.querySelector("[data-hero-image]");
+  const currentContent = currentContentSlide.querySelectorAll("[data-hero-reveal]");
+  const nextImage = nextMediaSlide.querySelector("[data-hero-image]");
+  const nextContent = nextContentSlide.querySelectorAll("[data-hero-reveal]");
 
   isTransitioning = true;
   activeIndex.value = targetIndex;
   transitionTimeline?.kill();
 
-  gsap.set(nextSlide, { autoAlpha: 0, zIndex: 3 });
+  gsap.set(nextContentSlide, { autoAlpha: 0, zIndex: 3 });
+  gsap.set(nextMediaSlide, { autoAlpha: 0, zIndex: 3 });
   gsap.set(nextImage, { scale: 1.075, xPercent: direction * 1.5 });
   if (nextContent.length) {
     gsap.set(nextContent, { autoAlpha: 0, y: 24 });
@@ -121,8 +169,10 @@ function goToSlide(targetIndex: number, direction = 1) {
 
   transitionTimeline = gsap.timeline({
     onComplete: () => {
-      gsap.set(currentSlide, { autoAlpha: 0, zIndex: 1 });
-      gsap.set(nextSlide, { zIndex: 2 });
+      gsap.set(currentContentSlide, { autoAlpha: 0, zIndex: 1 });
+      gsap.set(currentMediaSlide, { autoAlpha: 0, zIndex: 1 });
+      gsap.set(nextContentSlide, { zIndex: 2 });
+      gsap.set(nextMediaSlide, { zIndex: 2 });
       isTransitioning = false;
       transitionTimeline = null;
       scheduleAutoplay();
@@ -150,12 +200,22 @@ function goToSlide(targetIndex: number, direction = 1) {
       0,
     )
     .to(
-      currentSlide,
+      currentContentSlide,
       { autoAlpha: 0, duration: 0.62, ease: "power2.inOut" },
       0.12,
     )
     .to(
-      nextSlide,
+      currentMediaSlide,
+      { autoAlpha: 0, duration: 0.62, ease: "power2.inOut" },
+      0.12,
+    )
+    .to(
+      nextContentSlide,
+      { autoAlpha: 1, duration: 0.74, ease: "power2.out" },
+      0.18,
+    )
+    .to(
+      nextMediaSlide,
       { autoAlpha: 1, duration: 0.74, ease: "power2.out" },
       0.18,
     )
@@ -248,35 +308,39 @@ onMounted(() => {
     return;
   }
 
-  const slides = getSlides();
+  const contentSlides = getContentSlides();
+  const mediaSlides = getMediaSlides();
 
-  if (!slides.length) {
+  if (!contentSlides.length || !mediaSlides.length) {
     return;
   }
 
-  const firstSlide = slides[0];
+  const firstContentSlide = contentSlides[0];
+  const firstMediaSlide = mediaSlides[0];
 
-  if (!firstSlide) {
+  if (!firstContentSlide || !firstMediaSlide) {
     return;
   }
 
   animationContext = gsap.context(() => {
-    gsap.set(slides, { autoAlpha: 0, zIndex: 1 });
+    gsap.set(contentSlides, { autoAlpha: 0, zIndex: 1 });
+    gsap.set(mediaSlides, { autoAlpha: 0, zIndex: 1 });
     gsap.set(
-      slides.flatMap((slide) =>
+      contentSlides.flatMap((slide) =>
         Array.from(slide.querySelectorAll("[data-hero-reveal]")),
       ),
       { autoAlpha: 0, y: 24 },
     );
     gsap.set(
-      slides
+      mediaSlides
         .slice(1)
         .map((slide) => slide.querySelector("[data-hero-image]")),
       { scale: 1.075 },
     );
-    gsap.set(firstSlide, { autoAlpha: 1, zIndex: 2 });
+    gsap.set(firstContentSlide, { autoAlpha: 1, zIndex: 2 });
+    gsap.set(firstMediaSlide, { autoAlpha: 1, zIndex: 2 });
 
-    const firstImage = firstSlide.querySelector("[data-hero-image]");
+    const firstImage = firstMediaSlide.querySelector("[data-hero-image]");
 
     if (firstImage) {
       gsap.set(firstImage, { scale: 1 });
@@ -284,7 +348,7 @@ onMounted(() => {
 
     gsap
       .timeline({ defaults: { ease: "power3.out" } })
-      .to(firstSlide.querySelectorAll("[data-hero-reveal]"), {
+      .to(firstContentSlide.querySelectorAll("[data-hero-reveal]"), {
         autoAlpha: 1,
         y: 0,
         duration: 0.72,
@@ -328,191 +392,210 @@ onUnmounted(() => {
     ref="heroRoot"
     aria-label="Najważniejsze obszary działalności Termospec"
     aria-roledescription="karuzela"
-    class="relative isolate min-h-[100svh] overflow-hidden bg-ink text-white"
+    class="relative isolate min-h-[44rem] overflow-hidden bg-ink text-white lg:min-h-[100svh]"
     @mouseenter="pauseAutoplay"
     @mouseleave="resumeAutoplay"
     @focusin="pauseAutoplay"
     @focusout="handleFocusOut"
   >
-    <div class="absolute inset-0">
-      <article
-        v-for="(slide, index) in props.slides"
-        :key="index"
-        data-hero-slide
-        :aria-hidden="activeIndex !== index"
-        class="invisible absolute inset-0"
+    <div class="relative min-h-[44rem] w-full overflow-hidden bg-ink lg:min-h-[100svh]">
+      <div class="absolute inset-0 z-0 overflow-hidden">
+        <article
+          v-for="(slide, index) in props.slides"
+          :key="`media-${index}`"
+          data-hero-media-slide
+          :aria-hidden="activeIndex !== index"
+          class="invisible absolute inset-0"
+        >
+          <picture
+            v-if="slide.presentation === 'pelny-kadr'"
+            aria-hidden="true"
+            class="absolute -inset-8 block overflow-hidden"
+          >
+            <source media="(max-width: 1023px)" :srcset="slide.image.mobile.src" />
+            <img
+              :src="slide.image.desktop.src"
+              alt=""
+              loading="lazy"
+              decoding="async"
+              class="hero-media h-full w-full scale-110 object-cover opacity-35 blur-2xl"
+              :style="{
+                '--hero-position-mobile': slide.image.mobile.position,
+                '--hero-position-desktop': slide.image.desktop.position,
+              }"
+            />
+          </picture>
+
+          <picture class="absolute inset-0 block overflow-hidden">
+            <source media="(max-width: 1023px)" :srcset="slide.image.mobile.src" />
+            <img
+              data-hero-image
+              :src="slide.image.desktop.src"
+              :alt="slide.image.alt"
+              :loading="index === 0 ? 'eager' : 'lazy'"
+              :fetchpriority="index === 0 ? 'high' : 'auto'"
+              decoding="async"
+              class="hero-media h-full w-full will-change-transform"
+              :class="
+                slide.presentation === 'pelny-kadr'
+                  ? 'object-cover lg:object-contain'
+                  : 'object-cover'
+              "
+              :style="{
+                '--hero-position-mobile': slide.image.mobile.position,
+                '--hero-position-desktop': slide.image.desktop.position,
+              }"
+            />
+          </picture>
+
+          <div
+            class="absolute inset-0"
+            :class="slide.presentation === 'pelny-kadr' ? 'bg-ink/10' : 'bg-ink/5'"
+            aria-hidden="true"
+          />
+        </article>
+      </div>
+
+      <div class="absolute inset-0 z-10">
+        <article
+          v-for="(slide, index) in props.slides"
+          :key="`content-${index}`"
+          data-hero-content
+          :aria-hidden="activeIndex !== index"
+          :inert="activeIndex !== index"
+          class="invisible absolute inset-0"
+        >
+          <div
+            v-if="slide.presentation !== 'pelny-kadr'"
+            class="absolute inset-x-0 bottom-0 min-h-[70%] border-t border-white/10 bg-ink/85 backdrop-blur-xl md:inset-y-0 md:right-auto md:min-h-0 md:w-[48%] md:border-r md:border-t-0 lg:w-[42%]"
+          >
+            <div class="flex min-h-full flex-col justify-center px-5 pb-24 pt-10 sm:px-8 md:h-full md:px-10 md:pb-24 md:pt-36 lg:px-12 xl:px-16">
+              <div class="max-w-[38rem]">
+                <p
+                  data-hero-reveal
+                  :aria-label="[slide.caption.label || 'Termospec', slide.caption.text].filter(Boolean).join(' ')"
+                  class="flex items-center gap-3 text-xs font-medium uppercase tracking-[0.14em] text-white/62 sm:text-sm"
+                >
+                  <span aria-hidden="true" class="h-0.5 w-9 shrink-0 bg-brand" />
+                  <span>
+                    {{ [slide.caption.label || 'Termospec', slide.caption.text].filter(Boolean).join(' / ') }}
+                  </span>
+                </p>
+
+                <h1
+                  data-hero-reveal
+                  :aria-label="slide.title.replace('\n', ' ')"
+                  class="mt-5 max-w-[10ch] text-[clamp(2.55rem,4.8vw,4.8rem)] font-medium leading-[0.94] tracking-[-0.055em] text-white sm:mt-6"
+                >
+                  <span
+                    v-for="(line, lineIndex) in slide.title.split('\n')"
+                    :key="lineIndex"
+                    aria-hidden="true"
+                    class="block"
+                  >
+                    {{ line }}
+                  </span>
+                </h1>
+
+                <p
+                  data-hero-reveal
+                  class="mt-6 max-w-[34rem] text-sm leading-6 text-white/68 sm:text-base sm:leading-7 lg:mt-7 lg:text-lg lg:leading-8"
+                >
+                  {{ slide.lead }}
+                </p>
+
+                <div data-hero-reveal class="mt-7 flex flex-wrap items-center gap-3 lg:mt-8">
+                  <NuxtLink
+                    :to="slide.primaryLink.href"
+                    class="inline-flex min-h-11 items-center justify-center rounded-full bg-brand px-6 text-sm font-semibold text-white transition-colors hover:bg-white hover:text-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                  >
+                    {{ slide.primaryLink.label }}
+                  </NuxtLink>
+
+                  <NuxtLink
+                    :to="slide.secondaryLink.href"
+                    class="inline-flex min-h-11 items-center justify-center rounded-full border border-white/35 px-6 text-sm font-semibold text-white transition-colors hover:border-white hover:bg-white hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                  >
+                    {{ slide.secondaryLink.label }}
+                  </NuxtLink>
+                </div>
+
+                <dl
+                  data-hero-reveal
+                  class="mt-8 hidden grid-cols-3 gap-5 border-t border-white/15 pt-6 xl:grid"
+                >
+                  <div v-for="fact in heroFacts" :key="fact.label" class="min-w-0">
+                    <dt class="text-[clamp(1.2rem,1.65vw,1.65rem)] font-medium leading-tight tracking-[-0.035em] text-white">
+                      {{ fact.value }}
+                    </dt>
+                    <dd class="mt-2 text-xs leading-5 text-white/42">
+                      {{ fact.label }}
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div
+        v-if="props.slides.length > 1"
+        class="pointer-events-none absolute inset-x-5 bottom-5 z-30 sm:inset-x-8 sm:bottom-8 lg:inset-x-12"
       >
         <div
-          v-if="slide.presentation === 'podzial'"
-          class="absolute inset-x-0 top-16 bottom-0 grid grid-rows-2 bg-ink lg:grid-cols-5 lg:grid-rows-1"
+          class="pointer-events-auto ms-auto w-fit max-w-full overflow-hidden rounded-full bg-ink/90 text-white backdrop-blur-xl"
         >
-          <div class="order-2 flex items-center px-6 py-6 sm:px-8 lg:order-1 lg:col-span-2 lg:px-10 lg:py-12">
-            <div class="max-w-2xl">
-              <h1
-                data-hero-reveal
-                class="max-w-[12ch] font-heading text-[clamp(2.1rem,4.2vw,4.5rem)] font-black leading-[0.92] tracking-[-0.055em] text-white"
-              >
-                {{ slide.title }}
-              </h1>
-
-              <p
-                data-hero-reveal
-                class="mt-4 max-w-xl text-sm leading-6 text-white/75 sm:text-base sm:leading-7 lg:mt-6 lg:text-lg lg:leading-8"
-              >
-                {{ slide.lead }}
-              </p>
-
-              <div
-                data-hero-reveal
-                class="mt-5 flex flex-wrap items-center gap-2 lg:mt-8 lg:gap-4"
-              >
-                <NuxtLink
-                  :to="slide.primaryLink.href"
-                  class="inline-flex min-h-12 items-center gap-6 bg-brand px-5 font-mono text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-white hover:text-ink"
-                >
-                  <span>{{ slide.primaryLink.label }}</span>
-                  <span aria-hidden="true">→</span>
-                </NuxtLink>
-
-                <NuxtLink
-                  :to="slide.secondaryLink.href"
-                  class="inline-flex min-h-12 items-center gap-6 bg-brand px-5 font-mono text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-white hover:text-ink"
-                >
-                  <span>{{ slide.secondaryLink.label }}</span>
-                  <span aria-hidden="true">↗</span>
-                </NuxtLink>
-              </div>
-            </div>
-          </div>
-
-          <div class="relative order-1 overflow-hidden lg:order-2 lg:col-span-3">
-            <picture class="block h-full w-full">
-              <source
-                media="(max-width: 1023px)"
-                :srcset="slide.image.mobile.src"
-              />
-              <img
-                data-hero-image
-                :src="slide.image.desktop.src"
-                :alt="slide.image.alt"
-                :loading="index === 0 ? 'eager' : 'lazy'"
-                :fetchpriority="index === 0 ? 'high' : 'auto'"
-                decoding="async"
-                class="hero-media h-full w-full object-cover"
-                :style="{
-                  '--hero-position-mobile': slide.image.mobile.position,
-                  '--hero-position-desktop': slide.image.desktop.position,
-                }"
-              />
-            </picture>
-            <div
-              aria-hidden="true"
-              class="absolute inset-y-0 left-0 hidden w-1/4 bg-gradient-to-r from-ink/45 to-transparent lg:block"
+          <span class="block h-px w-full bg-white/15">
+            <span
+              data-hero-progress
+              class="block h-full w-full origin-left scale-x-0 bg-brand"
             />
+          </span>
+
+          <div class="flex min-h-16 items-center gap-3 px-3 sm:gap-5 sm:px-4">
+            <div class="flex items-center gap-0.5" aria-label="Wybierz slajd">
+              <button
+                v-for="(_slide, index) in props.slides"
+                :key="`selector-${index}`"
+                type="button"
+                :aria-label="`Pokaż slajd ${index + 1}`"
+                :aria-current="activeIndex === index ? 'true' : undefined"
+                class="grid size-9 place-items-center rounded-full text-xs font-semibold tabular-nums transition-colors"
+                :class="
+                  activeIndex === index
+                    ? 'bg-white text-ink'
+                    : 'text-white/45 hover:bg-white/10 hover:text-white'
+                "
+                @click="goToSlide(index, index > activeIndex ? 1 : -1)"
+              >
+                {{ String(index + 1).padStart(2, '0') }}
+              </button>
+            </div>
+
+            <span class="h-7 w-px bg-white/15" aria-hidden="true" />
+
+            <div class="flex items-center gap-1">
+              <button
+                type="button"
+                aria-label="Poprzedni slajd"
+                class="grid size-10 place-items-center rounded-full text-sm text-white transition-colors hover:bg-white hover:text-ink"
+                @click="showPreviousSlide"
+              >
+                <span aria-hidden="true">←</span>
+              </button>
+              <button
+                type="button"
+                aria-label="Następny slajd"
+                class="grid size-10 place-items-center rounded-full bg-brand text-sm text-white transition-colors hover:bg-white hover:text-ink"
+                @click="showNextSlide"
+              >
+                <span aria-hidden="true">→</span>
+              </button>
+            </div>
           </div>
         </div>
-
-        <template v-else>
-          <div class="absolute inset-0">
-            <picture class="block h-full w-full">
-              <source
-                media="(max-width: 1023px)"
-                :srcset="slide.image.mobile.src"
-              />
-              <img
-                data-hero-image
-                :src="slide.image.desktop.src"
-                :alt="slide.image.alt"
-                :loading="index === 0 ? 'eager' : 'lazy'"
-                :fetchpriority="index === 0 ? 'high' : 'auto'"
-                decoding="async"
-                class="hero-media h-full w-full object-cover"
-                :style="{
-                  '--hero-position-mobile': slide.image.mobile.position,
-                  '--hero-position-desktop': slide.image.desktop.position,
-                }"
-              />
-            </picture>
-          </div>
-          <div
-            aria-hidden="true"
-            class="hero-image-shade absolute inset-0"
-          />
-
-          <div
-            class="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-[96rem] items-end px-6 pt-32 pb-36 sm:px-8 sm:pb-40 lg:items-center lg:px-10 lg:pt-28 lg:pb-32"
-          >
-            <div class="max-w-3xl">
-              <h1
-                data-hero-reveal
-                class="max-w-[13ch] font-heading text-[clamp(2.25rem,4.7vw,4.75rem)] font-black leading-[0.9] tracking-[-0.06em] text-white"
-              >
-                {{ slide.title }}
-              </h1>
-
-              <p
-                data-hero-reveal
-                class="mt-6 max-w-2xl text-base leading-7 text-white/80 sm:text-lg sm:leading-8"
-              >
-                {{ slide.lead }}
-              </p>
-
-              <div
-                data-hero-reveal
-                class="mt-8 flex flex-wrap items-center gap-4"
-              >
-                <NuxtLink
-                  :to="slide.primaryLink.href"
-                  class="inline-flex min-h-12 items-center gap-8 bg-brand px-5 font-mono text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-white hover:text-ink"
-                >
-                  <span>{{ slide.primaryLink.label }}</span>
-                  <span aria-hidden="true">→</span>
-                </NuxtLink>
-
-                <NuxtLink
-                  :to="slide.secondaryLink.href"
-                  class="inline-flex min-h-12 items-center gap-8 bg-brand px-5 font-mono text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-white hover:text-ink"
-                >
-                  <span>{{ slide.secondaryLink.label }}</span>
-                  <span aria-hidden="true">↗</span>
-                </NuxtLink>
-              </div>
-            </div>
-          </div>
-
-          <div
-            v-if="slide.caption.label || slide.caption.text"
-            class="absolute right-6 bottom-24 z-10 hidden font-mono text-[0.64rem] uppercase tracking-widest text-white/55 sm:block lg:right-10"
-          >
-            <template v-if="slide.caption.label">
-              {{ slide.caption.label }} /
-            </template>
-            <span class="font-bold text-white/85">{{ slide.caption.text }}</span>
-          </div>
-        </template>
-      </article>
-    </div>
-
-    <div
-      v-if="props.slides.length > 1"
-      class="absolute right-6 bottom-6 z-20 flex items-center gap-2 lg:right-10 lg:bottom-10"
-    >
-      <button
-        type="button"
-        aria-label="Poprzedni slajd"
-        class="grid size-12 place-items-center border border-white/25 bg-ink/80 text-xl text-white transition-colors hover:border-white hover:bg-white hover:text-ink"
-        @click="showPreviousSlide"
-      >
-        <span aria-hidden="true">←</span>
-      </button>
-      <button
-        type="button"
-        aria-label="Następny slajd"
-        class="grid size-12 place-items-center border border-white/25 bg-ink/80 text-xl text-white transition-colors hover:border-white hover:bg-white hover:text-ink"
-        @click="showNextSlide"
-      >
-        <span aria-hidden="true">→</span>
-      </button>
+      </div>
     </div>
 
     <p class="sr-only" aria-live="polite">
@@ -530,31 +613,6 @@ onUnmounted(() => {
 @media (min-width: 64rem) {
   .hero-media {
     object-position: var(--hero-position-desktop, center);
-  }
-}
-
-.hero-image-shade {
-  background:
-    linear-gradient(
-      90deg,
-      rgb(18 11 56 / 0.92) 0%,
-      rgb(18 11 56 / 0.74) 36%,
-      rgb(18 11 56 / 0.24) 72%,
-      rgb(18 11 56 / 0.14) 100%
-    ),
-    linear-gradient(0deg, rgb(18 11 56 / 0.62) 0%, transparent 48%);
-}
-
-@media (max-width: 63.999rem) {
-  .hero-image-shade {
-    background:
-      linear-gradient(
-        0deg,
-        rgb(18 11 56 / 0.93) 0%,
-        rgb(18 11 56 / 0.58) 58%,
-        rgb(18 11 56 / 0.18) 100%
-      ),
-      linear-gradient(90deg, rgb(18 11 56 / 0.4), transparent 72%);
   }
 }
 </style>

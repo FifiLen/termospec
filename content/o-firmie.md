@@ -75,20 +75,6 @@ Wentylacja. Produkcja i serwis wentylatorów oraz tam wentylacyjnych dla kopalń
 
 Energia odnawialna. Projektowanie, montaż, serwis oraz obsługa systemów opartych na odnawialnych źródłach energii. Punkty: dobór rozwiązań OZE, montaż instalacji, obsługa techniczna, serwis i utrzymanie.
 
-## Sposób pracy
-
-Od rozpoznania warunków po obsługę instalacji.
-
-Projekty techniczne wymagają ciągłości: od analizy i doboru urządzeń, przez wdrożenie, aż po późniejszy serwis i modernizacje.
-
-Rozpoznanie warunków. Analiza środowiska pracy, ograniczeń technicznych i wymagań instalacji.
-
-Projekt techniczny. Dobór urządzeń, parametrów i rozwiązań wykonawczych pod konkretny obiekt.
-
-Produkcja i wdrożenie. Dostarczenie rozwiązań oraz wsparcie przy uruchomieniu instalacji.
-
-Serwis i utrzymanie. Przeglądy, naprawy, modernizacje i bieżąca obsługa eksploatacyjna.
-
 Obrazy opisowe na stronie o firmie obejmują: budynek Termospec oraz zdjęcia zespołu z rekordów YAML.
 
 ## Zespół

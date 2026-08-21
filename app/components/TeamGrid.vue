@@ -9,76 +9,61 @@ defineProps<{
   members: TeamMember[];
 }>();
 
-const getInitials = (name: string) => {
-  return name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part.charAt(0))
-    .join("")
-    .toUpperCase();
-};
+const getInitials = (name: string) => name
+  .split(/\s+/)
+  .filter(Boolean)
+  .slice(0, 2)
+  .map((part) => part.charAt(0))
+  .join("")
+  .toUpperCase();
 </script>
 
 <template>
-  <section
-    class="w-full border-b border-white/10 bg-ink px-6 py-24 text-white lg:px-10"
-    aria-labelledby="team-heading"
-  >
-    <div class="mx-auto max-w-[96rem]">
-      <div class="mb-10 grid w-full place-items-center text-center md:mb-12">
-        <h2 id="team-heading" class="font-heading text-4xl font-black leading-none text-white">
-        Poznaj nasz zespół
+  <section class="bg-surface px-5 py-20 font-sans text-ink sm:px-8 lg:px-12 lg:py-28" aria-labelledby="team-heading">
+    <div class="mx-auto max-w-[92rem]">
+      <p class="flex items-center gap-3 text-xs font-medium text-ink/52">
+        <span class="size-1.5 rounded-full bg-brand" aria-hidden="true" />
+        Zespół
+      </p>
+
+      <div class="mt-7 grid items-end gap-8 lg:grid-cols-2 lg:gap-16">
+        <h2 id="team-heading" class="max-w-[13ch] font-sans text-[clamp(2.75rem,4.7vw,4.8rem)] font-medium leading-[1.02] tracking-[-0.05em] text-ink">
+          Wiedza, która pracuje w terenie.
         </h2>
+        <p class="max-w-[38rem] pb-1 text-base leading-7 text-ink/54 md:text-lg md:leading-8">
+          Zespół projektowy, produkcyjny i serwisowy odpowiedzialny za ciągłość realizacji — od pierwszych założeń po pracę instalacji.
+        </p>
       </div>
 
-      <div
-        v-if="members.length > 0"
-        class="flex flex-wrap justify-center gap-px"
-      >
-        <article
-          v-for="member in members"
-          :key="member.name"
-          class="group relative isolate aspect-[4/5] min-h-64 w-full overflow-hidden bg-ink sm:w-[calc((100%-1px)/2)] md:w-[calc((100%-2px)/3)] lg:w-[calc((100%-4px)/5)] xl:w-[calc((100%-5px)/6)]"
-          :aria-label="`${member.name}, ${member.role}`"
-        >
-          <img
-            v-if="member.photo"
-            :src="member.photo"
-            :alt="member.name"
-            width="900"
-            height="1125"
-            loading="lazy"
-            decoding="async"
-            class="absolute inset-0 h-full w-full object-cover grayscale transition duration-500 group-hover:scale-[1.03] group-hover:grayscale-0"
-          />
-
-          <div
-            v-else
-            class="absolute inset-0 grid place-items-center bg-ink text-5xl font-black text-white"
-            aria-hidden="true"
-          >
-            {{ getInitials(member.name) }}
+      <div v-if="members.length" class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:mt-16">
+        <article v-for="member in members" :key="member.name" class="group">
+          <div class="relative aspect-[4/5] overflow-hidden rounded-[1.75rem] bg-[#ebe6dd]">
+            <img
+              v-if="member.photo"
+              :src="member.photo"
+              :alt="member.name"
+              width="800"
+              height="1000"
+              loading="lazy"
+              decoding="async"
+              class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
+            >
+            <div v-else class="grid h-full place-items-center text-4xl font-medium text-ink/32" aria-hidden="true">
+              {{ getInitials(member.name) }}
+            </div>
           </div>
-
-          <div
-            class="absolute inset-0 bg-ink/12 transition duration-500 group-hover:bg-ink/0"
-            aria-hidden="true"
-          />
-          <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink via-ink/76 to-transparent p-4 pt-20 md:p-5 md:pt-24">
-            <h3 class="max-w-64 break-words text-xl font-black leading-tight text-white">
-              {{ member.name }}
-            </h3>
-            <p class="mt-1.5 max-w-64 text-xs font-bold leading-5 text-white/76">
-              {{ member.role }}
-            </p>
-          </div>
+          <h3 class="mt-5 font-sans text-lg font-semibold leading-tight tracking-[-0.02em] text-ink">
+            {{ member.name }}
+          </h3>
+          <p class="mt-2 text-sm text-ink/40">
+            {{ member.role }}
+          </p>
         </article>
       </div>
 
-      <div v-else class="bg-white p-10 text-xl font-black text-ink">
-        Brak osób w zespole.
-      </div>
+      <p v-else class="mt-14 text-base text-ink/48">
+        Dane zespołu są w trakcie uzupełniania.
+      </p>
     </div>
   </section>
 </template>

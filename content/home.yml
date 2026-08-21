@@ -1,15 +1,17 @@
 hero:
   slides:
-    - title: Od projektu do utrzymania instalacji.
+    - title: |-
+        Od projektu do
+        utrzymania instalacji.
       lead: Łączymy zaplecze projektowe, produkcję urządzeń, uruchomienia oraz obsługę serwisową rozwiązań przemysłowych.
       presentation: nakladka
       image:
         alt: Siedziba i zakład produkcyjny Termospec
         desktop:
-          src: /images/hero/crops/siedziba-termospec-desktop.jpg
+          src: /budynek-termospec.png
           position: center center
         mobile:
-          src: /images/hero/crops/siedziba-termospec-mobile.jpg
+          src: /budynek-termospec.png
           position: center center
       caption:
         label: Termospec
@@ -20,7 +22,9 @@ hero:
       secondaryLink:
         label: poznaj firmę
         href: /o-firmie
-    - title: Systemy dla górnictwa i przemysłu.
+    - title: |-
+        Systemy dla górnictwa
+        i przemysłu.
       lead: Projektujemy i produkujemy rozwiązania techniczne przeznaczone do pracy w wymagających warunkach podziemnych.
       presentation: nakladka
       image:
@@ -40,7 +44,9 @@ hero:
       secondaryLink:
         label: zobacz realizacje
         href: "#realizacje"
-    - title: Kontrola warunków pracy pod ziemią.
+    - title: |-
+        Kontrola warunków
+        pracy pod ziemią.
       lead: Projektujemy i obsługujemy układy klimatyzacji centralnej kopalń oraz systemy redukcji ciśnienia wody.
       presentation: nakladka
       image:
@@ -62,11 +68,11 @@ hero:
         href: /#kontakt
     - title: Profesjonalna obróbka stali.
       lead: Realizujemy obróbkę skrawaniem oraz wycinanie i wykrawanie laserowe z wykorzystaniem nowoczesnego parku maszynowego.
-      presentation: podzial
+      presentation: pelny-kadr
       image:
         alt: Park maszynowy Termospec do obróbki stali
         desktop:
-          src: /images/hero/crops/obrobka-stali-desktop.jpg
+          src: /images/hero/crops/obrobka-stali-final-desktop.png
           position: center center
         mobile:
           src: /images/hero/crops/obrobka-stali-mobile.jpg

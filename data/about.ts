@@ -69,9 +69,14 @@ export const aboutMetrics: AboutMetric[] = [
 ];
 
 export const aboutProfile = {
-  title: "Kompleksowe rozwiązania i obsługa instalacji",
+  title:
+    "Kompleksowa realizacja i obsługa instalacji klimatyzacyjnych oraz wentylacyjnych o dużych mocach.",
+  lead:
+    "Termospec Sp. z o.o. to jeden z największych producentów urządzeń chłodniczych w Polsce o uznanej renomie z blisko trzydziestoletnim doświadczeniem w branży.",
   intro:
-    "Termospec Sp. z o.o. to jeden z największych producentów urządzeń chłodniczych w Polsce o uznanej renomie z blisko trzydziestoletnim doświadczeniem w branży. To, z czego słynie nasza firma, to kompleksowa realizacja i obsługa instalacji klimatyzacyjnych oraz wentylacyjnych o dużych mocach oraz portfolio dopasowane do potrzeb klientów z sektora przemysłowego, produkcyjnego, magazynowego i komercyjnego. Poza działalnością stricte produkcyjną oferujemy szeroki zakres usług – od projektowania i modernizacji instalacji, poprzez montaż i uruchomienie urządzeń, aż po ich regularny serwis, konserwację oraz remonty.",
+    "To, z czego słynie nasza Firma to kompleksowa realizacja i obsługa instalacji klimatyzacyjnych oraz wentylacyjnych o dużych mocach oraz portfolio dopasowane do potrzeb klientów z sektora przemysłowego, produkcyjnego, magazynowego i komercyjnego.",
+  servicesIntro:
+    "Poza działalnością stricte produkcyjną, oferujemy szeroki zakres usług – od projektowania i modernizacji instalacji, poprzez montaż i uruchomienie urządzeń, aż po ich regularny serwis, konserwację oraz remonty. Specjalizujemy się w szczególności w:",
   specialties: [
     "projektowanie przemysłowych systemów klimatyzacji i wentylacji dużych mocy dla przemysłu i górnictwa",
     "montaż i modernizacja istniejących instalacji chłodniczych",

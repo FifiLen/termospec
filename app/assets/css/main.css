@@ -8,13 +8,15 @@
     "DM Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
   --font-heading:
-    "Manrope", "DM Sans", ui-sans-serif, system-ui, -apple-system,
-    BlinkMacSystemFont, "Segoe UI", sans-serif;
+    "DM Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
   --color-brand: #9a0b2e;
+  --color-signal: #f9cd34;
   --color-ink: #120b38;
   --color-white: #ffffff;
   --color-surface: #f7f4f1;
   --color-surface-raised: #ffffff;
+  --color-panel-soft: #eee9eb;
   --color-muted: #6d6675;
   --color-line: #e6dde2;
   --radius-brand: 8px;
@@ -26,10 +28,12 @@
   :root {
     color-scheme: light;
     --brand: #9a0b2e;
+    --signal: #f9cd34;
     --ink: #120b38;
     --white: #ffffff;
     --surface: #f7f4f1;
     --surface-raised: #ffffff;
+    --panel-soft: #eee9eb;
     --muted: #6d6675;
     --line: #e6dde2;
     --line-strong: #d7c9d0;

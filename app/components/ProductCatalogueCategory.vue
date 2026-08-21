@@ -51,17 +51,24 @@ const detailedCategoryEntries = computed(() => {
 const hasFocusStage = computed(() => {
   return Boolean(activeGroup.value || focusRender.value);
 });
+
+const focusLabel = computed(() => {
+  return activeGroup.value?.label ?? props.category.label;
+});
 </script>
 
 <template>
   <article
     :id="props.category.slug"
-    class="@container scroll-mt-16 bg-white"
+    class="@container scroll-mt-28 bg-white"
   >
-    <header class="grid min-h-24 bg-ink text-white">
-      <div class="flex min-w-0 items-center px-6 py-5 md:px-8 lg:px-10">
+    <header class="border-b border-line px-6 py-8 md:px-8 lg:px-10 lg:py-10">
+      <div class="min-w-0">
+        <p class="text-xs font-bold uppercase tracking-[0.16em] text-brand">
+          Kategoria produktów
+        </p>
         <h2
-          class="whitespace-nowrap font-heading text-[clamp(1.25rem,3cqw,2rem)] font-black uppercase leading-tight tracking-tight text-white"
+          class="mt-3 max-w-[26ch] text-[clamp(1.9rem,4cqw,3.75rem)] font-medium leading-[0.98] tracking-[-0.05em] text-ink"
         >
           {{ props.category.label }}
         </h2>
@@ -70,24 +77,26 @@ const hasFocusStage = computed(() => {
 
     <section
       v-if="hasFocusStage"
-      class="relative grid min-h-[22rem] overflow-hidden border-b border-line bg-white"
-      :class="activeGroup && focusRender ? 'lg:grid-cols-[minmax(22rem,1fr)_minmax(28rem,0.9fr)]' : ''"
-      :aria-label="activeGroup?.label || props.category.label"
+      class="relative grid overflow-hidden border-b border-line bg-surface"
+      :class="focusRender ? 'lg:grid-cols-[minmax(20rem,0.85fr)_minmax(26rem,1.15fr)]' : ''"
+      :aria-label="focusLabel"
     >
       <div
-        v-if="activeGroup"
-        class="flex min-h-[18rem] items-center px-6 py-10 md:px-8 lg:min-h-[22rem] lg:px-10"
+        class="flex min-h-[16rem] flex-col justify-between px-6 py-8 md:px-8 lg:min-h-[24rem] lg:px-10 lg:py-10"
       >
+        <p class="text-xs font-bold uppercase tracking-[0.16em] text-ink/44">
+          {{ activeGroup ? "Rodzina urządzeń" : "Grupa urządzeń" }}
+        </p>
         <h3
-          class="max-w-[26ch] font-heading text-[clamp(1.45rem,2.7cqw,2.25rem)] font-black uppercase leading-[1.08] tracking-tight text-ink"
+          class="mt-10 max-w-[20ch] text-[clamp(1.65rem,3.1cqw,3rem)] font-medium leading-[1.02] tracking-[-0.045em] text-ink"
         >
-          {{ activeGroup.label }}
+          {{ focusLabel }}
         </h3>
       </div>
 
       <figure
         v-if="focusRender"
-        class="grid min-h-[22rem] place-items-center bg-white px-6 py-7 md:px-8 lg:px-10"
+        class="grid min-h-[19rem] place-items-center bg-white px-6 py-8 md:px-8 lg:min-h-[24rem] lg:px-10"
       >
         <NuxtImg
           :src="focusRender.src"
@@ -97,7 +106,7 @@ const hasFocusStage = computed(() => {
           sizes="100vw lg:52vw"
           loading="eager"
           decoding="async"
-          class="h-[18rem] w-full object-contain mix-blend-multiply md:h-[20rem] lg:h-[22rem]"
+          class="h-[17rem] w-full object-contain mix-blend-multiply md:h-[20rem] lg:h-[22rem]"
         />
       </figure>
     </section>

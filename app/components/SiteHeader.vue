@@ -28,6 +28,9 @@ const mobileBar = ref<MobileBarHandle | null>(null);
 const mobileMenu = ref<MobileMenuHandle | null>(null);
 const isScrolled = ref(false);
 const isMobileMenuOpen = ref(false);
+const isHeroOverlay = computed(() => {
+  return route.path === "/" && !isScrolled.value && !isMobileMenuOpen.value;
+});
 
 let previousDocumentOverflow = "";
 let desktopBreakpoint: MediaQueryList | null = null;
@@ -120,20 +123,21 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <header class="pointer-events-none fixed inset-x-0 top-0 z-50 text-ink">
-    <div
-      class="pointer-events-auto w-full border-b border-line bg-white/95 backdrop-blur-md transition-colors duration-200"
-      :class="isScrolled ? 'bg-white' : undefined"
-    >
+  <header
+    class="pointer-events-none fixed inset-x-0 top-0 z-50 px-4 pt-4 text-ink sm:px-6 lg:px-8"
+  >
+    <div class="pointer-events-auto mx-auto w-full max-w-[96rem]">
       <SiteHeaderMobileBar
         ref="mobileBar"
         :is-open="isMobileMenuOpen"
+        :overlay="isHeroOverlay"
         @navigate="closeMobileMenu()"
         @toggle="toggleMobileMenu"
       />
       <SiteHeaderDesktop
         :product-categories="productCategories"
         :services="services"
+        :overlay="isHeroOverlay"
       />
     </div>
 

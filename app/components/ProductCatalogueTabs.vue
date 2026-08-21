@@ -83,16 +83,19 @@ const selectAdjacent = async (
 </script>
 
 <template>
-  <div v-if="props.entries.length" class="relative border-t border-line bg-white">
+  <div v-if="props.entries.length" class="relative bg-white">
     <div
       v-if="selectableEntries.length"
-      class="sticky top-16 z-30 border-b border-line bg-white/95 backdrop-blur-sm"
+      class="border-b border-line px-6 py-7 md:px-8 lg:px-10 lg:py-8"
     >
+      <p class="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-ink/44">
+        Dostępne modele
+      </p>
       <div class="overflow-x-auto">
         <div
           role="tablist"
           :aria-label="props.label"
-          class="flex w-max min-w-full"
+          class="flex w-max min-w-full gap-2"
         >
           <button
             v-for="(entry, index) in selectableEntries"
@@ -103,11 +106,11 @@ const selectAdjacent = async (
             :aria-selected="activeIndex === index"
             :aria-controls="entry.details ? panelId(entry) : undefined"
             :tabindex="activeIndex === index ? 0 : -1"
-            class="min-w-28 flex-1 shrink-0 px-5 py-4 font-mono text-base font-bold transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-3px]"
+            class="min-w-24 shrink-0 rounded-full px-5 py-3 text-sm font-semibold transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
             :class="
               activeIndex === index
                 ? 'bg-brand text-white focus-visible:outline-white'
-                : 'text-ink hover:bg-white hover:text-brand focus-visible:outline-brand'
+                : 'bg-surface text-ink/62 hover:bg-ink hover:text-white focus-visible:outline-brand'
             "
             @click="selectEntry(index, true)"
             @keydown.left.prevent="selectAdjacent($event, index, -1)"
@@ -128,7 +131,7 @@ const selectAdjacent = async (
 
     <ul
       v-if="descriptiveEntries.length"
-      class="grid gap-3 border-t border-line px-6 py-4 md:px-8 lg:px-10"
+      class="grid gap-3 border-b border-line bg-surface px-6 py-5 md:px-8 lg:px-10"
     >
       <li
         v-for="entry in descriptiveEntries"
@@ -157,6 +160,7 @@ const selectAdjacent = async (
       <ProductCatalogueDetail
         :product="activeEntry.details"
         :is-draft="activeEntry.isDraft"
+        hide-media
       />
     </div>
   </div>

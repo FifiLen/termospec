@@ -308,32 +308,32 @@ useSeoMeta({
 </script>
 
 <template>
-  <main class="min-h-[100svh] bg-line pt-16 text-ink">
+  <main class="min-h-[100svh] bg-surface px-5 pb-20 pt-32 text-ink sm:px-8 lg:px-12 lg:pb-28 lg:pt-36">
     <h1 class="sr-only">Katalog produktów</h1>
 
     <section
-      class="grid min-h-[calc(100svh-4rem)] gap-px bg-line sm:grid-cols-[20rem_minmax(0,1fr)] sm:items-start"
+      class="mx-auto grid w-full max-w-[92rem] items-start gap-5 lg:grid-cols-[18rem_minmax(0,1fr)]"
       aria-label="Katalog produktów"
     >
       <aside
-        class="bg-white sm:sticky sm:top-16 sm:h-[calc(100svh-4rem)] sm:overflow-y-auto"
+        class="overflow-hidden rounded-[1.75rem] bg-brand text-white lg:sticky lg:top-28 lg:max-h-[calc(100svh-8rem)] lg:overflow-y-auto"
         aria-label="Indeks katalogu produktów"
       >
-        <div class="sticky top-0 z-20 border-b border-line bg-white px-4 py-4">
+        <div class="sticky top-0 z-20 border-b border-white/15 bg-brand px-5 py-5">
           <label for="product-search" class="sr-only">
             Szukaj w katalogu produktów
           </label>
           <div class="relative">
             <UIcon
               name="i-lucide-search"
-              class="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-brand"
+              class="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-white/70"
               aria-hidden="true"
             />
             <input
               id="product-search"
               v-model="searchQuery"
               type="search"
-              class="h-12 w-full border border-line bg-white pl-10 pr-3 text-base font-bold text-ink outline-none transition placeholder:text-ink/42 focus:border-brand"
+              class="h-12 w-full rounded-xl border border-white/20 bg-white/10 pl-10 pr-3 text-sm font-medium text-white outline-none transition placeholder:text-white/52 focus:border-white/55 focus:bg-white/15"
               placeholder="Szukaj typu lub kategorii"
               autocomplete="off"
             />
@@ -344,7 +344,7 @@ useSeoMeta({
           <div
             v-for="category in filteredCategories"
             :key="category.slug"
-            class="border-b border-line"
+            class="border-b border-white/15 last:border-b-0"
           >
             <UCollapsible
               :open="expandedCategorySlug === category.slug"
@@ -358,11 +358,11 @@ useSeoMeta({
               <template #default="{ open }">
                 <button
                   type="button"
-                  class="group grid w-full grid-cols-[minmax(0,1fr)_1rem] items-center gap-2 px-4 py-4 text-left transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand"
+                  class="group grid w-full grid-cols-[minmax(0,1fr)_1rem] items-center gap-2 px-5 py-4 text-left transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white"
                   :class="
                     activeCategorySlug === category.slug || open
-                      ? 'text-brand'
-                      : 'text-ink/62 hover:text-brand'
+                      ? 'bg-white/15 text-white'
+                      : 'text-white/72 hover:bg-white/10 hover:text-white'
                   "
                   :aria-current="activeCategorySlug === category.slug ? 'location' : undefined"
                 >
@@ -379,7 +379,7 @@ useSeoMeta({
               </template>
 
               <template #content>
-                <div class="border-t border-line bg-soft py-1.5">
+                <div class="border-t border-white/15 bg-black/10 py-1.5">
                   <div v-if="category.groups.length">
                     <UCollapsible
                       v-for="group in category.groups"
@@ -395,8 +395,8 @@ useSeoMeta({
                       <template #default="{ open }">
                         <button
                           type="button"
-                          class="grid w-full grid-cols-[minmax(0,1fr)_1rem] items-center gap-2 py-3 pe-4 ps-7 text-left text-[0.78rem] font-extrabold leading-5 transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand"
-                          :class="activeGroupSlug === group.slug ? 'text-brand' : 'text-ink/68 hover:text-brand'"
+                          class="grid w-full grid-cols-[minmax(0,1fr)_1rem] items-center gap-2 py-3 pe-4 ps-7 text-left text-[0.78rem] font-extrabold leading-5 transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white"
+                          :class="activeGroupSlug === group.slug ? 'bg-white/12 text-white' : 'text-white/68 hover:bg-white/8 hover:text-white'"
                         >
                           <span>{{ group.label }}</span>
                           <UIcon
@@ -410,7 +410,7 @@ useSeoMeta({
 
                       <template #content>
                         <ul
-                          class="border-y border-line/70 bg-white py-1.5"
+                          class="border-y border-white/10 bg-black/10 py-1.5"
                           :aria-label="`Typy w podkategorii ${group.label}`"
                         >
                           <li
@@ -419,8 +419,8 @@ useSeoMeta({
                           >
                             <button
                               type="button"
-                              class="w-full py-2 pe-4 ps-10 text-left font-mono text-xs font-bold leading-4 transition-colors duration-200 hover:text-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand"
-                              :class="activeEntryId === entry.id ? 'text-brand' : 'text-ink/58'"
+                              class="w-full py-2 pe-4 ps-10 text-left font-mono text-xs font-bold leading-4 transition-colors duration-200 hover:bg-white/8 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white"
+                              :class="activeEntryId === entry.id ? 'bg-white/14 text-white' : 'text-white/58'"
                               @click="activateEntry(category.slug, group.slug, entry.id)"
                             >
                               {{ entry.label }}
@@ -441,8 +441,8 @@ useSeoMeta({
                     >
                       <button
                         type="button"
-                        class="w-full py-2.5 pe-4 ps-7 text-left font-mono text-xs font-bold leading-4 transition-colors duration-200 hover:text-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand"
-                        :class="activeEntryId === entry.id ? 'text-brand' : 'text-ink/60'"
+                        class="w-full py-2.5 pe-4 ps-7 text-left font-mono text-xs font-bold leading-4 transition-colors duration-200 hover:bg-white/8 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white"
+                        :class="activeEntryId === entry.id ? 'bg-white/14 text-white' : 'text-white/60'"
                         @click="activateEntry(category.slug, '', entry.id)"
                       >
                         {{ entry.label }}
@@ -456,7 +456,7 @@ useSeoMeta({
         </nav>
       </aside>
 
-      <div class="min-w-0 bg-white">
+      <div class="min-w-0 overflow-clip rounded-[1.75rem] bg-white">
         <ProductCatalogueCategory
           v-if="activeCategory"
           :key="`${activeCategory.slug}-${activeGroup?.slug || 'category'}`"

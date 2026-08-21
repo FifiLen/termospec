@@ -1,7 +1,6 @@
 export type HomePartner = {
-  name: string;
-  mark: string;
-  sector: string;
+  id: string;
+  label: string;
 };
 
 export type HomeScopeItem = {
@@ -9,6 +8,11 @@ export type HomeScopeItem = {
   title: string;
   lead: string;
   points: string[];
+  tone: "brand" | "light";
+  action: {
+    label: string;
+    href: string;
+  };
 };
 
 export type HomeScopeImage = {
@@ -22,10 +26,21 @@ export type HomeProcessStep = {
   body: string;
 };
 
-export type HomeRealizationPhoto = {
+export type HomeRealization = {
   src: string;
   alt: string;
+  industry: string;
+  title: string;
+  description: string;
+};
+
+export type HomeRealizationMetric = {
   label: string;
+  value: string;
+};
+
+export type HomeFeaturedRealization = HomeRealization & {
+  metrics: HomeRealizationMetric[];
 };
 
 export type HomeContactTopic = {
@@ -34,67 +49,26 @@ export type HomeContactTopic = {
 };
 
 export const homePartners: HomePartner[] = [
-  {
-    name: "Silesia Mining",
-    mark: "SM",
-    sector: "górnictwo",
-  },
-  {
-    name: "Nord Tunnel",
-    mark: "NT",
-    sector: "infrastruktura tunelowa",
-  },
-  {
-    name: "Ventra Systems",
-    mark: "VS",
-    sector: "wentylacja przemysłowa",
-  },
-  {
-    name: "Energolab",
-    mark: "EL",
-    sector: "energetyka",
-  },
-  {
-    name: "Industro Tech",
-    mark: "IT",
-    sector: "przemysł ciężki",
-  },
-  {
-    name: "Geo Cooling",
-    mark: "GC",
-    sector: "instalacje chłodnicze",
-  },
-  {
-    name: "Partner 07",
-    mark: "P7",
-    sector: "automatyka i sterowanie",
-  },
-  {
-    name: "Partner 08",
-    mark: "P8",
-    sector: "zaplecze projektowe",
-  },
-  {
-    name: "Partner 09",
-    mark: "P9",
-    sector: "serwis techniczny",
-  },
-  {
-    name: "Partner 10",
-    mark: "P10",
-    sector: "dostawy urządzeń",
-  },
-  {
-    name: "Partner 11",
-    mark: "P11",
-    sector: "infrastruktura przemysłowa",
-  },
-  {
-    name: "Partner 12",
-    mark: "P12",
-    sector: "wsparcie realizacji",
-  },
+  { id: "partner-01", label: "Miejsce na logo partnera 01" },
+  { id: "partner-02", label: "Miejsce na logo partnera 02" },
+  { id: "partner-03", label: "Miejsce na logo partnera 03" },
+  { id: "partner-04", label: "Miejsce na logo partnera 04" },
+  { id: "partner-05", label: "Miejsce na logo partnera 05" },
+  { id: "partner-06", label: "Miejsce na logo partnera 06" },
+  { id: "partner-07", label: "Miejsce na logo partnera 07" },
+  { id: "partner-08", label: "Miejsce na logo partnera 08" },
+  { id: "partner-09", label: "Miejsce na logo partnera 09" },
+  { id: "partner-10", label: "Miejsce na logo partnera 10" },
 ];
+
+export const homePartnerIndustries = [
+  "Górnictwo",
+  "Energetyka",
+  "Przemysł spożywczy",
+  "Logistyka i magazyny",
+  "Obiekty komercyjne",
+  "Tunele",
+] as const;
 
 export const homeScopeItems: HomeScopeItem[] = [
   {
@@ -107,6 +81,11 @@ export const homeScopeItems: HomeScopeItem[] = [
       "dobór parametrów pracy",
       "serwis i modernizacja instalacji",
     ],
+    tone: "brand",
+    action: {
+      label: "Zobacz produkty",
+      href: "/produkty",
+    },
   },
   {
     number: "02",
@@ -118,6 +97,11 @@ export const homeScopeItems: HomeScopeItem[] = [
       "obsługa eksploatacyjna",
       "utrzymanie przepływu powietrza",
     ],
+    tone: "light",
+    action: {
+      label: "Zobacz produkty",
+      href: "/produkty",
+    },
   },
   {
     number: "03",
@@ -129,12 +113,17 @@ export const homeScopeItems: HomeScopeItem[] = [
       "obsługa techniczna",
       "serwis i utrzymanie",
     ],
+    tone: "light",
+    action: {
+      label: "Zobacz usługi",
+      href: "/uslugi",
+    },
   },
 ];
 
 export const homeScopeImage: HomeScopeImage = {
-  src: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=1800&q=82",
-  alt: "Przemysłowa instalacja techniczna w hali produkcyjnej",
+  src: "/budynek-termospec.png",
+  alt: "Siedziba i zakład produkcyjny Termospec w Żorach",
 };
 
 export const homeProcessSteps: HomeProcessStep[] = [
@@ -160,56 +149,45 @@ export const homeProcessSteps: HomeProcessStep[] = [
   },
 ];
 
-export const homeRealizationPhotos: HomeRealizationPhoto[] = [
+export const homeFeaturedRealization: HomeFeaturedRealization = {
+  src: "/images/realizations/uklad-chlodzenia-wyrobisko-podziemne.png",
+  alt: "Centralna instalacja chłodnicza w wyrobisku podziemnym",
+  industry: "Górnictwo · projekt pod klucz",
+  title: "Centralna klimatyzacja wyrobisk podziemnych",
+  description:
+    "Projekt, produkcja i montaż stacji chłodniczej wraz z instalacją rozprowadzającą oraz uruchomieniem i stałym nadzorem serwisowym.",
+  metrics: [
+    { label: "Moc chłodnicza", value: "2 × 1,2 MW" },
+    { label: "Czynnik", value: "wodno-glikolowy" },
+    { label: "Zakres", value: "projekt → serwis" },
+    { label: "Rok", value: "2024" },
+  ],
+};
+
+export const homeRealizations: HomeRealization[] = [
   {
-    src: "/images/products/chlodziarka-bezposredniego-dzialania-wyrobisko-ujecie-01.png",
-    alt: "Realizacja produktu Termospec w wyrobisku podziemnym",
-    label: "Chłodziarka bezpośredniego działania",
+    src: "/images/realizations/uklad-chlodzenia-hala-produkcyjna.png",
+    alt: "Instalacja chłodnicza w hali produkcyjnej",
+    industry: "Przemysł spożywczy",
+    title: "Modernizacja instalacji chłodniczej zakładu",
+    description:
+      "Wymiana agregatów i układu automatyki bez przerwania produkcji.",
   },
   {
-    src: "/images/products/chlodziarka-bezposredniego-dzialania-wyrobisko-ujecie-02.png",
-    alt: "Zabudowa urządzenia chłodniczego Termospec w środowisku podziemnym",
-    label: "Układ chłodzenia w wyrobisku",
-  },
-  {
-    src: "/images/products/chlodziarka-posredniego-dzialania-wyrobisko-ujecie-01.png",
-    alt: "Realizacja chłodziarki pośredniego działania Termospec",
-    label: "Chłodziarka pośredniego działania",
-  },
-  {
-    src: "/images/products/chlodziarka-posredniego-dzialania-wyrobisko-ujecie-02.png",
-    alt: "Instalacja chłodnicza Termospec z osprzętem w wyrobisku",
-    label: "Instalacja z osprzętem",
-  },
-  {
-    src: "/images/products/chlodziarka-posredniego-dzialania-1-3mw-wyrobisko-ujecie-01.png",
-    alt: "Realizacja agregatu chłodniczego Termospec w zakresie 1-3 MW",
-    label: "Układ 1-3 MW",
-  },
-  {
-    src: "/images/products/chlodnica-powietrza-cpn-wyrobisko-ujecie-01.png",
-    alt: "Chłodnica powietrza CP(N) Termospec w realizacji podziemnej",
-    label: "Chłodnica powietrza CP(N)",
-  },
-  {
-    src: "/images/products/chlodnica-powietrza-cpn-wyrobisko-ujecie-02.png",
-    alt: "Zabudowana chłodnica powietrza Termospec w miejscu pracy",
-    label: "Zabudowa chłodnicy powietrza",
-  },
-  {
-    src: "/images/products/chlodnica-wyparna-cww-wyrobisko-ujecie-01.png",
-    alt: "Chłodnica wyparna CWW Termospec w realizacji przemysłowej",
-    label: "Chłodnica wyparna CWW",
-  },
-  {
-    src: "/images/realizations/uklad-chlodzenia-wyrobisko-podziemne.png",
-    alt: "Układ chłodzenia dla wyrobiska podziemnego",
-    label: "Wyrobisko podziemne",
+    src: "/images/realizations/instalacja-techniczna-rurociagi.png",
+    alt: "Instalacja wentylacyjna i techniczna obiektu liniowego",
+    industry: "Tunele",
+    title: "Wentylacja obiektu liniowego",
+    description:
+      "Dobór i montaż wentylatorów przemysłowych oraz tam wentylacyjnych.",
   },
   {
     src: "/images/realizations/uklad-chlodzenia-instalacja-przemyslowa.png",
-    alt: "Przemysłowa instalacja chłodnicza Termospec",
-    label: "Instalacja przemysłowa",
+    alt: "Układ chłodzenia hali magazynowej",
+    industry: "Logistyka",
+    title: "Chłodzenie hali magazynowej",
+    description:
+      "Agregat z typoszeregu TS wraz z instalacją i przeglądami okresowymi.",
   },
 ];
 

@@ -9,7 +9,7 @@ navigation:
 
 Systemy chłodzenia i wentylacji dla przemysłu, górnictwa oraz infrastruktury technicznej. Termospec projektuje, produkuje, serwisuje i utrzymuje systemy wykorzystywane w wymagających instalacjach przemysłowych.
 
-Strona główna zawiera aktualnie dynamiczną sekcję frontową, zakres działalności, partnerów i współpracę, wybrane realizacje oraz formularz kontaktowy pod adresem `/#kontakt`. Główna nawigacja ma kolejność: O firmie, Produkty, Usługi, Kontakt i Szukaj. Zakładka Aktualności została usunięta. Produkty otwierają techniczny indeks dziewięciu kategorii wraz z podkategoriami, modelami i typoszeregami przekazanymi przez klienta. Usługi otwierają pięć potwierdzonych kategorii i prowadzą do strony `/uslugi`. Na telefonach i tabletach te same pozycje są dostępne w pełnoekranowym menu, a wyszukiwarka jest jego ostatnią pozycją. Dofinansowania, języki PL/EN i zapytanie ofertowe pozostają w obszarze narzędziowym nagłówka.
+Strona główna zawiera aktualnie dynamiczną sekcję frontową, zakres działalności, partnerów i współpracę, wybrane realizacje oraz formularz kontaktowy pod adresem `/#kontakt`. Główna nawigacja ma kolejność: O firmie, Produkty, Usługi, Kontakt i Szukaj. Zakładka Aktualności została usunięta. Produkty otwierają techniczny indeks dziewięciu kategorii wraz z podkategoriami, modelami i typoszeregami przekazanymi przez klienta. Usługi otwierają pięć potwierdzonych kategorii i prowadzą do strony `/uslugi`. Na telefonach i tabletach te same pozycje są dostępne w pełnoekranowym menu, a wyszukiwarka jest jego ostatnią pozycją. Na desktopie obszar narzędziowy zawiera języki PL/EN oraz obowiązkowe logo dofinansowania z Unii Europejskiej prowadzące do `/dofinansowania`; mobilne menu zachowuje dodatkowo zapytanie ofertowe.
 
 ## Dynamiczna strona frontowa
 
@@ -18,6 +18,8 @@ Pierwszy ekran jest pełnoekranową karuzelą czterech zdjęć z projektu. W ust
 ## Zakres działalności {#zakres}
 
 Rozwiązania techniczne dla wymagających instalacji. Termospec łączy projektowanie, produkcję, serwis i utrzymanie systemów wykorzystywanych w przemyśle, górnictwie oraz infrastrukturze technicznej.
+
+Sekcja wykorzystuje panoramiczne zdjęcie siedziby i zakładu produkcyjnego Termospec. Karta Klimatyzacja jest wyróżniona czerwienią marki i prowadzi do katalogu produktów; karta Wentylacja również prowadzi do produktów, a Energia odnawialna do strony usług.
 
 ### Klimatyzacja
 
@@ -46,28 +48,33 @@ Projektowanie, montaż, serwis oraz obsługa systemów opartych na odnawialnych 
 - obsługa techniczna
 - serwis i utrzymanie
 
-## Partnerzy i współpraca
+## Partnerzy i klienci
 
-Zaplecze biznesowe i techniczne wokół projektów przemysłowych.
+Zaufali nam producenci, kopalnie i operatorzy infrastruktury. Część relacji trwa od pierwszych lat działalności firmy — od dostawy urządzeń po stały nadzór serwisowy.
 
-- Silesia Mining, SM, górnictwo
-- Nord Tunnel, NT, infrastruktura tunelowa
-- Ventra Systems, VS, wentylacja przemysłowa
-- Energolab, EL, energetyka
-- Industro Tech, IT, przemysł ciężki
-- Geo Cooling, GC, instalacje chłodnicze
-- Partner 07, P7, automatyka i sterowanie
-- Partner 08, P8, zaplecze projektowe
-- Partner 09, P9, serwis techniczny
-- Partner 10, P10, dostawy urządzeń
-- Partner 11, P11, infrastruktura przemysłowa
-- Partner 12, P12, wsparcie realizacji
+Branże partnerów i klientów: górnictwo, energetyka, przemysł spożywczy, logistyka i magazyny, obiekty komercyjne oraz tunele. Sekcja zachowuje dziesięć neutralnych miejsc na zweryfikowane logotypy; nie publikuje niepotwierdzonych nazw firm.
 
 ## Realizacje {#realizacje}
 
-Wybrane wdrożenia i obszary prac technicznych. Sekcja zawiera przyciski poprzednie realizacje, następne realizacje oraz zobacz produkty. Zamiast tekstowych kart pokazuje poziomą karuzelę zdjęć realizacji produktów i instalacji.
+Instalacje, które pracują tam, gdzie warunki są najtrudniejsze. Wybrane projekty z ostatnich lat — od chłodzenia wyrobisk podziemnych po instalacje procesowe w zakładach produkcyjnych.
 
-Zdjęcia w karuzeli: chłodziarka bezpośredniego działania, układ chłodzenia w wyrobisku, chłodziarka pośredniego działania, instalacja z osprzętem, układ 1-3 MW, chłodnica powietrza CP(N), zabudowa chłodnicy powietrza, chłodnica wyparna CWW, wyrobisko podziemne, instalacja przemysłowa.
+### Centralna klimatyzacja wyrobisk podziemnych
+
+Górnictwo, projekt pod klucz. Projekt, produkcja i montaż stacji chłodniczej wraz z instalacją rozprowadzającą oraz uruchomieniem i stałym nadzorem serwisowym. Moc chłodnicza: 2 × 1,2 MW. Czynnik: wodno-glikolowy. Zakres: projekt → serwis. Rok: 2024.
+
+### Modernizacja instalacji chłodniczej zakładu
+
+Przemysł spożywczy. Wymiana agregatów i układu automatyki bez przerwania produkcji.
+
+### Wentylacja obiektu liniowego
+
+Tunele. Dobór i montaż wentylatorów przemysłowych oraz tam wentylacyjnych.
+
+### Chłodzenie hali magazynowej
+
+Logistyka. Agregat z typoszeregu TS wraz z instalacją i przeglądami okresowymi.
+
+Pełna lista realizacji oraz referencje są dostępne na życzenie, także dla konkretnej branży lub typu obiektu. Przycisk `Wszystkie realizacje` prowadzi obecnie do formularza kontaktowego.
 
 ## Kontakt na stronie głównej {#kontakt}
 

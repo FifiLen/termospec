@@ -1,6 +1,7 @@
 <script setup lang="ts">
 defineProps<{
   isOpen: boolean;
+  overlay: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -8,6 +9,7 @@ const emit = defineEmits<{
   toggle: [];
 }>();
 
+const { open: isSearchOpen } = useContentSearch();
 const menuButton = ref<HTMLButtonElement | null>(null);
 
 defineExpose({
@@ -16,46 +18,36 @@ defineExpose({
 </script>
 
 <template>
-  <div class="flex h-16 items-stretch xl:hidden">
-    <div class="flex min-w-0 flex-1 items-center px-4 sm:px-6">
-      <NuxtLink
-        class="inline-flex outline-none"
-        to="/"
-        aria-label="Termospec, strona główna"
-        @click="emit('navigate')"
-      >
-        <NuxtImg
-          src="/termospec-logo.png"
-          alt="Termospec"
-          width="112"
-          class="block h-auto w-28"
-        />
-      </NuxtLink>
-    </div>
+  <div class="flex min-h-16 w-full items-center rounded-[1.5rem] bg-white px-4 shadow-[0_14px_40px_rgb(18_11_56_/_0.09)] xl:hidden">
+    <NuxtLink class="inline-flex outline-none" to="/" aria-label="Termospec, strona główna" @click="emit('navigate')">
+      <NuxtImg src="/termospec-logo.png" alt="Termospec" width="120" class="h-auto w-28" />
+    </NuxtLink>
 
-    <button
-      ref="menuButton"
-      type="button"
-      class="relative grid size-16 place-items-center border-s border-line bg-brand text-white transition-colors hover:bg-ink"
-      aria-controls="mobile-navigation-panel"
-      :aria-expanded="isOpen"
-      :aria-label="isOpen ? 'Zamknij menu główne' : 'Otwórz menu główne'"
-      @click="emit('toggle')"
-    >
-      <span class="relative block h-5 w-6" aria-hidden="true">
-        <span
-          class="absolute start-0 top-1 block h-px w-6 bg-current transition duration-300"
-          :class="isOpen ? 'translate-y-[0.35rem] rotate-45' : undefined"
-        />
-        <span
-          class="absolute start-0 top-1/2 block h-px w-6 -translate-y-1/2 bg-current transition duration-200"
-          :class="isOpen ? 'opacity-0' : undefined"
-        />
-        <span
-          class="absolute bottom-1 start-0 block h-px w-6 bg-current transition duration-300"
-          :class="isOpen ? '-translate-y-[0.35rem] -rotate-45' : undefined"
-        />
-      </span>
-    </button>
+    <div class="ms-auto flex items-center gap-2">
+      <button
+        type="button"
+        class="grid size-11 place-items-center rounded-full bg-[#f1ede6] text-ink/48 transition-colors hover:text-ink"
+        aria-label="Otwórz wyszukiwanie"
+        @click="isSearchOpen = true"
+      >
+        <span class="size-3.5 rounded-full border border-current" aria-hidden="true" />
+      </button>
+
+      <button
+        ref="menuButton"
+        type="button"
+        class="grid size-11 place-items-center rounded-full bg-ink text-white transition-colors hover:bg-brand"
+        aria-controls="mobile-navigation-panel"
+        :aria-expanded="isOpen"
+        :aria-label="isOpen ? 'Zamknij menu główne' : 'Otwórz menu główne'"
+        @click="emit('toggle')"
+      >
+        <span class="relative block h-4 w-5" aria-hidden="true">
+          <span class="absolute start-0 top-0 block h-px w-5 bg-current" />
+          <span class="absolute start-0 top-1/2 block h-px w-5 -translate-y-1/2 bg-current" />
+          <span class="absolute bottom-0 start-0 block h-px w-5 bg-current" />
+        </span>
+      </button>
+    </div>
   </div>
 </template>

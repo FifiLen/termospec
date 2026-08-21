@@ -8,189 +8,157 @@ const props = withDefaults(
   defineProps<{
     productCategories?: ProductNavigationCategory[];
     services?: ServiceNavigationItem[];
+    overlay?: boolean;
   }>(),
   {
     productCategories: () => [],
     services: () => [],
+    overlay: false,
   },
 );
 
-interface HeaderNavigationItem {
-  label: string;
-  to: string;
-  value: string;
-  slot: string;
-  active: boolean;
-  class?: string;
-}
-
 const route = useRoute();
 const { open: isSearchOpen } = useContentSearch();
+const openMenu = ref<"products" | "services" | null>(null);
 
-const megaMenuItems = computed<HeaderNavigationItem[]>(() => [
-  {
-    label: "produkty",
-    to: "/produkty",
-    value: "products",
-    slot: "products",
-    active: route.path === "/produkty",
-    class:
-      route.path === "/produkty"
-        ? "text-ink underline decoration-2 underline-offset-8"
-        : undefined,
-  },
-  {
-    label: "usługi",
-    to: "/uslugi",
-    value: "services",
-    slot: "services",
-    active: route.path === "/uslugi",
-    class:
-      route.path === "/uslugi"
-        ? "text-ink underline decoration-2 underline-offset-8"
-        : undefined,
-  },
-]);
+watch(() => route.fullPath, () => {
+  openMenu.value = null;
+});
 </script>
 
 <template>
   <div
-    class="hidden h-16 w-full grid-cols-[auto_minmax(0,1fr)_auto_auto_auto] items-center text-base xl:grid"
+    class="relative hidden w-full xl:block"
+    @mouseleave="openMenu = null"
+    @keydown.esc="openMenu = null"
   >
-    <div class="flex h-full items-center border-e border-ink/10 ps-10 pe-[3.25rem]">
-      <NuxtLink
-        class="inline-flex outline-none"
-        to="/"
-        aria-label="Termospec, strona główna"
-      >
-        <NuxtImg
-          src="/termospec-logo.png"
-          alt="Termospec"
-          width="100"
-          class="block h-auto"
-        />
-      </NuxtLink>
-    </div>
-
-    <nav
-      class="flex h-full items-center justify-start gap-9 overflow-visible whitespace-nowrap px-10"
-      aria-label="Główna nawigacja"
-    >
-      <NuxtLink
-        to="/o-firmie"
-        class="relative flex h-full items-center font-bold lowercase tracking-tight opacity-40 transition-opacity hover:opacity-100 [&.router-link-active]:opacity-100 [&.router-link-active]:underline [&.router-link-active]:decoration-2 [&.router-link-active]:underline-offset-8"
-      >
-        o firmie
+    <div class="grid min-h-[4.5rem] grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-7 rounded-[1.75rem] bg-white px-6 shadow-[0_16px_50px_rgb(18_11_56_/_0.08)]">
+      <NuxtLink to="/" aria-label="Termospec, strona główna" class="inline-flex pe-2 outline-none">
+        <NuxtImg src="/termospec-logo.png" alt="Termospec" width="132" class="h-auto w-32" />
       </NuxtLink>
 
-      <UNavigationMenu
-        :items="megaMenuItems"
-        color="neutral"
-        variant="link"
-        class="flex h-full"
-        :delay-duration="90"
-        :skip-delay-duration="120"
-        :ui="{
-          root: 'h-full',
-          list: 'h-full gap-9',
-          item: 'h-full py-0',
-          link: 'h-full rounded-none px-0 py-0 text-base font-bold lowercase tracking-tight text-ink/40 before:hidden hover:text-ink data-[state=open]:text-ink focus-visible:outline-none focus-visible:before:outline-none',
-          linkLabel: 'truncate',
-          linkTrailing: 'ms-1 text-current',
-          linkTrailingIcon: 'size-4 shrink-0 transition-transform duration-200',
-          content: 'absolute left-0 top-0 max-h-[70vh] overflow-y-auto',
-          viewportWrapper:
-            'absolute -left-[7.75rem] top-full z-40 flex max-w-[calc(100vw-13.25rem)] justify-start',
-          viewport:
-            'relative h-(--reka-navigation-menu-viewport-height) w-(--reka-navigation-menu-viewport-width) max-w-[calc(100vw-13.25rem)] overflow-hidden rounded-none bg-transparent shadow-none ring-0 transition-[width,height] duration-200',
-        }"
-      >
-        <template #products-trailing>
-          <span
-            class="grid size-4 place-items-center text-current"
-            aria-hidden="true"
-          >
-            <span class="size-1.5 rotate-45 border-e border-b border-current" />
-          </span>
-        </template>
-
-        <template #services-trailing>
-          <span
-            class="grid size-4 place-items-center text-current"
-            aria-hidden="true"
-          >
-            <span class="size-1.5 rotate-45 border-e border-b border-current" />
-          </span>
-        </template>
-
-        <template #products-content>
-          <ProductMegaMenu :categories="props.productCategories" />
-        </template>
-
-        <template #services-content>
-          <ServiceMegaMenu :services="props.services" />
-        </template>
-      </UNavigationMenu>
-
-      <NuxtLink
-        to="/#kontakt"
-        class="relative flex h-full items-center font-bold lowercase tracking-tight opacity-40 transition-opacity hover:opacity-100"
-      >
-        kontakt
-      </NuxtLink>
-
-      <button
-        type="button"
-        class="inline-flex h-full items-center gap-2 px-0 font-bold lowercase tracking-tight text-ink/40 transition-colors hover:text-ink"
-        @click="isSearchOpen = true"
-      >
-        <svg
-          class="size-4"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
+      <nav class="flex items-center gap-1" aria-label="Główna nawigacja">
+        <NuxtLink
+          to="/o-firmie"
+          class="rounded-full px-5 py-3 text-sm font-medium lowercase transition-colors"
+          :class="route.path === '/o-firmie' ? 'bg-[#f1ede6] text-ink' : 'text-ink/62 hover:text-ink'"
         >
-          <circle cx="11" cy="11" r="8" />
-          <path d="m21 21-4.35-4.35" />
-        </svg>
-        <span>szukaj</span>
-      </button>
-    </nav>
+          o firmie
+        </NuxtLink>
 
-    <NuxtLink
-      to="/dofinansowania"
-      aria-label="Dofinansowania Termospec"
-      class="flex h-full items-center justify-center border-s border-ink/10 px-6"
-    >
-      <NuxtImg
-        src="/panel-dofinansowanie.png"
-        alt="Dofinansowanie"
-        class="block h-16 w-auto object-contain"
-      />
-    </NuxtLink>
+        <NuxtLink
+          to="/produkty"
+          class="rounded-full px-5 py-3 text-sm font-medium lowercase transition-colors"
+          :class="openMenu === 'products' || route.path.startsWith('/produkty') ? 'bg-ink text-white' : 'text-ink/62 hover:text-ink'"
+          :aria-expanded="openMenu === 'products'"
+          aria-haspopup="true"
+          aria-controls="desktop-products-menu"
+          @mouseenter="openMenu = 'products'"
+          @focus="openMenu = 'products'"
+          @click="openMenu = null"
+        >
+          produkty
+        </NuxtLink>
 
-    <div
-      class="flex h-full items-center justify-center gap-2 border-s border-ink/10 px-6 font-mono text-xs"
-    >
-      <button class="font-bold text-ink">PL</button>
-      <span class="text-ink/20">/</span>
-      <button class="text-ink/40 hover:text-ink">EN</button>
+        <NuxtLink
+          to="/uslugi"
+          class="rounded-full px-5 py-3 text-sm font-medium lowercase transition-colors"
+          :class="openMenu === 'services' || route.path.startsWith('/uslugi') ? 'bg-ink text-white' : 'text-ink/62 hover:text-ink'"
+          :aria-expanded="openMenu === 'services'"
+          aria-haspopup="true"
+          aria-controls="desktop-services-menu"
+          @mouseenter="openMenu = 'services'"
+          @focus="openMenu = 'services'"
+          @click="openMenu = null"
+        >
+          usługi
+        </NuxtLink>
+
+        <NuxtLink to="/#kontakt" class="rounded-full px-5 py-3 text-sm font-medium lowercase text-ink/62 transition-colors hover:text-ink">
+          kontakt
+        </NuxtLink>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <button
+          type="button"
+          class="inline-flex min-h-11 items-center gap-2.5 rounded-full bg-[#f1ede6] px-4 text-sm text-ink/48 transition-colors hover:text-ink"
+          @click="isSearchOpen = true"
+        >
+          <svg
+            class="size-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="11" cy="11" r="7" />
+            <path d="m20 20-4-4" />
+          </svg>
+          <span>szukaj</span>
+        </button>
+
+        <div class="flex min-h-11 items-center rounded-full bg-[#f1ede6] p-1 text-xs font-medium">
+          <button type="button" class="grid min-h-9 min-w-10 place-items-center rounded-full bg-ink px-3 text-white" aria-pressed="true">PL</button>
+          <button type="button" class="grid min-h-9 min-w-10 place-items-center rounded-full px-3 text-ink/42" aria-pressed="false">EN</button>
+        </div>
+
+        <button
+          type="button"
+          class="grid size-11 shrink-0 place-items-center rounded-full bg-[#f1ede6] text-ink transition-colors hover:bg-[#e9e3da] hover:text-brand"
+          aria-label="Ustawienia dostępności, funkcja w przygotowaniu"
+          aria-disabled="true"
+          title="Ustawienia dostępności"
+        >
+          <svg
+            class="size-5"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="16" cy="4" r="1" />
+            <path d="m18 19 1-7-6 1M5 8l3-3 5.5 3-2.36 3.5m-6.9 3a5 5 0 0 0 6.88 6" />
+            <path d="M13.76 17.5a5 5 0 0 0-6.88-6" />
+          </svg>
+        </button>
+
+        <NuxtLink
+          to="/dofinansowania"
+          aria-label="Dofinansowanie ze środków Unii Europejskiej"
+          class="grid h-11 w-32 place-items-center overflow-hidden rounded-full bg-[#f1ede6] px-3 transition-colors hover:bg-[#e9e3da]"
+        >
+          <NuxtImg src="/panel-dofinansowanie.png" alt="Unia Europejska" width="150" class="max-h-9 w-auto object-contain" />
+        </NuxtLink>
+      </div>
     </div>
 
-    <div
-      class="flex h-full items-center border-s border-ink/10 bg-brand ps-7 pe-10 transition-colors"
+    <Transition
+      enter-active-class="transition duration-200 ease-out"
+      enter-from-class="-translate-y-2 opacity-0"
+      enter-to-class="translate-y-0 opacity-100"
+      leave-active-class="transition duration-150 ease-in"
+      leave-from-class="translate-y-0 opacity-100"
+      leave-to-class="-translate-y-2 opacity-0"
     >
-      <NuxtLink
-        class="inline-flex items-center gap-2 font-extrabold lowercase tracking-tight text-white"
-        to="/#kontakt"
-      >
-        <span>zapytaj o ofertę</span>
-        <span class="font-normal" aria-hidden="true">→</span>
-      </NuxtLink>
-    </div>
+      <div v-if="openMenu" class="absolute inset-x-0 top-full pt-3">
+        <ProductMegaMenu
+          v-if="openMenu === 'products'"
+          id="desktop-products-menu"
+          :categories="props.productCategories"
+        />
+        <ServiceMegaMenu
+          v-else
+          id="desktop-services-menu"
+          :services="props.services"
+        />
+      </div>
+    </Transition>
   </div>
 </template>

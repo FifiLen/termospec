@@ -7,40 +7,33 @@ const props = defineProps<{
 </script>
 
 <template>
-  <section
-    class="w-[calc(100vw-13.25rem)] max-w-[52rem] whitespace-normal overflow-hidden border-x border-b border-line bg-white shadow-lift"
-    aria-label="Kategorie usług"
-  >
-    <header
-      class="flex min-h-16 items-center justify-between gap-8 border-b border-line bg-ink px-5 text-white"
-    >
-      <div>
-        <p class="font-mono text-[0.62rem] font-bold uppercase tracking-[0.2em] text-white/50">
-          Zakres usług
-        </p>
-        <p class="mt-1 text-sm font-black">Wsparcie techniczne Termospec</p>
-      </div>
-
-      <NuxtLink
-        to="/uslugi"
-        class="inline-flex min-h-10 items-center gap-6 bg-brand px-4 font-mono text-[0.65rem] font-bold uppercase tracking-wider text-white transition-colors hover:bg-white hover:text-ink"
-      >
-        <span>Wszystkie usługi</span>
-        <span aria-hidden="true">→</span>
-      </NuxtLink>
-    </header>
-
-    <div class="grid grid-cols-2 gap-px bg-line">
+  <section class="w-full rounded-[1.75rem] bg-white p-8 shadow-[0_20px_60px_rgb(18_11_56_/_0.1)]" aria-label="Kategorie usług">
+    <div class="grid grid-cols-5 gap-4">
       <NuxtLink
         v-for="service in props.services"
         :key="service.slug"
         :to="service.href"
-        class="group grid min-h-28 grid-cols-[minmax(0,1fr)_auto] items-start gap-3 bg-white p-5 outline-none transition-colors hover:bg-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-brand"
+        class="group flex min-h-64 flex-col rounded-[1.5rem] p-6 transition-colors"
+        :class="service.slug === 'serwis-24-7'
+          ? 'bg-ink text-white hover:bg-[#1b1648]'
+          : 'bg-[#f4f0ea] text-ink hover:bg-[#ebe6dd]'"
       >
-        <span class="text-sm font-black uppercase leading-5 text-ink">
+        <p
+          class="text-xs"
+          :class="service.slug === 'serwis-24-7' ? 'text-white' : 'text-ink/38'"
+        >
+          Usługa
+        </p>
+        <h3
+          class="mt-4 font-sans text-lg font-semibold leading-tight tracking-[-0.02em]"
+          :class="service.slug === 'serwis-24-7' ? 'text-white' : 'text-ink'"
+        >
           {{ service.label }}
-        </span>
-        <span class="text-brand transition-transform group-hover:translate-x-1" aria-hidden="true">
+        </h3>
+        <span
+          class="mt-auto block pt-6 text-brand transition-transform group-hover:translate-x-1"
+          aria-hidden="true"
+        >
           →
         </span>
       </NuxtLink>

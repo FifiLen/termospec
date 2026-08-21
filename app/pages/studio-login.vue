@@ -53,7 +53,7 @@ const submitLogin = async () => {
   <main class="grid min-h-svh bg-surface lg:grid-cols-[minmax(0,0.9fr)_minmax(32rem,1.1fr)]">
     <section class="relative hidden overflow-hidden bg-ink lg:block">
       <img
-        src="/images/hero/crops/siedziba-termospec-desktop.jpg"
+        src="/budynek-termospec.png"
         alt=""
         class="absolute inset-0 h-full w-full object-cover opacity-55"
       >

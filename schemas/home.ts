@@ -66,16 +66,17 @@ const responsiveImageSchema = (label: string, description: string) => homeField(
 const heroSlideSchema = homeField(z.object({
   title: homeField(z.string().trim().min(1, "Podaj tytuł slajdu"), {
     label: "Tytuł",
-    description: "Główny nagłówek slajdu.",
+    description: "Główny nagłówek slajdu. W układzie nakładkowym wpisz dwie linie.",
+    input: "textarea",
   }),
   lead: homeField(z.string().trim().min(1, "Podaj krótki opis"), {
     label: "Opis",
     description: "Jeden krótki akapit pod tytułem.",
     input: "textarea",
   }),
-  presentation: homeField(z.enum(["nakladka", "podzial"]).default("nakladka"), {
+  presentation: homeField(z.enum(["nakladka", "pelny-kadr"]).default("nakladka"), {
     label: "Układ slajdu",
-    description: "nakladka — tekst na zdjęciu; podzial — osobna część tekstowa i zdjęcie.",
+    description: "nakladka — tekst na zdjęciu; pelny-kadr — sama grafika bez warstwy tekstowej.",
   }),
   image: homeField(z.object({
     alt: homeField(z.string().trim().min(1, "Opisz zawartość obrazu"), {

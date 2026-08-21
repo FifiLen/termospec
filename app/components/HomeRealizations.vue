@@ -1,152 +1,127 @@
 <script setup lang="ts">
-import { homeRealizationPhotos } from "~~/data/home";
-
-const carousel = ref<HTMLElement | null>(null);
-const canScrollPrev = ref(false);
-const canScrollNext = ref(true);
-
-const updateCarouselState = () => {
-  const element = carousel.value;
-
-  if (!element) {
-    return;
-  }
-
-  const maxScroll = element.scrollWidth - element.clientWidth;
-
-  canScrollPrev.value = element.scrollLeft > 4;
-  canScrollNext.value = element.scrollLeft < maxScroll - 4;
-};
-
-const scrollRealizations = (direction: -1 | 1) => {
-  const element = carousel.value;
-
-  if (!element) {
-    return;
-  }
-
-  const card = element.querySelector<HTMLElement>("[data-realization-photo]");
-  const styles = window.getComputedStyle(element);
-  const gap = Number.parseFloat(styles.columnGap || styles.gap || "0");
-  const distance = (card?.offsetWidth ?? element.clientWidth * 0.86) + gap;
-
-  element.scrollBy({
-    left: distance * direction,
-    behavior: "smooth",
-  });
-};
-
-onMounted(async () => {
-  await nextTick();
-  updateCarouselState();
-  window.addEventListener("resize", updateCarouselState);
-});
-
-onBeforeUnmount(() => {
-  window.removeEventListener("resize", updateCarouselState);
-});
+import {
+  homeFeaturedRealization,
+  homeRealizations,
+} from "~~/data/home";
 </script>
 
 <template>
-  <section
-    id="realizacje"
-    class="bg-white py-24 [--realization-gutter:1.5rem] lg:[--realization-gutter:2.5rem]"
-  >
-    <div class="ml-[max(var(--realization-gutter),calc((100vw-96rem)/2))]">
+  <section id="realizacje" class="bg-surface px-5 pt-20 sm:px-8 lg:px-12 lg:pt-28">
+    <div class="mx-auto max-w-[92rem]">
       <div
-        class="grid gap-8 lg:grid-cols-[0.75fr_1.25fr] lg:items-end pr-[max(var(--realization-gutter),calc((100vw-96rem)/2))]"
+        class="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(24rem,0.9fr)] lg:items-end lg:gap-16"
       >
         <div>
+          <p class="flex items-center gap-3 text-sm font-medium text-muted">
+            <span class="h-2 w-2 shrink-0 rounded-full bg-brand" />
+            Realizacje
+          </p>
+
           <h2
-            class="mt-5 max-w-xl font-heading text-4xl font-black leading-[0.98] tracking-[-0.05em] text-ink"
+            class="mt-7 max-w-none text-[clamp(2.75rem,5vw,4.75rem)] font-medium leading-[1.02] tracking-[-0.045em] text-ink"
           >
-            Wybrane wdrożenia i obszary prac technicznych.
+            <span class="xl:block">Instalacje, które pracują</span>
+            <span class="xl:block">tam, gdzie warunki są</span>
+            <span class="xl:block">najtrudniejsze.</span>
           </h2>
         </div>
 
-        <div class="flex items-center gap-3 lg:justify-end">
-          <button
-            type="button"
-            class="grid h-11 w-11 place-items-center border border-ink/15 bg-white/55 text-ink transition duration-200 hover:border-brand/45 hover:text-brand disabled:pointer-events-none disabled:opacity-35"
-            :disabled="!canScrollPrev"
-            aria-label="Poprzednie realizacje"
-            @click="scrollRealizations(-1)"
-          >
-            <svg
-              aria-hidden="true"
-              viewBox="0 0 24 24"
-              class="h-4 w-4"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="square"
-              stroke-linejoin="miter"
-            >
-              <path d="M15 5 8 12l7 7" />
-              <path d="M9 12h11" />
-            </svg>
-          </button>
+        <p class="max-w-[38rem] text-lg leading-8 text-muted lg:pb-2 lg:text-xl lg:leading-9">
+          Wybrane projekty z ostatnich lat — od chłodzenia wyrobisk podziemnych
+          po instalacje procesowe w zakładach produkcyjnych.
+        </p>
+      </div>
 
-          <button
-            type="button"
-            class="grid h-11 w-11 place-items-center border border-ink/15 bg-white/55 text-ink transition duration-200 hover:border-brand/45 hover:text-brand disabled:pointer-events-none disabled:opacity-35"
-            :disabled="!canScrollNext"
-            aria-label="Następne realizacje"
-            @click="scrollRealizations(1)"
-          >
-            <svg
-              aria-hidden="true"
-              viewBox="0 0 24 24"
-              class="h-4 w-4"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="square"
-              stroke-linejoin="miter"
-            >
-              <path d="M9 5l7 7-7 7" />
-              <path d="M4 12h11" />
-            </svg>
-          </button>
-
-          <a
-            href="/produkty"
-            class="inline-flex h-11 items-center justify-center bg-brand px-5 text-sm font-bold tracking-tight text-white transition duration-200 hover:bg-brand/90"
-          >
-            Zobacz produkty
-          </a>
+      <article class="mt-14 overflow-hidden rounded-3xl bg-line/45 lg:mt-16">
+        <div class="group aspect-[30/13] overflow-hidden bg-line/60">
+          <img
+            :src="homeFeaturedRealization.src"
+            :alt="homeFeaturedRealization.alt"
+            width="2400"
+            height="1040"
+            loading="lazy"
+            decoding="async"
+            class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.015]"
+          />
         </div>
+
+        <div
+          class="grid gap-10 px-6 py-8 sm:px-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(28rem,0.9fr)] lg:gap-16 lg:px-12 lg:py-11"
+        >
+          <div>
+            <p class="text-sm leading-6 text-muted">
+              {{ homeFeaturedRealization.industry }}
+            </p>
+            <h3
+              class="mt-3 max-w-2xl text-3xl font-medium leading-[1.08] tracking-[-0.035em] text-ink lg:text-4xl"
+            >
+              {{ homeFeaturedRealization.title }}
+            </h3>
+            <p class="mt-5 max-w-2xl text-base leading-7 text-muted lg:text-lg lg:leading-8">
+              {{ homeFeaturedRealization.description }}
+            </p>
+          </div>
+
+          <dl class="grid grid-cols-2 gap-x-8 gap-y-6 self-end">
+            <div
+              v-for="metric in homeFeaturedRealization.metrics"
+              :key="metric.label"
+            >
+              <dt class="text-sm text-muted">{{ metric.label }}</dt>
+              <dd class="mt-1 text-xl font-medium tracking-[-0.025em] text-ink">
+                {{ metric.value }}
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </article>
+
+      <div class="mt-8 grid gap-8 md:grid-cols-3 md:gap-5 lg:gap-8">
+        <article v-for="realization in homeRealizations" :key="realization.title">
+          <div class="group aspect-[4/3] overflow-hidden rounded-3xl bg-line/45">
+            <img
+              :src="realization.src"
+              :alt="realization.alt"
+              width="1200"
+              height="900"
+              loading="lazy"
+              decoding="async"
+              class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.025]"
+            />
+          </div>
+
+          <p class="mt-5 text-sm leading-6 text-muted">{{ realization.industry }}</p>
+          <h3
+            class="mt-2 text-2xl font-medium leading-[1.12] tracking-[-0.035em] text-ink"
+          >
+            {{ realization.title }}
+          </h3>
+          <p class="mt-4 text-base leading-7 text-muted">
+            {{ realization.description }}
+          </p>
+        </article>
       </div>
 
       <div
-        ref="carousel"
-        class="mt-10 flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-        @scroll="updateCarouselState"
+        class="mt-14 flex flex-col gap-7 border-t border-line pt-8 sm:flex-row sm:items-center sm:justify-between"
       >
-        <figure
-          v-for="photo in homeRealizationPhotos"
-          :key="photo.src"
-          data-realization-photo
-          class="group relative h-[24rem] w-[20rem] shrink-0 snap-start overflow-hidden bg-ink sm:w-[32rem] md:h-[30rem] md:w-[44rem] lg:w-[56rem] xl:w-[64rem]"
-        >
-          <img
-            :src="photo.src"
-            :alt="photo.alt"
-            width="1280"
-            height="780"
-            loading="lazy"
-            decoding="async"
-            class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.025]"
-          />
+        <p class="max-w-2xl text-base leading-7 text-muted">
+          Pełna lista realizacji oraz referencje dostępne na życzenie — także dla
+          konkretnej branży lub typu obiektu.
+        </p>
 
-          <figcaption
-            class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/75 via-ink/20 to-transparent p-5 md:p-7"
+        <NuxtLink
+          to="/#kontakt"
+          class="group inline-flex min-h-12 shrink-0 items-center justify-center gap-4 self-start rounded-full bg-ink px-7 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-brand sm:self-auto"
+        >
+          Wszystkie realizacje
+          <span
+            aria-hidden="true"
+            class="text-brand transition-transform duration-200 group-hover:translate-x-1 group-hover:text-white"
           >
-            <span class="text-sm font-bold tracking-tight text-white">
-              {{ photo.label }}
-            </span>
-          </figcaption>
-        </figure>
+            →
+          </span>
+        </NuxtLink>
       </div>
     </div>
   </section>

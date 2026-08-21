@@ -11,7 +11,7 @@ export interface HomeHeroImageSource {
 export interface HomeHeroSlide {
   title: string;
   lead: string;
-  presentation: "nakladka" | "podzial";
+  presentation: "nakladka" | "pelny-kadr";
   image: {
     alt: string;
     desktop: HomeHeroImageSource;
