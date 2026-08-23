@@ -9,6 +9,7 @@ const props = withDefaults(
     productCategories?: ProductNavigationCategory[];
     services?: ServiceNavigationItem[];
     overlay?: boolean;
+    accessibilityOpen: boolean;
   }>(),
   {
     productCategories: () => [],
@@ -16,6 +17,10 @@ const props = withDefaults(
     overlay: false,
   },
 );
+
+const emit = defineEmits<{
+  toggleAccessibility: [];
+}>();
 
 const route = useRoute();
 const { open: isSearchOpen } = useContentSearch();
@@ -108,10 +113,15 @@ watch(() => route.fullPath, () => {
 
         <button
           type="button"
-          class="grid size-11 shrink-0 place-items-center rounded-full bg-[#f1ede6] text-ink transition-colors hover:bg-[#e9e3da] hover:text-brand"
-          aria-label="Ustawienia dostępności, funkcja w przygotowaniu"
-          aria-disabled="true"
+          data-accessibility-trigger
+          class="grid size-11 shrink-0 place-items-center rounded-full transition-colors"
+          :class="props.accessibilityOpen ? 'bg-ink text-white' : 'bg-[#f1ede6] text-ink hover:bg-[#e9e3da] hover:text-brand'"
+          aria-label="Ustawienia dostępności"
+          aria-haspopup="dialog"
+          aria-controls="accessibility-panel"
+          :aria-expanded="props.accessibilityOpen"
           title="Ustawienia dostępności"
+          @click="emit('toggleAccessibility')"
         >
           <svg
             class="size-5"

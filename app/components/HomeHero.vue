@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { gsap } from "gsap";
 import { aboutMetrics } from "~~/data/about";
+import { accessibilityPreferencesEvent } from "~/composables/useAccessibilityPreferences";
 import type { HomeHeroSlide } from "~~/types/home";
 
 const props = defineProps<{
@@ -20,6 +21,11 @@ let interactionPaused = false;
 let isTransitioning = false;
 
 const autoplayDelay = 6.5;
+
+function shouldReduceMotion() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    || document.documentElement.dataset.accessibilityMotion === "reduced";
+}
 
 function getContentSlides() {
   if (!heroRoot.value) {
@@ -286,6 +292,21 @@ function handleVisibilityChange() {
   }
 }
 
+function syncAccessibilityMotionPreference() {
+  reducedMotion = shouldReduceMotion();
+
+  if (reducedMotion) {
+    transitionTimeline?.kill();
+    transitionTimeline = null;
+    isTransitioning = false;
+    revealSlideImmediately(activeIndex.value);
+    cancelAutoplay();
+    return;
+  }
+
+  scheduleAutoplay();
+}
+
 watch(
   () => props.slides.length,
   async (slideCount) => {
@@ -362,8 +383,8 @@ onMounted(() => {
       reduceMotion: "(prefers-reduced-motion: reduce)",
       allowMotion: "(prefers-reduced-motion: no-preference)",
     },
-    (context) => {
-      reducedMotion = Boolean(context.conditions?.reduceMotion);
+    () => {
+      reducedMotion = shouldReduceMotion();
 
       if (reducedMotion) {
         revealSlideImmediately(activeIndex.value);
@@ -376,10 +397,12 @@ onMounted(() => {
   );
 
   document.addEventListener("visibilitychange", handleVisibilityChange);
+  window.addEventListener(accessibilityPreferencesEvent, syncAccessibilityMotionPreference);
 });
 
 onUnmounted(() => {
   document.removeEventListener("visibilitychange", handleVisibilityChange);
+  window.removeEventListener(accessibilityPreferencesEvent, syncAccessibilityMotionPreference);
   cancelAutoplay();
   transitionTimeline?.kill();
   mediaQueries?.revert();

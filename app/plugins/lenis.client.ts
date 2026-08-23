@@ -1,5 +1,6 @@
 import type Lenis from 'lenis'
 import 'lenis/dist/lenis.css'
+import { accessibilityPreferencesEvent } from '~/composables/useAccessibilityPreferences'
 
 export default defineNuxtPlugin((nuxtApp) => {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -12,14 +13,19 @@ export default defineNuxtPlugin((nuxtApp) => {
     lenis = null
   }
 
+  const shouldReduceMotion = () => {
+    return reducedMotion.matches
+      || document.documentElement.dataset.accessibilityMotion === 'reduced'
+  }
+
   const startLenis = async () => {
-    if (lenis || reducedMotion.matches || disposed) {
+    if (lenis || shouldReduceMotion() || disposed) {
       return
     }
 
     const { default: LenisConstructor } = await (lenisLoad ??= import('lenis'))
 
-    if (lenis || reducedMotion.matches || disposed) {
+    if (lenis || shouldReduceMotion() || disposed) {
       return
     }
 
@@ -39,7 +45,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   }
 
   const syncMotionPreference = () => {
-    if (reducedMotion.matches) {
+    if (shouldReduceMotion()) {
       stopLenis()
       return
     }
@@ -50,6 +56,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   void startLenis()
 
   reducedMotion.addEventListener('change', syncMotionPreference)
+  window.addEventListener(accessibilityPreferencesEvent, syncMotionPreference)
 
   nuxtApp.hook('page:finish', () => {
     window.requestAnimationFrame(() => {
@@ -61,6 +68,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     import.meta.hot.dispose(() => {
       disposed = true
       reducedMotion.removeEventListener('change', syncMotionPreference)
+      window.removeEventListener(accessibilityPreferencesEvent, syncMotionPreference)
       stopLenis()
     })
   }

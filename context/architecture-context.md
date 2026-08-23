@@ -147,6 +147,7 @@ For the current public website, state should remain minimal:
 - navigation open/closed
 - mega menu open/closed
 - mobile menu open/closed
+- locally persisted accessibility preferences (text size, higher contrast, reduced motion)
 - optional accordion/tab state
 - optional filters on product/reference lists
 

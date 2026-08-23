@@ -17,6 +17,7 @@ const props = withDefaults(
 
 const emit = defineEmits<{
   navigate: [];
+  openAccessibility: [];
 }>();
 
 const route = useRoute();
@@ -110,6 +111,18 @@ defineExpose({
         <NuxtLink to="/#kontakt" class="flex min-h-16 items-center justify-between rounded-[1.25rem] px-5 text-[1.7rem] font-medium tracking-[-0.035em] text-white/[0.86] transition-colors hover:bg-white/[0.06]" @click="emit('navigate')">
           <span>kontakt</span><span class="text-base text-white/38" aria-hidden="true">→</span>
         </NuxtLink>
+
+        <button
+          type="button"
+          data-accessibility-trigger
+          class="flex min-h-16 w-full items-center justify-between rounded-[1.25rem] px-5 text-left text-[1.7rem] font-medium tracking-[-0.035em] text-white/[0.86] transition-colors hover:bg-white/[0.06]"
+          aria-controls="accessibility-panel"
+          aria-haspopup="dialog"
+          aria-expanded="false"
+          @click="emit('openAccessibility')"
+        >
+          <span>Dostosuj widok</span><span class="text-base text-white/38" aria-hidden="true">→</span>
+        </button>
       </nav>
 
       <a href="tel:+48603899165" class="mt-8 rounded-[1.5rem] bg-white/10 p-5 transition-colors hover:bg-white/[0.14]">

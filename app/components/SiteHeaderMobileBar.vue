@@ -2,11 +2,13 @@
 defineProps<{
   isOpen: boolean;
   overlay: boolean;
+  accessibilityOpen: boolean;
 }>();
 
 const emit = defineEmits<{
   navigate: [];
   toggle: [];
+  toggleAccessibility: [];
 }>();
 
 const { open: isSearchOpen } = useContentSearch();
@@ -31,6 +33,33 @@ defineExpose({
         @click="isSearchOpen = true"
       >
         <span class="size-3.5 rounded-full border border-current" aria-hidden="true" />
+      </button>
+
+      <button
+        type="button"
+        data-accessibility-trigger
+        class="grid size-11 place-items-center rounded-full transition-colors"
+        :class="accessibilityOpen ? 'bg-ink text-white' : 'bg-[#f1ede6] text-ink/48 hover:text-ink'"
+        aria-label="Ustawienia dostępności"
+        aria-haspopup="dialog"
+        aria-controls="accessibility-panel"
+        :aria-expanded="accessibilityOpen"
+        @click="emit('toggleAccessibility')"
+      >
+        <svg
+          class="size-5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <circle cx="16" cy="4" r="1" />
+          <path d="m18 19 1-7-6 1M5 8l3-3 5.5 3-2.36 3.5m-6.9 3a5 5 0 0 0 6.88 6" />
+          <path d="M13.76 17.5a5 5 0 0 0-6.88-6" />
+        </svg>
       </button>
 
       <button

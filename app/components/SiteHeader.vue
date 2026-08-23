@@ -22,19 +22,18 @@ interface MobileBarHandle {
 interface MobileMenuHandle {
   focusFirstItem: () => void;
 }
-
 const route = useRoute();
 const mobileBar = ref<MobileBarHandle | null>(null);
 const mobileMenu = ref<MobileMenuHandle | null>(null);
 const isScrolled = ref(false);
 const isMobileMenuOpen = ref(false);
+const isAccessibilityOpen = ref(false);
+useAccessibilityPreferences();
 const isHeroOverlay = computed(() => {
   return route.path === "/" && !isScrolled.value && !isMobileMenuOpen.value;
 });
-
 let previousDocumentOverflow = "";
 let desktopBreakpoint: MediaQueryList | null = null;
-
 const updateScrollState = () => {
   isScrolled.value = window.scrollY > 8;
 };
@@ -62,6 +61,15 @@ const toggleMobileMenu = () => {
   }
 
   isMobileMenuOpen.value = true;
+};
+
+const toggleAccessibilityPanel = () => {
+  isAccessibilityOpen.value = !isAccessibilityOpen.value;
+};
+
+const openAccessibilityPanel = () => {
+  closeMobileMenu();
+  isAccessibilityOpen.value = true;
 };
 
 const handleKeydown = (event: KeyboardEvent) => {
@@ -102,7 +110,10 @@ watch(
 
 watch(
   () => route.fullPath,
-  () => closeMobileMenu(),
+  () => {
+    closeMobileMenu();
+    isAccessibilityOpen.value = false;
+  },
 );
 
 onMounted(() => {
@@ -126,19 +137,24 @@ onBeforeUnmount(() => {
   <header
     class="pointer-events-none fixed inset-x-0 top-0 z-50 px-4 pt-4 text-ink sm:px-6 lg:px-8"
   >
-    <div class="pointer-events-auto mx-auto w-full max-w-[96rem]">
+    <div class="pointer-events-auto relative mx-auto w-full max-w-[96rem]">
       <SiteHeaderMobileBar
         ref="mobileBar"
         :is-open="isMobileMenuOpen"
         :overlay="isHeroOverlay"
+        :accessibility-open="isAccessibilityOpen"
         @navigate="closeMobileMenu()"
         @toggle="toggleMobileMenu"
+        @toggle-accessibility="toggleAccessibilityPanel"
       />
       <SiteHeaderDesktop
         :product-categories="productCategories"
         :services="services"
         :overlay="isHeroOverlay"
+        :accessibility-open="isAccessibilityOpen"
+        @toggle-accessibility="toggleAccessibilityPanel"
       />
+      <AccessibilityPanel :open="isAccessibilityOpen" @close="isAccessibilityOpen = false" />
     </div>
 
     <Transition
@@ -155,6 +171,7 @@ onBeforeUnmount(() => {
         :product-categories="productCategories"
         :services="services"
         @navigate="closeMobileMenu()"
+        @open-accessibility="openAccessibilityPanel"
       />
     </Transition>
   </header>
