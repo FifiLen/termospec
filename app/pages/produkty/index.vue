@@ -5,7 +5,7 @@ import type {
 } from "~~/types/navigation";
 import type { CatalogueProductRecord } from "~/utils/product-catalogue";
 import {
-  normalizeCatalogueText,
+  filterCatalogueCategories,
   normalizeCatalogueCategories,
   resolveCatalogueSelection,
   selectableCatalogueEntries,
@@ -32,51 +32,9 @@ const productNavigation = useProductCatalogue(
   catalogueProducts,
 );
 
-const normalizeText = (value: string) => {
-  return normalizeCatalogueText(value);
-};
-
-const filterGroup = (
-  group: ProductNavigationGroup,
-  query: string,
-): ProductNavigationGroup | null => {
-  if (normalizeText(group.label).includes(query)) {
-    return group;
-  }
-
-  const entries = group.entries.filter((entry) => {
-    return normalizeText(entry.label).includes(query);
-  });
-
-  return entries.length ? { ...group, entries } : null;
-};
-
 const searchQuery = ref("");
-const normalizedSearch = computed(() => normalizeText(searchQuery.value.trim()));
-
-const filteredCategories = computed<ProductNavigationCategory[]>(() => {
-  const query = normalizedSearch.value;
-
-  if (!query) {
-    return productNavigation.value;
-  }
-
-  return productNavigation.value.flatMap((category) => {
-    if (normalizeText(category.label).includes(query)) {
-      return [category];
-    }
-
-    const entries = category.entries.filter((entry) => {
-      return normalizeText(entry.label).includes(query);
-    });
-    const groups = category.groups
-      .map((group) => filterGroup(group, query))
-      .filter((group): group is ProductNavigationGroup => Boolean(group));
-
-    return entries.length || groups.length
-      ? [{ ...category, entries, groups }]
-      : [];
-  });
+const filteredCategories = computed(() => {
+  return filterCatalogueCategories(productNavigation.value, searchQuery.value);
 });
 
 const activeCategorySlug = ref("");
@@ -264,8 +222,9 @@ watch(
   { immediate: true },
 );
 
-onMounted(() => {
-  const hash = window.location.hash.replace("#", "");
+const route = useRoute();
+const syncRouteSelection = () => {
+  const hash = route.hash.replace("#", "");
   const category = productNavigation.value.find((item) => {
     return item.slug === hash
       || item.entries.some((entry) => entry.id === hash)
@@ -278,6 +237,7 @@ onMounted(() => {
     return;
   }
 
+  searchQuery.value = "";
   const group = category.groups.find((item) => item.slug === hash);
   const entryGroup = category.groups.find((item) => {
     return item.entries.some((entry) => entry.id === hash);
@@ -298,7 +258,10 @@ onMounted(() => {
   } else {
     void activateCategory(category.slug, false);
   }
-});
+};
+
+onMounted(syncRouteSelection);
+watch(() => route.hash, syncRouteSelection);
 
 useSeoMeta({
   title: "Produkty | Termospec",
@@ -315,146 +278,19 @@ useSeoMeta({
       class="mx-auto grid w-full max-w-[92rem] items-start gap-5 lg:grid-cols-[18rem_minmax(0,1fr)]"
       aria-label="Katalog produktów"
     >
-      <aside
-        class="overflow-hidden rounded-[1.75rem] bg-brand text-white lg:sticky lg:top-28 lg:max-h-[calc(100svh-8rem)] lg:overflow-y-auto"
-        aria-label="Indeks katalogu produktów"
-      >
-        <div class="sticky top-0 z-20 border-b border-white/15 bg-brand px-5 py-5">
-          <label for="product-search" class="sr-only">
-            Szukaj w katalogu produktów
-          </label>
-          <div class="relative">
-            <UIcon
-              name="i-lucide-search"
-              class="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-white/70"
-              aria-hidden="true"
-            />
-            <input
-              id="product-search"
-              v-model="searchQuery"
-              type="search"
-              class="h-12 w-full rounded-xl border border-white/20 bg-white/10 pl-10 pr-3 text-sm font-medium text-white outline-none transition placeholder:text-white/52 focus:border-white/55 focus:bg-white/15"
-              placeholder="Szukaj typu lub kategorii"
-              autocomplete="off"
-            />
-          </div>
-        </div>
-
-        <nav aria-label="Główne kategorie produktów">
-          <div
-            v-for="category in filteredCategories"
-            :key="category.slug"
-            class="border-b border-white/15 last:border-b-0"
-          >
-            <UCollapsible
-              :open="expandedCategorySlug === category.slug"
-              :unmount-on-hide="false"
-              :ui="{
-                content:
-                  'overflow-hidden motion-reduce:animate-none motion-reduce:transition-none',
-              }"
-              @update:open="setCategoryExpanded(category.slug, $event)"
-            >
-              <template #default="{ open }">
-                <button
-                  type="button"
-                  class="group grid w-full grid-cols-[minmax(0,1fr)_1rem] items-center gap-2 px-5 py-4 text-left transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white"
-                  :class="
-                    activeCategorySlug === category.slug || open
-                      ? 'bg-white/15 text-white'
-                      : 'text-white/72 hover:bg-white/10 hover:text-white'
-                  "
-                  :aria-current="activeCategorySlug === category.slug ? 'location' : undefined"
-                >
-                  <span class="whitespace-nowrap text-[0.8rem] font-black uppercase leading-5">
-                    {{ category.label }}
-                  </span>
-                  <UIcon
-                    name="i-lucide-chevron-down"
-                    class="size-4 transition-transform duration-200 motion-reduce:transition-none"
-                    :class="open ? 'rotate-180' : ''"
-                    aria-hidden="true"
-                  />
-                </button>
-              </template>
-
-              <template #content>
-                <div class="border-t border-white/15 bg-black/10 py-1.5">
-                  <div v-if="category.groups.length">
-                    <UCollapsible
-                      v-for="group in category.groups"
-                      :key="group.slug"
-                      :open="expandedGroupSlug === group.slug"
-                      :unmount-on-hide="false"
-                      :ui="{
-                        content:
-                          'overflow-hidden motion-reduce:animate-none motion-reduce:transition-none',
-                      }"
-                      @update:open="setGroupExpanded(category.slug, group.slug, $event)"
-                    >
-                      <template #default="{ open }">
-                        <button
-                          type="button"
-                          class="grid w-full grid-cols-[minmax(0,1fr)_1rem] items-center gap-2 py-3 pe-4 ps-7 text-left text-[0.78rem] font-extrabold leading-5 transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white"
-                          :class="activeGroupSlug === group.slug ? 'bg-white/12 text-white' : 'text-white/68 hover:bg-white/8 hover:text-white'"
-                        >
-                          <span>{{ group.label }}</span>
-                          <UIcon
-                            name="i-lucide-chevron-down"
-                            class="size-3.5 transition-transform duration-200 motion-reduce:transition-none"
-                            :class="open ? 'rotate-180' : ''"
-                            aria-hidden="true"
-                          />
-                        </button>
-                      </template>
-
-                      <template #content>
-                        <ul
-                          class="border-y border-white/10 bg-black/10 py-1.5"
-                          :aria-label="`Typy w podkategorii ${group.label}`"
-                        >
-                          <li
-                            v-for="entry in selectableCatalogueEntries(group.entries)"
-                            :key="entry.id"
-                          >
-                            <button
-                              type="button"
-                              class="w-full py-2 pe-4 ps-10 text-left font-mono text-xs font-bold leading-4 transition-colors duration-200 hover:bg-white/8 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white"
-                              :class="activeEntryId === entry.id ? 'bg-white/14 text-white' : 'text-white/58'"
-                              @click="activateEntry(category.slug, group.slug, entry.id)"
-                            >
-                              {{ entry.label }}
-                            </button>
-                          </li>
-                        </ul>
-                      </template>
-                    </UCollapsible>
-                  </div>
-
-                  <ul
-                    v-else
-                    :aria-label="`Typy w kategorii ${category.label}`"
-                  >
-                    <li
-                      v-for="entry in selectableCatalogueEntries(category.entries)"
-                      :key="entry.id"
-                    >
-                      <button
-                        type="button"
-                        class="w-full py-2.5 pe-4 ps-7 text-left font-mono text-xs font-bold leading-4 transition-colors duration-200 hover:bg-white/8 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white"
-                        :class="activeEntryId === entry.id ? 'bg-white/14 text-white' : 'text-white/60'"
-                        @click="activateEntry(category.slug, '', entry.id)"
-                      >
-                        {{ entry.label }}
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-              </template>
-            </UCollapsible>
-          </div>
-        </nav>
-      </aside>
+      <ProductCatalogueIndex
+        v-model:search-query="searchQuery"
+        :categories="filteredCategories"
+        :active-category-slug="activeCategorySlug"
+        :active-group-slug="activeGroupSlug"
+        :active-entry-id="activeEntryId"
+        :expanded-category-slug="expandedCategorySlug"
+        :expanded-group-slug="expandedGroupSlug"
+        class="lg:sticky lg:top-28 lg:max-h-[calc(100svh-8rem)]"
+        @category-expanded="setCategoryExpanded"
+        @group-expanded="setGroupExpanded"
+        @select-entry="activateEntry"
+      />
 
       <div class="min-w-0 overflow-clip rounded-[1.75rem] bg-white">
         <ProductCatalogueCategory

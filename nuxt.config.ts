@@ -114,6 +114,7 @@ export default defineNuxtConfig({
     '/kontakt': { redirect: { to: '/#kontakt', statusCode: 301 } },
     '/dofinansowania': { prerender: true },
     '/rodo': { prerender: true },
+    '/koncesja': { prerender: true },
     '/studio-login': {
       headers: {
         'cache-control': 'no-store',

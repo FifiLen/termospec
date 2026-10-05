@@ -1,7 +1,6 @@
 <script setup lang="ts">
 const footerLinks = [
   { label: "o firmie", to: "/o-firmie" },
-  { label: "zespół", to: "/o-firmie#zespol" },
   { label: "kontakt", to: "/#kontakt" },
   { label: "produkty", to: "/produkty" },
   { label: "realizacje", to: "/#realizacje" },

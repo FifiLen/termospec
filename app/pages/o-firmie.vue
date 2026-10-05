@@ -1,12 +1,5 @@
 <script setup lang="ts">
-import TeamGrid from "~/components/TeamGrid.vue";
 import { aboutProfile, aboutTimeline } from "~~/data/about";
-
-const { data: teamMembers } = await useFetch("/api/content/team", {
-  key: "about-team",
-});
-
-const visibleTeamMembers = computed(() => (teamMembers.value || []).slice(0, 4));
 
 useSeoMeta({
   title: "O firmie | Termospec",
@@ -163,10 +156,6 @@ useSeoMeta({
         </ol>
       </div>
     </section>
-
-    <TeamGrid id="zespol" :members="visibleTeamMembers" />
-
-    <HomeContactForm />
   </main>
 </template>
 

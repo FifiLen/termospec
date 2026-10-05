@@ -52,6 +52,29 @@ export const normalizeCatalogueText = (value: string) => {
     .replace(/ł/g, "l");
 };
 
+export const filterCatalogueCategories = (
+  categories: ProductNavigationCategory[],
+  search: string,
+): ProductNavigationCategory[] => {
+  const query = normalizeCatalogueText(search.trim());
+  const matches = (label: string) => normalizeCatalogueText(label).includes(query);
+
+  if (!query) return categories;
+
+  return categories.flatMap((category) => {
+    if (matches(category.label)) return [category];
+
+    const entries = category.entries.filter((entry) => matches(entry.label));
+    const groups = category.groups.flatMap((group) => {
+      if (matches(group.label)) return [group];
+      const matchingEntries = group.entries.filter((entry) => matches(entry.label));
+      return matchingEntries.length ? [{ ...group, entries: matchingEntries }] : [];
+    });
+
+    return entries.length || groups.length ? [{ ...category, entries, groups }] : [];
+  });
+};
+
 export const productSlug = (
   product: CatalogueProductRecord,
   fallbackTitle: string,

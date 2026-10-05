@@ -3,10 +3,13 @@ import { homeScopeImage, homeScopeItems } from "~~/data/home";
 </script>
 
 <template>
-  <section id="zakres" class="bg-transparent px-5 pt-20 sm:px-8 lg:px-12 lg:pt-28">
+  <section
+    id="zakres"
+    class="bg-transparent px-5 pt-20 sm:px-8 lg:px-12 lg:pt-28"
+  >
     <div class="mx-auto max-w-[92rem]">
       <div
-        class="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(24rem,0.9fr)] lg:items-end lg:gap-16"
+        class="relative z-20 grid gap-10 lg:grid-cols-[minmax(0,1.25fr)_minmax(24rem,0.75fr)] lg:items-end lg:gap-16"
       >
         <div>
           <p class="flex items-center gap-3 text-sm font-medium text-muted">
@@ -17,9 +20,9 @@ import { homeScopeImage, homeScopeItems } from "~~/data/home";
           <h2
             class="mt-7 max-w-none text-[clamp(2.75rem,5vw,4.75rem)] font-medium leading-[1.02] tracking-[-0.045em] text-ink"
           >
-            <span class="xl:block">Rozwiązania techniczne</span>
-            <span class="xl:block">dla wymagających</span>
-            <span class="xl:block">instalacji.</span>
+            <span class="block">Rozwiązania techniczne</span>
+            <span class="block">dla wymagających</span>
+            <span class="block">instalacji.</span>
           </h2>
         </div>
 
@@ -30,14 +33,15 @@ import { homeScopeImage, homeScopeItems } from "~~/data/home";
         </p>
       </div>
 
-      <div class="group mt-14 aspect-[13/4] overflow-hidden rounded-3xl bg-line/45 lg:mt-16">
+      <div class="mt-14 aspect-[13/4] overflow-hidden rounded-3xl bg-line/45 lg:mt-16">
         <NuxtImg
           :src="homeScopeImage.src"
           :alt="homeScopeImage.alt"
           width="2600"
           height="800"
           loading="lazy"
-          class="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.015]"
+          decoding="async"
+          class="h-full w-full object-cover object-center"
         />
       </div>
 

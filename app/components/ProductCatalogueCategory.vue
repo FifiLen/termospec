@@ -77,6 +77,7 @@ const focusLabel = computed(() => {
 
     <section
       v-if="hasFocusStage"
+      :id="activeGroup?.slug"
       class="relative grid overflow-hidden border-b border-line bg-surface"
       :class="focusRender ? 'lg:grid-cols-[minmax(20rem,0.85fr)_minmax(26rem,1.15fr)]' : ''"
       :aria-label="focusLabel"

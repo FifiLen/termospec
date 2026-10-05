@@ -42,7 +42,7 @@ export const searchQuickLinkGroups: SearchQuickLinkGroup[] = [
     items: [
       {
         label: "O firmie",
-        description: "Doświadczenie Termospec, historia działalności i zespół.",
+        description: "Doświadczenie Termospec i historia działalności.",
         to: "/o-firmie",
         icon: "i-lucide-file",
       },

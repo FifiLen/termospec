@@ -26,6 +26,12 @@ const route = useRoute();
 const { open: isSearchOpen } = useContentSearch();
 const openMenu = ref<"products" | "services" | null>(null);
 
+const focusProductMenu = async () => {
+  openMenu.value = "products";
+  await nextTick();
+  document.querySelector<HTMLInputElement>("#desktop-products-menu input")?.focus();
+};
+
 watch(() => route.fullPath, () => {
   openMenu.value = null;
 });
@@ -58,6 +64,7 @@ watch(() => route.fullPath, () => {
           :aria-expanded="openMenu === 'products'"
           aria-haspopup="true"
           aria-controls="desktop-products-menu"
+          @keydown.down.prevent="focusProductMenu"
           @mouseenter="openMenu = 'products'"
           @focus="openMenu = 'products'"
           @click="openMenu = null"
@@ -81,6 +88,14 @@ watch(() => route.fullPath, () => {
 
         <NuxtLink to="/#kontakt" class="rounded-full px-5 py-3 text-sm font-medium lowercase text-ink/62 transition-colors hover:text-ink">
           kontakt
+        </NuxtLink>
+
+        <NuxtLink
+          to="/koncesja"
+          class="rounded-full px-5 py-3 text-sm font-medium lowercase transition-colors"
+          :class="route.path === '/koncesja' ? 'bg-panel-soft text-ink' : 'text-ink/62 hover:text-ink'"
+        >
+          koncesja
         </NuxtLink>
       </nav>
 
@@ -162,6 +177,7 @@ watch(() => route.fullPath, () => {
           v-if="openMenu === 'products'"
           id="desktop-products-menu"
           :categories="props.productCategories"
+          @navigate="openMenu = null"
         />
         <ServiceMegaMenu
           v-else

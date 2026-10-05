@@ -150,6 +150,8 @@ Avoid outline buttons that look unfinished. Secondary actions should still feel 
 
 Navigation is critical.
 
+The owner-confirmed `koncesja` link ends the list of page links after `kontakt` on desktop and mobile. Search, locale, funding and accessibility remain utility controls. The `/koncesja` content area stays visually empty until the owner supplies content.
+
 ### Desktop
 
 - Top navbar with logo, primary links, and CTA.
@@ -170,7 +172,7 @@ Navigation is critical.
 Current product mega menu implementation:
 
 - The global header is a floating white rounded bar with a soft shadow, compact pill states, search, locale switcher, and the EU funding mark. It remains visually consistent over the homepage hero and light internal pages rather than switching to a transparent full-width rail.
-- Desktop product and service controls open a separate rounded white panel below the bar. The product panel is one uninterrupted white surface with no title bar, numeric prefixes, internal dividers, or featured-product rail. It renders the complete confirmed catalogue taxonomy — all categories, groups, models and series — in three balanced text columns with viewport-bound scrolling. Categories containing models directly use the same hierarchy as grouped series: a dark group heading followed by compact, light model links in a wrapping row; service shortcuts remain sourced from `data/services.ts`.
+- Desktop product and service controls open a separate rounded white panel below the bar. The product panel mirrors the catalogue: a burgundy searchable accordion index on the left and the selected family/category render with model label and a catalogue link on the right. Its height is capped at `min(42rem, 100dvh - 7.25rem)`; the index scrolls independently and the image fits the remaining preview height. Categories containing models directly use the same hierarchy as grouped series: a dark group heading followed by compact, light model links in a wrapping row; service shortcuts remain sourced from `data/services.ts`.
 - The accessibility-settings control is part of the desktop navigation action cluster directly after the PL/EN switch. It uses the same warm neutral circular treatment and 44 px height as search and language controls; there is no separate floating accessibility button outside the navigation.
 - The accessibility control opens a compact panel aligned under the navigation bar rather than a separate page or floating widget. Its deep-ink header and white control surface use the same rounded geometry as the menu panels; high contrast, text size and motion preferences remain functional on both desktop and mobile.
 - The desktop service mega-menu renders the five confirmed service categories as five equal warm-neutral tiles. `Serwis 24/7` appears only once in that list; there is no separate emergency-service aside duplicating it.
@@ -179,7 +181,7 @@ Current product mega menu implementation:
 
 - Desktop navigation follows the confirmed order `O firmie`, `Produkty`, `Usługi`, `Kontakt`, `Szukaj`; `Aktualności` is removed and the logo remains the home link.
 - `Produkty` and `Usługi` use Nuxt UI `UNavigationMenu` for hover/focus trigger and viewport behavior.
-- `ProductMegaMenu` is a three-column technical index sourced from Studio-editable `content/catalogue.yml`. It shows all nine confirmed uppercase product categories, uppercase subcategories, and exact model lists or series; editorial future-development notes stay hidden from the public menu.
+- `ProductMegaMenu` reuses `ProductCatalogueIndex` from `/produkty`, including its search and category → family → model hierarchy sourced from Studio-editable `content/catalogue.yml`. Category/family/model selection updates the compact preview without navigating; its link opens the selected catalogue hash. Use the same verified family/category render as the catalogue and omit absent artwork. Editorial future-development notes stay hidden. Arrow Down on the desktop product link focuses the menu search.
 - Main categories and uppercase subcategories have optional render slots. Do not show invented image placeholders while final client renders are unavailable.
 - `ServiceMegaMenu` lists the five confirmed service categories and links them to anchored sections on `/uslugi`.
 - The desktop service mega menu highlights `Serwis 24/7` with a deep navy surface and explicit white label/title text. Its visible gap below the navigation bar is implemented as padding inside the active hover region, so moving the pointer from the bar to the service or product panel does not close the menu. `Produkty` and `Usługi` are real route links while retaining hover/focus panel opening.
@@ -205,7 +207,7 @@ Current product mega menu implementation:
 
 ## Contact Section
 
-- The homepage and `/o-firmie` use the same shared `HomeContactForm` section: a deep navy contact/map panel paired with the warm-neutral technical inquiry form. Do not fork its visual implementation between routes.
+- The homepage uses `HomeContactForm`: a deep navy contact/map panel paired with the warm-neutral technical inquiry form. The owner removed the contact and team sections from `/o-firmie`; that page now ends after the company timeline.
 - The embedded Google map remains clearly legible with only a light deep-ink tonal veil. Do not restore the decorative `Mapa — lokalizacja zakładu` caption; the map's accessible iframe title and the `Otwórz w Mapach` action provide sufficient orientation.
 
 ## Homepage Partners
@@ -221,6 +223,7 @@ Current product mega menu implementation:
 ## Homepage Scope
 
 - `HomeScope` follows the same warm editorial surface and `max-w-[92rem]` axis as the adjacent homepage sections. It pairs a three-line heading with a short lead, then uses one rounded panoramic image and three equal service cards.
+- The headquarters panorama is a single static photograph in the original rounded 13:4 frame. The owner requested removal of the architectural cutout and parallax; keep the image free of scroll and hover transforms.
 - `Klimatyzacja` is the only emphasized scope card and uses the burgundy `bg-brand` token with white content. Do not restore the previous deep-navy emphasis or split-photo background. The other two cards use the solid, non-transparent `bg-panel-soft` surface so the background motif never shows through their content.
 
 ## Homepage Realizations

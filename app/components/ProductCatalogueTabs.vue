@@ -83,7 +83,7 @@ const selectAdjacent = async (
 </script>
 
 <template>
-  <div v-if="props.entries.length" class="relative bg-white">
+  <div v-if="props.entries.length" :id="activeEntry?.id" class="relative scroll-mt-28 bg-white">
     <div
       v-if="selectableEntries.length"
       class="border-b border-line px-6 py-7 md:px-8 lg:px-10 lg:py-8"

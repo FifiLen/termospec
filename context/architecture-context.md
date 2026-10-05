@@ -76,6 +76,8 @@ Routes can be reduced if scope is smaller, but should not become inconsistent wi
 Current product scope uses `/produkty` only; product detail pages are not planned.
 The confirmed service categories use one index route, `/uslugi`, with anchored sections; service detail routes are not planned yet.
 There is no standalone contact page in the current implementation; contact CTAs target `/#kontakt`.
+The company page ends after its history section and no longer fetches team records or renders team/contact sections. The legacy `/zespol` route redirects to `/o-firmie` without the removed team anchor; the footer no longer links to that section.
+The owner-confirmed `/koncesja` route is prerendered and currently contains only an accessible page heading inside the shared site shell; its visible content remains empty.
 
 ## SEO Model
 
@@ -126,6 +128,7 @@ Pages should be composed from reusable sections:
 - `HomePartners`
 - `HomeRealizations`
 - `HomeContactForm`
+- `ProductCatalogueIndex`
 - `ProductCatalogueCategory`
 - `ProductCatalogueTabs`
 - `ProductCatalogueDetail`
@@ -139,6 +142,8 @@ Components should accept data through props. Do not make every component fetch o
 The public app does not use the global Nuxt UI `UApp` shell because it has no global toast or programmatic overlay requirement. Search triggers are native buttons, while the lazy content-search modal is wrapped only in `UiLocaleProvider` so Polish accessibility labels remain available without loading the global toaster, tooltip, and overlay providers in the entry chunk.
 
 Client bundle boundaries are intentional: Lenis is imported dynamically only when reduced motion is not requested, the mobile navigation panel is lazy, and `tailwind-merge` is isolated as the stable `style-runtime` vendor chunk. Keep the largest production JavaScript chunk below Vite's 500 kB warning threshold; do not silence the warning by increasing the threshold.
+
+`ProductCatalogueIndex` is the shared prop-driven search/accordion panel used by `/produkty` and the desktop product mega-menu. Each host owns independent selection and expansion state; both use `filterCatalogueCategories` and `resolveCatalogueSelection` for consistent filtering and stable ids. Each index creates a unique search input id. The mega-menu reuses catalogue family/category renders without fetching full product sheets. Catalogue hash navigation is watched on the existing route as well as on initial mount, and clears an obsolete page search before applying an external selection.
 
 ## State and Interactivity
 

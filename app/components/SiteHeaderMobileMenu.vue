@@ -112,6 +112,15 @@ defineExpose({
           <span>kontakt</span><span class="text-base text-white/38" aria-hidden="true">→</span>
         </NuxtLink>
 
+        <NuxtLink
+          to="/koncesja"
+          class="flex min-h-16 items-center justify-between rounded-[1.25rem] px-5 text-[1.7rem] font-medium tracking-[-0.035em] transition-colors"
+          :class="route.path === '/koncesja' ? 'bg-white/10 text-white' : 'text-white/[0.86] hover:bg-white/[0.06]'"
+          @click="emit('navigate')"
+        >
+          <span>koncesja</span><span class="text-base text-white/38" aria-hidden="true">→</span>
+        </NuxtLink>
+
         <button
           type="button"
           data-accessibility-trigger

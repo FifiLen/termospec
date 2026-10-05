@@ -11,6 +11,10 @@ This file defines the content structure for the Termospec website. It should be 
 - Keep technical claims specific, but only when verified.
 - Do not invent certifications, parameters, partners, or project names.
 
+## Product Mega Menu
+
+The desktop product menu mirrors the `/produkty` index through the shared `ProductCatalogueIndex`: searchable categories, expandable families and model/series selectors. Selection updates a right-hand thumbnail using the exact family/category artwork from `content/catalogue.yml`, with the chosen model label and a `Zobacz w katalogu` link to its stable hash. Missing artwork stays absent. The panel fits the available viewport height and the index scrolls independently; the existing mobile main menu remains unchanged.
+
 ## Suggested Navigation
 
 ```ts
@@ -29,11 +33,14 @@ export const navigation = [
     items: "serviceNavigation from data/navigation.ts"
   },
   { label: "Kontakt", href: "/#kontakt" },
+  { label: "Koncesja", href: "/koncesja" },
   { label: "Szukaj", type: "search" }
 ]
 ```
 
 ## Company Data
+
+The owner-confirmed `koncesja` link is the final page link in the desktop and mobile main navigation, after `kontakt`. `/koncesja` is intentionally empty for now, retaining the shared header/footer and a visually hidden heading. Its search entry contains only the confirmed title; document copy and files remain unauthored.
 
 Single source of truth example:
 
@@ -100,7 +107,7 @@ Current homepage composition:
 
 - `HomeHero` — full-viewport four-slide editorial carousel sourced from Studio-editable `content/home.yml`. Every slide keeps its art-directed desktop/mobile `<picture>` source and focal position. The first slide uses the client-confirmed canonical headquarters photograph at `/budynek-termospec.png` for both breakpoints. Regular slides render the photograph across the entire viewport behind a full-height desktop glass column occupying the left `42%`; on mobile the blurred deep-ink column becomes a lower panel so the image remains visible above it. The column contains the authored title, caption, lead and actions plus the first three existing facts from `aboutMetrics`; no metrics are invented in the hero. A compact lower-right capsule contains direct `01–04` selectors, autoplay progress and previous/next controls. The `pelny-kadr` machining slide keeps `/images/hero/crops/obrobka-stali-final-desktop.png` (`2172×724`) fully visible over its softly enlarged backdrop without duplicated HTML copy, while retaining the separate mobile crop. The sequence remains headquarters, underground cooling equipment, central mine cooling installation, and machining capabilities. The global navigation is unchanged. Autoplay, interaction pause, responsive sources, GSAP cleanup and `prefers-reduced-motion` remain supported.
 - `HomePartners` — rounded deep-navy trust section based on `homePartners` and `homePartnerIndustries` in `data/home.ts`. It uses the approved `Partnerzy i klienci` heading, relationship copy, ten neutral logo slots in two desktop rows, and six confirmed industry labels. Replace the neutral slots with verified partner logos before publication; do not publish invented company names.
-- `HomeScope` — editorial scope section based on `homeScopeItems` and `homeScopeImage` in `data/home.ts`. It uses the shared `max-w-[92rem]` axis, a split heading/lead row, the client-confirmed headquarters photograph from `/budynek-termospec.png`, and three rounded service cards. The first `Klimatyzacja` card is the single red brand-emphasis surface; `Wentylacja` and `Energia odnawialna` remain on warm neutral surfaces. Each card has one confirmed product/service route action.
+- `HomeScope` — editorial scope section based on `homeScopeItems` and `homeScopeImage` in `data/home.ts`. It uses the shared `max-w-[92rem]` axis, a split heading/lead row, the client-confirmed headquarters photograph from `/budynek-termospec.png`, and three rounded service cards. The headquarters media is one static photograph in the original rounded 13:4 panoramic frame, without cutout layers, parallax or image hover transforms. The first `Klimatyzacja` card is the single red brand-emphasis surface; `Wentylacja` and `Energia odnawialna` remain on warm neutral surfaces. Each card has one confirmed product/service route action.
 - `HomeProcess` — technical process section based on `homeProcessSteps` in `data/home.ts`.
 - `HomeRealizations` — editorial project register based on `homeFeaturedRealization` and `homeRealizations` in `data/home.ts`. One wide mining implementation combines a panoramic local image, scope copy and four technical facts; three supporting projects form a static image-led row below it. The full-reference CTA leads to the existing contact section until a dedicated realizations route is confirmed.
 - `HomeContactForm` — visual contact form shell based on `homeContactTopics` in `data/home.ts`; backend handling is still not confirmed.
@@ -139,7 +146,7 @@ Current root markdown search-index entries:
 - `content/index.md` mirrors the currently rendered homepage sections: scope, partners, realizations, homepage contact form, global navigation labels, and interface labels.
 - `content/produkty.md` mirrors the visible product catalogue UI plus all current product-family YAML fields that are relevant to search: title, category, lead, short description, specs, applications, components, features, service scope, related realizations, technical sections, and image alt text.
 - `content/uslugi.md` mirrors the five confirmed service categories, detailed scopes, calls to action, and metalworking machine specifications rendered on `/uslugi`.
-- `content/o-firmie.md` mirrors the company page copy plus current team YAML names and visible roles.
+- `content/o-firmie.md` mirrors the company page copy; team and contact sections have been removed at the owner’s request.
 - `content/dofinansowania.md` mirrors the funding projects page and the EU/regional project copy rendered from `data/dofinansowania.ts`.
 - `content/rodo.md` mirrors the RODO information clause rendered from `data/rodo.ts`.
 
@@ -153,14 +160,12 @@ Current `/dofinansowania` composition:
 Current `/o-firmie` composition:
 
 - `data/about.ts` stores the page hero, fact strip, client-supplied company profile, specialization list, supporting editorial sections, and the company timeline milestones. The current client copy consistently states nearly 30 years of experience alongside the existing 500 MW total cooling capacity, underground mine/tunnel applications, and international mine deliveries.
-- `app/pages/o-firmie.vue` follows the approved precise light editorial design. It uses DM Sans throughout, a left-aligned company statement above the client-confirmed headquarters photograph from `/budynek-termospec.png`, one editorial profile column with a two-column specialization list, two equal rounded value panels, a horizontal five-point company timeline with alternating cards and a highlighted middle milestone, a four-person portrait row, and a final two-panel contact/map/form composition. The timeline collapses to a vertical card sequence on mobile. The warm surface, deep navy, and restrained burgundy accents are the only visible color system on this page.
+- `app/pages/o-firmie.vue` follows the approved precise light editorial design. It uses DM Sans throughout, a left-aligned company statement above the client-confirmed headquarters photograph from `/budynek-termospec.png`, one editorial profile column with a two-column specialization list, two equal rounded value panels, a horizontal five-point company timeline with alternating cards and a highlighted middle milestone. The page ends after the timeline; team and contact sections are removed at the owner’s request. The timeline collapses to a vertical card sequence on mobile. The warm surface, deep navy, and restrained burgundy accents are the only visible color system on this page.
 
 Current `/uslugi` composition:
 
 - `data/services.ts` contains the five client-confirmed service records: headings, introductory copy, detailed sections, bullet scopes, calls to action, and the metalworking machine park with technical specifications.
 - `app/pages/uslugi.vue` renders all five records from `data/services.ts` as complete anchored editorial sections in the supplied warm, rounded service-page design. The top page index links to the established anchors, the `Serwis 24/7` section carries the emergency phone treatment, and the `Obróbka metali` section expands the structured machine park into paired specification cards. The fourth display label remains `Obróbka metali`; its existing `#obrobka-metali-skrawaniem-i-laserem` anchor is preserved for inbound-link compatibility.
-- `TeamGrid` uses the same warm page surface and horizontal axis as `/o-firmie`, with a balanced heading/lead row and four rounded 4:5 portraits. Names and roles sit below each portrait; department grouping, bios, email links, and extra team records are not rendered in this approved composition.
-- The bottom contact section is the same shared `HomeContactForm` used on `/`, including map/contact details and the visual form shell backed by `homeContactTopics`.
 - Legacy `/o-nas` remains as a 301 redirect to `/o-firmie`.
 - Nuxt UI components are used for visible UI primitives on the page: `UIcon`.
 - The page intentionally avoids the removed oversized split-claim treatment and keeps the calmer grid/image rhythm requested for company/about pages.
@@ -420,9 +425,10 @@ Current search-index files:
 - `content/produkty.md` -> `/produkty`
 - `content/uslugi.md` -> `/uslugi`
 - `content/o-firmie.md` -> `/o-firmie`
-- Contact search content is indexed through `content/index.md` and `content/o-firmie.md`; there is no standalone `/kontakt` content page.
+- Contact search content is indexed through `content/index.md`; there is no standalone `/kontakt` content page.
 - `content/dofinansowania.md` -> `/dofinansowania`
 - `content/rodo.md` -> `/rodo`
+- `content/koncesja.md` -> `/koncesja`
 
 For `/produkty`, product headings use explicit anchors matching the catalogue anchors, e.g. `#produkt-chlodziarki-bezposredniego-dzialania`, so search results can jump into the existing catalogue page without adding product detail routes.
 
