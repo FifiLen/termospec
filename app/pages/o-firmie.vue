@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { aboutProfile, aboutTimeline } from "~~/data/about";
 
+const milestones = aboutTimeline.slice(0, 5);
+
 useSeoMeta({
   title: "O firmie | Termospec",
   description:
@@ -9,148 +11,118 @@ useSeoMeta({
 </script>
 
 <template>
-  <main aria-label="O firmie" class="overflow-hidden bg-surface font-sans text-ink">
-    <section class="px-5 pb-20 pt-32 sm:px-8 lg:px-12 lg:pb-28 lg:pt-40" aria-labelledby="about-title">
-      <div class="mx-auto max-w-[92rem]">
-        <p class="flex items-center gap-3 text-xs font-medium text-ink/52">
-          <span class="size-1.5 rounded-full bg-brand" aria-hidden="true" />
-          O firmie
-        </p>
+  <main aria-label="O firmie" class="bg-surface text-ink">
+    <section
+      aria-labelledby="about-title"
+      class="pb-[clamp(3.5rem,4.1vw,5rem)] pt-[calc(var(--site-header-height)+clamp(3rem,5vw,6rem))]"
+    >
+      <div class="design-shell">
+        <SectionEyebrow label="O firmie" />
 
-        <h1
-          id="about-title"
-          class="mt-7 max-w-[24ch] text-balance font-sans text-[clamp(2.65rem,5.2vw,5.35rem)] font-medium leading-[0.98] tracking-[-0.055em] text-ink"
-        >
+        <h1 id="about-title" class="design-heading mt-[clamp(1.75rem,2.5vw,3rem)] max-w-[28ch] text-balance">
           {{ aboutProfile.title }}
         </h1>
 
-        <p class="mt-8 max-w-[46rem] text-base leading-7 text-ink/58 md:text-lg md:leading-8">
-          {{ aboutProfile.lead }}
-        </p>
-
-        <figure class="about-media mt-14 overflow-hidden rounded-[1.75rem] bg-[#ebe6dd] md:mt-20">
-          <NuxtImg
-            src="/budynek-termospec.png"
-            alt="Siedziba i zakład Termospec w Żorach"
-            width="2200"
-            height="900"
-            class="aspect-[2.45/1] min-h-64 w-full object-cover"
-            loading="eager"
-            decoding="async"
-          />
-        </figure>
-
-        <div class="mt-20 grid gap-12 lg:mt-28 lg:grid-cols-[1.05fr_0.95fr] lg:gap-20">
-          <div>
-            <p class="text-[clamp(1.45rem,2.25vw,2.15rem)] font-medium leading-[1.42] tracking-[-0.025em] text-ink">
-              {{ aboutProfile.intro }}
-            </p>
-          </div>
-
-          <div class="lg:pt-1">
-            <p class="text-base leading-7 text-ink/58 md:text-lg md:leading-8">
-              {{ aboutProfile.servicesIntro }}
-            </p>
-            <ul class="mt-9 grid content-start gap-y-6">
-              <li
-                v-for="specialty in aboutProfile.specialties"
-                :key="specialty"
-                class="grid grid-cols-[0.5rem_1fr] gap-4 text-base leading-7 text-ink"
-              >
-                <span class="mt-[0.7rem] size-1.5 rounded-full bg-brand" aria-hidden="true" />
-                <span>{{ specialty }}.</span>
-              </li>
-            </ul>
-          </div>
+        <div class="mt-[clamp(1.5rem,2.5vw,3rem)] grid lg:grid-cols-[58fr_42fr]">
+          <p class="design-lead max-w-[46rem] lg:col-start-2">
+            {{ aboutProfile.lead }}
+          </p>
         </div>
+
+        <img
+          src="/budynek-termospec.png"
+          alt="Siedziba i zakład Termospec w Żorach"
+          width="1672"
+          height="941"
+          loading="eager"
+          decoding="async"
+          class="mt-[clamp(2.5rem,4vw,4.8rem)] aspect-[2.45/1] min-h-64 w-full rounded-[clamp(1.5rem,4.95vw,5.95rem)] object-cover"
+        >
       </div>
     </section>
 
-    <section class="px-5 py-20 sm:px-8 lg:px-12 lg:py-28" aria-label="Podejście do współpracy">
-      <div class="mx-auto grid max-w-[92rem] gap-5 lg:grid-cols-2">
+    <section aria-label="Profil firmy" class="bg-white py-[clamp(3.5rem,4.1vw,5rem)]">
+      <div class="design-shell grid gap-10 lg:grid-cols-[58fr_42fr] lg:gap-[clamp(2rem,4vw,4.8rem)]">
+        <div>
+          <SectionEyebrow label="Profil" />
+          <p class="mt-[clamp(1.75rem,2.5vw,3rem)] text-[clamp(1.5rem,2.1vw,2.5rem)] font-bold leading-[1.35] tracking-[-0.01em] text-heading">
+            {{ aboutProfile.intro }}
+          </p>
+        </div>
+
+        <article class="rounded-[clamp(1.5rem,2.6vw,3.1rem)] bg-surface p-[clamp(1.75rem,3vw,3.6rem)]">
+          <p class="design-body">
+            {{ aboutProfile.servicesIntro }}
+          </p>
+          <div class="my-[clamp(1.25rem,1.6vw,1.9rem)] h-0.5 bg-line" />
+          <ul class="grid gap-[clamp(0.5rem,0.75vw,0.9rem)]">
+            <li
+              v-for="specialty in aboutProfile.specialties"
+              :key="specialty"
+              class="design-body flex gap-2 text-heading"
+            >
+              <span aria-hidden="true" class="text-brand">–</span>
+              {{ specialty }}
+            </li>
+          </ul>
+          <NuxtLink to="/uslugi" class="design-button mt-[clamp(1.75rem,2.6vw,3.1rem)] bg-brand text-white hover:bg-ink">
+            zobacz usługi <span aria-hidden="true">→</span>
+          </NuxtLink>
+        </article>
+      </div>
+    </section>
+
+    <section aria-label="Podejście do współpracy" class="py-[clamp(3.5rem,4.1vw,5rem)]">
+      <div class="design-shell grid gap-5 lg:grid-cols-2 lg:gap-[clamp(1.5rem,3.1vw,3.75rem)]">
         <article
           v-for="(item, index) in aboutProfile.sections"
           :key="item.title"
-          class="about-panel flex min-h-[22rem] flex-col justify-between rounded-[1.75rem] p-8 md:p-12 lg:p-14"
-          :class="index === 0 ? 'bg-ink text-white' : 'bg-[#ebe6dd] text-ink'"
+          class="flex flex-col rounded-[clamp(1.75rem,3.1vw,3.75rem)] p-[clamp(1.75rem,3.85vw,4.6rem)]"
+          :class="index === 0 ? 'bg-ink text-white' : 'bg-white text-heading'"
         >
-          <h2 class="max-w-[16ch] font-sans text-[clamp(2rem,3vw,3.1rem)] font-medium leading-[1.05] tracking-[-0.045em]" :class="index === 0 ? 'text-white' : 'text-ink'">
+          <p class="text-[clamp(1.05rem,1.31vw,1.57rem)] font-semibold leading-none" :class="index === 0 ? 'text-white' : 'text-brand'">
+            {{ String(index + 1).padStart(2, "0") }}
+          </p>
+          <h2 class="mt-[clamp(1.5rem,2.3vw,2.75rem)] max-w-[16ch] text-[clamp(2rem,2.82vw,3.4rem)] font-bold leading-[1.12] tracking-[-0.015em] text-current">
             {{ item.title }}
           </h2>
-          <p class="mt-12 max-w-[35rem] text-sm leading-7 md:text-base" :class="index === 0 ? 'text-white/66' : 'text-ink/58'">
+          <div class="my-[clamp(1.5rem,2.1vw,2.5rem)] h-0.5" :class="index === 0 ? 'bg-white/15' : 'bg-line'" />
+          <p class="text-[clamp(1rem,1.15vw,1.38rem)] leading-[1.6]" :class="index === 0 ? 'text-white/80' : 'text-muted'">
             {{ item.body }}
           </p>
         </article>
       </div>
     </section>
 
-    <section id="historia" class="px-5 py-20 sm:px-8 lg:px-12 lg:py-28" aria-labelledby="history-title">
-      <div class="mx-auto max-w-[92rem]">
-        <p class="flex items-center gap-3 text-xs font-medium text-ink/52">
-          <span class="size-1.5 rounded-full bg-brand" aria-hidden="true" />
-          Historia firmy
-        </p>
-        <h2 id="history-title" class="mt-7 max-w-[15ch] font-sans text-[clamp(2.75rem,4.7vw,4.8rem)] font-medium leading-[1.02] tracking-[-0.05em] text-ink">
-          Trzy dekady konsekwentnego rozwoju.
+    <section id="historia" aria-labelledby="history-title" class="bg-white py-[clamp(3.5rem,4.1vw,5rem)]">
+      <div class="design-shell">
+        <SectionEyebrow label="Historia firmy" />
+        <h2 id="history-title" class="design-heading mt-[clamp(1.75rem,2.5vw,3rem)]">
+          Trzy dekady<br class="hidden lg:inline">
+          konsekwentnego rozwoju.
         </h2>
 
-        <div class="mt-20 hidden lg:block">
-          <div class="grid min-h-[22rem] grid-cols-5 items-end gap-5">
-            <template v-for="(milestone, index) in aboutTimeline.slice(0, 5)" :key="`top-${milestone.year}`">
-              <article
-                v-if="index % 2 === 0"
-                class="timeline-card w-full max-w-64 justify-self-center rounded-[1.5rem] p-7 transition duration-300 hover:-translate-y-1"
-                :class="index === 2 ? 'bg-ink text-white' : 'bg-[#ebe6dd] text-ink'"
-              >
-                <h3 class="font-sans text-xl font-semibold leading-[1.15] tracking-[-0.025em]" :class="index === 2 ? 'text-white' : 'text-ink'">
-                  {{ milestone.title }}
-                </h3>
-                <p v-if="milestone.body" class="mt-5 text-sm leading-6" :class="index === 2 ? 'text-white/66' : 'text-ink/52'">
-                  {{ milestone.body }}
-                </p>
-              </article>
-              <div v-else aria-hidden="true" />
-            </template>
-          </div>
-
-          <div class="relative mt-7 grid grid-cols-5 border-t-2 border-[#dfd8cc]">
-            <div
-              v-for="milestone in aboutTimeline.slice(0, 5)"
-              :key="`axis-${milestone.year}`"
-              class="group relative pt-7 text-center"
-            >
-              <span class="absolute left-1/2 top-0 size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand ring-8 ring-surface transition-transform duration-300 group-hover:scale-125" aria-hidden="true" />
-              <p class="text-[clamp(1.25rem,1.7vw,1.75rem)] font-medium leading-tight tracking-[-0.03em] text-brand">
-                {{ milestone.year }}
-              </p>
+        <ol class="mt-[clamp(2.5rem,4.15vw,5rem)] grid gap-6 lg:grid-cols-5 lg:gap-[clamp(1rem,1.6vw,1.9rem)]">
+          <li
+            v-for="milestone in milestones"
+            :key="milestone.year"
+            class="group relative flex flex-col ps-8 lg:ps-0"
+          >
+            <span aria-hidden="true" class="absolute inset-y-0 start-1.5 w-0.5 bg-line lg:hidden" />
+            <p class="text-[clamp(1.5rem,2.1vw,2.5rem)] font-bold leading-none text-brand">
+              {{ milestone.year }}
+            </p>
+            <div aria-hidden="true" class="relative my-[clamp(1.25rem,1.6vw,1.9rem)] hidden h-0.5 bg-line lg:block lg:-me-[clamp(1rem,1.6vw,1.9rem)] lg:group-last:me-0">
+              <span class="absolute start-0 top-1/2 size-3.5 -translate-y-1/2 rounded-full bg-brand ring-8 ring-white" />
             </div>
-          </div>
-
-          <div class="grid min-h-[24rem] grid-cols-5 items-start gap-5 pt-14">
-            <template v-for="(milestone, index) in aboutTimeline.slice(0, 5)" :key="`bottom-${milestone.year}`">
-              <article
-                v-if="index % 2 === 1"
-                class="timeline-card w-full max-w-64 justify-self-center rounded-[1.5rem] bg-[#ebe6dd] p-7 text-ink transition duration-300 hover:-translate-y-1"
-              >
-                <h3 class="font-sans text-xl font-semibold leading-[1.15] tracking-[-0.025em] text-ink">
-                  {{ milestone.title }}
-                </h3>
-                <p v-if="milestone.body" class="mt-5 text-sm leading-6 text-ink/52">
-                  {{ milestone.body }}
-                </p>
-              </article>
-              <div v-else aria-hidden="true" />
-            </template>
-          </div>
-        </div>
-
-        <ol class="relative mt-14 space-y-7 ps-8 before:absolute before:inset-y-3 before:start-1.5 before:w-px before:bg-[#dfd8cc] lg:hidden">
-          <li v-for="(milestone, index) in aboutTimeline.slice(0, 5)" :key="`mobile-${milestone.year}`" class="relative">
-            <span class="absolute -start-[1.875rem] top-6 size-3 rounded-full bg-brand ring-4 ring-surface" aria-hidden="true" />
-            <p class="mb-3 text-lg font-medium tracking-[-0.02em] text-brand">{{ milestone.year }}</p>
-            <article class="rounded-[1.5rem] p-6" :class="index === 2 ? 'bg-ink text-white' : 'bg-[#ebe6dd] text-ink'">
-              <h3 class="font-sans text-xl font-semibold leading-tight" :class="index === 2 ? 'text-white' : 'text-ink'">{{ milestone.title }}</h3>
-              <p v-if="milestone.body" class="mt-4 text-sm leading-6" :class="index === 2 ? 'text-white/66' : 'text-ink/52'">{{ milestone.body }}</p>
+            <span aria-hidden="true" class="absolute start-0 top-[0.35em] size-3.5 rounded-full bg-brand ring-4 ring-white lg:hidden" />
+            <article class="mt-4 flex-1 rounded-[clamp(1.5rem,2.1vw,2.5rem)] bg-surface p-[clamp(1.5rem,2vw,2.4rem)] lg:mt-0">
+              <h3 class="design-subheading text-[clamp(1.2rem,1.3vw,1.55rem)]">
+                {{ milestone.title }}
+              </h3>
+              <p v-if="milestone.body" class="mt-3 text-[clamp(0.95rem,0.98vw,1.18rem)] leading-[1.55] text-muted">
+                {{ milestone.body }}
+              </p>
             </article>
           </li>
         </ol>
@@ -158,30 +130,3 @@ useSeoMeta({
     </section>
   </main>
 </template>
-
-<style scoped>
-@keyframes about-rise {
-  from {
-    opacity: 0;
-    transform: translateY(1.25rem);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .about-media {
-    animation: about-rise 700ms 120ms cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-
-  .about-panel {
-    transition: transform 260ms ease;
-  }
-
-  .about-panel:hover {
-    transform: translateY(-0.3rem);
-  }
-}
-</style>
