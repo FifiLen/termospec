@@ -43,24 +43,24 @@ watch(() => route.fullPath, () => {
     @mouseleave="openMenu = null"
     @keydown.esc="openMenu = null"
   >
-    <div class="grid min-h-[4.5rem] grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-7 rounded-[1.75rem] bg-white px-6 shadow-[0_16px_50px_rgb(18_11_56_/_0.08)]">
+    <div class="grid min-h-[var(--site-header-height)] grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-7 bg-white px-[var(--design-gutter)] shadow-[0_1px_0_rgb(10_24_71_/_0.08)]">
       <NuxtLink to="/" aria-label="Termospec, strona główna" class="inline-flex pe-2 outline-none">
-        <NuxtImg src="/termospec-logo.png" alt="Termospec" width="132" class="h-auto w-32" />
+        <img src="/images/brand/termospec-logo.svg" alt="Termospec" width="275" height="40" class="h-auto w-[clamp(11rem,14.3vw,17.2rem)]">
       </NuxtLink>
 
-      <nav class="flex items-center gap-1" aria-label="Główna nawigacja">
+      <nav class="flex items-center gap-[clamp(0.25rem,1.1vw,1.4rem)] ps-[clamp(1rem,8vw,10rem)]" aria-label="Główna nawigacja">
         <NuxtLink
           to="/o-firmie"
-          class="rounded-full px-5 py-3 text-sm font-medium lowercase transition-colors"
-          :class="route.path === '/o-firmie' ? 'bg-[#f1ede6] text-ink' : 'text-ink/62 hover:text-ink'"
+          class="rounded-full px-[clamp(0.75rem,0.8vw,1rem)] py-2.5 text-[clamp(1rem,1.18vw,1.42rem)] font-bold transition-colors"
+          :class="route.path === '/o-firmie' ? 'text-brand' : 'text-heading hover:text-brand'"
         >
-          o firmie
+          O firmie
         </NuxtLink>
 
         <NuxtLink
           to="/produkty"
-          class="rounded-full px-5 py-3 text-sm font-medium lowercase transition-colors"
-          :class="openMenu === 'products' || route.path.startsWith('/produkty') ? 'bg-ink text-white' : 'text-ink/62 hover:text-ink'"
+          class="rounded-full px-[clamp(0.75rem,0.8vw,1rem)] py-2.5 text-[clamp(1rem,1.18vw,1.42rem)] font-bold transition-colors"
+          :class="openMenu === 'products' || route.path.startsWith('/produkty') ? 'text-brand' : 'text-heading hover:text-brand'"
           :aria-expanded="openMenu === 'products'"
           aria-haspopup="true"
           aria-controls="desktop-products-menu"
@@ -69,13 +69,13 @@ watch(() => route.fullPath, () => {
           @focus="openMenu = 'products'"
           @click="openMenu = null"
         >
-          produkty
+          Produkty
         </NuxtLink>
 
         <NuxtLink
           to="/uslugi"
-          class="rounded-full px-5 py-3 text-sm font-medium lowercase transition-colors"
-          :class="openMenu === 'services' || route.path.startsWith('/uslugi') ? 'bg-ink text-white' : 'text-ink/62 hover:text-ink'"
+          class="rounded-full px-[clamp(0.75rem,0.8vw,1rem)] py-2.5 text-[clamp(1rem,1.18vw,1.42rem)] font-bold transition-colors"
+          :class="openMenu === 'services' || route.path.startsWith('/uslugi') ? 'text-brand' : 'text-heading hover:text-brand'"
           :aria-expanded="openMenu === 'services'"
           aria-haspopup="true"
           aria-controls="desktop-services-menu"
@@ -83,26 +83,26 @@ watch(() => route.fullPath, () => {
           @focus="openMenu = 'services'"
           @click="openMenu = null"
         >
-          usługi
+          Usługi
         </NuxtLink>
 
-        <NuxtLink to="/#kontakt" class="rounded-full px-5 py-3 text-sm font-medium lowercase text-ink/62 transition-colors hover:text-ink">
-          kontakt
+        <NuxtLink to="/#kontakt" class="rounded-full px-[clamp(0.75rem,0.8vw,1rem)] py-2.5 text-[clamp(1rem,1.18vw,1.42rem)] font-bold text-heading transition-colors hover:text-brand">
+          Kontakt
         </NuxtLink>
 
         <NuxtLink
           to="/koncesja"
-          class="rounded-full px-5 py-3 text-sm font-medium lowercase transition-colors"
-          :class="route.path === '/koncesja' ? 'bg-panel-soft text-ink' : 'text-ink/62 hover:text-ink'"
+          class="rounded-full px-[clamp(0.75rem,0.8vw,1rem)] py-2.5 text-[clamp(1rem,1.18vw,1.42rem)] font-bold transition-colors"
+          :class="route.path === '/koncesja' ? 'text-brand' : 'text-heading hover:text-brand'"
         >
-          koncesja
+          Koncesja
         </NuxtLink>
       </nav>
 
       <div class="flex items-center gap-3">
         <button
           type="button"
-          class="inline-flex min-h-11 items-center gap-2.5 rounded-full bg-[#f1ede6] px-4 text-sm text-ink/48 transition-colors hover:text-ink"
+          class="inline-flex min-h-11 items-center gap-2.5 rounded-full bg-chip px-4 text-sm text-ink/48 transition-colors hover:text-ink"
           @click="isSearchOpen = true"
         >
           <svg
@@ -121,7 +121,7 @@ watch(() => route.fullPath, () => {
           <span>szukaj</span>
         </button>
 
-        <div class="flex min-h-11 items-center rounded-full bg-[#f1ede6] p-1 text-xs font-medium">
+        <div class="flex min-h-11 items-center rounded-full bg-chip p-1 text-xs font-medium">
           <button type="button" class="grid min-h-9 min-w-10 place-items-center rounded-full bg-ink px-3 text-white" aria-pressed="true">PL</button>
           <button type="button" class="grid min-h-9 min-w-10 place-items-center rounded-full px-3 text-ink/42" aria-pressed="false">EN</button>
         </div>
@@ -130,7 +130,7 @@ watch(() => route.fullPath, () => {
           type="button"
           data-accessibility-trigger
           class="grid size-11 shrink-0 place-items-center rounded-full transition-colors"
-          :class="props.accessibilityOpen ? 'bg-ink text-white' : 'bg-[#f1ede6] text-ink hover:bg-[#e9e3da] hover:text-brand'"
+          :class="props.accessibilityOpen ? 'text-brand' : 'bg-chip text-ink hover:bg-field hover:text-brand'"
           aria-label="Ustawienia dostępności"
           aria-haspopup="dialog"
           aria-controls="accessibility-panel"
@@ -157,7 +157,7 @@ watch(() => route.fullPath, () => {
         <NuxtLink
           to="/dofinansowania"
           aria-label="Dofinansowanie ze środków Unii Europejskiej"
-          class="grid h-11 w-32 place-items-center overflow-hidden rounded-full bg-[#f1ede6] px-3 transition-colors hover:bg-[#e9e3da]"
+          class="grid h-11 w-32 place-items-center overflow-hidden rounded-full bg-chip px-3 transition-colors hover:bg-field"
         >
           <NuxtImg src="/panel-dofinansowanie.png" alt="Unia Europejska" width="150" class="max-h-9 w-auto object-contain" />
         </NuxtLink>
@@ -173,17 +173,19 @@ watch(() => route.fullPath, () => {
       leave-to-class="-translate-y-2 opacity-0"
     >
       <div v-if="openMenu" class="absolute inset-x-0 top-full pt-3">
-        <ProductMegaMenu
-          v-if="openMenu === 'products'"
-          id="desktop-products-menu"
-          :categories="props.productCategories"
-          @navigate="openMenu = null"
-        />
-        <ServiceMegaMenu
-          v-else
-          id="desktop-services-menu"
-          :services="props.services"
-        />
+        <div class="design-shell">
+          <ProductMegaMenu
+            v-if="openMenu === 'products'"
+            id="desktop-products-menu"
+            :categories="props.productCategories"
+            @navigate="openMenu = null"
+          />
+          <ServiceMegaMenu
+            v-else
+            id="desktop-services-menu"
+            :services="props.services"
+          />
+        </div>
       </div>
     </Transition>
   </div>

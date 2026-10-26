@@ -8,6 +8,11 @@ export interface HomeHeroImageSource {
   position: string;
 }
 
+export interface HomeHeroFact {
+  value: string;
+  label: string;
+}
+
 export interface HomeHeroSlide {
   title: string;
   lead: string;
@@ -21,6 +26,7 @@ export interface HomeHeroSlide {
     label: string;
     text: string;
   };
+  facts?: HomeHeroFact[];
   primaryLink: HomeHeroLink;
   secondaryLink: HomeHeroLink;
 }

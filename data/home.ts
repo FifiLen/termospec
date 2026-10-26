@@ -8,7 +8,7 @@ export type HomeScopeItem = {
   title: string;
   lead: string;
   points: string[];
-  tone: "brand" | "light";
+  icon: string;
   action: {
     label: string;
     href: string;
@@ -18,6 +18,8 @@ export type HomeScopeItem = {
 export type HomeScopeImage = {
   src: string;
   alt: string;
+  width: number;
+  height: number;
 };
 
 export type HomeProcessStep = {
@@ -32,15 +34,6 @@ export type HomeRealization = {
   industry: string;
   title: string;
   description: string;
-};
-
-export type HomeRealizationMetric = {
-  label: string;
-  value: string;
-};
-
-export type HomeFeaturedRealization = HomeRealization & {
-  metrics: HomeRealizationMetric[];
 };
 
 export type HomeContactTopic = {
@@ -61,15 +54,6 @@ export const homePartners: HomePartner[] = [
   { id: "partner-10", label: "Miejsce na logo partnera 10" },
 ];
 
-export const homePartnerIndustries = [
-  "Górnictwo",
-  "Energetyka",
-  "Przemysł spożywczy",
-  "Logistyka i magazyny",
-  "Obiekty komercyjne",
-  "Tunele",
-] as const;
-
 export const homeScopeItems: HomeScopeItem[] = [
   {
     number: "01",
@@ -81,9 +65,9 @@ export const homeScopeItems: HomeScopeItem[] = [
       "dobór parametrów pracy",
       "serwis i modernizacja instalacji",
     ],
-    tone: "brand",
+    icon: "/images/home/ikona-klimatyzacja.png",
     action: {
-      label: "Zobacz produkty",
+      label: "zobacz produkty",
       href: "/produkty",
     },
   },
@@ -97,9 +81,9 @@ export const homeScopeItems: HomeScopeItem[] = [
       "obsługa eksploatacyjna",
       "utrzymanie przepływu powietrza",
     ],
-    tone: "light",
+    icon: "/images/home/ikona-wentylacja.png",
     action: {
-      label: "Zobacz produkty",
+      label: "zobacz produkty",
       href: "/produkty",
     },
   },
@@ -113,17 +97,19 @@ export const homeScopeItems: HomeScopeItem[] = [
       "obsługa techniczna",
       "serwis i utrzymanie",
     ],
-    tone: "light",
+    icon: "/images/home/ikona-odnawialna.png",
     action: {
-      label: "Zobacz usługi",
+      label: "zobacz usługi",
       href: "/uslugi",
     },
   },
 ];
 
 export const homeScopeImage: HomeScopeImage = {
-  src: "/budynek-termospec.png",
+  src: "/images/home/zakres-siedziba-termospec.webp",
   alt: "Siedziba i zakład produkcyjny Termospec w Żorach",
+  width: 1775,
+  height: 570,
 };
 
 export const homeProcessSteps: HomeProcessStep[] = [
@@ -149,41 +135,26 @@ export const homeProcessSteps: HomeProcessStep[] = [
   },
 ];
 
-export const homeFeaturedRealization: HomeFeaturedRealization = {
-  src: "/images/realizations/uklad-chlodzenia-wyrobisko-podziemne.png",
-  alt: "Centralna instalacja chłodnicza w wyrobisku podziemnym",
-  industry: "Górnictwo · projekt pod klucz",
-  title: "Centralna klimatyzacja wyrobisk podziemnych",
-  description:
-    "Projekt, produkcja i montaż stacji chłodniczej wraz z instalacją rozprowadzającą oraz uruchomieniem i stałym nadzorem serwisowym.",
-  metrics: [
-    { label: "Moc chłodnicza", value: "2 × 1,2 MW" },
-    { label: "Czynnik", value: "wodno-glikolowy" },
-    { label: "Zakres", value: "projekt → serwis" },
-    { label: "Rok", value: "2024" },
-  ],
-};
-
 export const homeRealizations: HomeRealization[] = [
   {
-    src: "/images/realizations/uklad-chlodzenia-hala-produkcyjna.png",
-    alt: "Instalacja chłodnicza w hali produkcyjnej",
+    src: "/images/realizations/realizacja-agregat-hala.jpg",
+    alt: "Agregat chłodniczy Termospec w hali produkcyjnej",
     industry: "Przemysł spożywczy",
     title: "Modernizacja instalacji chłodniczej zakładu",
     description:
       "Wymiana agregatów i układu automatyki bez przerwania produkcji.",
   },
   {
-    src: "/images/realizations/instalacja-techniczna-rurociagi.png",
-    alt: "Instalacja wentylacyjna i techniczna obiektu liniowego",
+    src: "/images/realizations/realizacja-agregat-maszynownia.jpg",
+    alt: "Agregat chłodniczy Termospec w maszynowni z instalacją rurociągów",
     industry: "Tunele",
     title: "Wentylacja obiektu liniowego",
     description:
       "Dobór i montaż wentylatorów przemysłowych oraz tam wentylacyjnych.",
   },
   {
-    src: "/images/realizations/uklad-chlodzenia-instalacja-przemyslowa.png",
-    alt: "Układ chłodzenia hali magazynowej",
+    src: "/images/realizations/realizacja-agregat-zaklad.jpg",
+    alt: "Agregat chłodniczy Termospec na terenie zakładu przemysłowego",
     industry: "Logistyka",
     title: "Chłodzenie hali magazynowej",
     description:

@@ -6,8 +6,8 @@ Termospec should look like a modern industrial engineering company: technical, p
 
 The visual language should combine:
 
-- deep technical navy/violet surfaces
-- burgundy brand accents
+- deep technical navy surfaces
+- brand red (`#DF0210`) accents
 - white space for clarity
 - strong typography
 - structured industrial layouts
@@ -21,26 +21,21 @@ The site is not dark-only, but the deep brand color should anchor key sections.
 
 ## Brand Colors
 
-Use CSS custom properties in `globals.css` and map them to Tailwind v4 tokens through `@theme inline`.
+Source: the client-approved October 2026 homepage PSD. Tokens live in `app/assets/css/main.css` (`@theme`) and replace the earlier burgundy/violet palette across the whole site.
 
-| Role                  | CSS Variable               | Value                       |
-| --------------------- | -------------------------- | --------------------------- |
-| Deep brand / ink      | `--color-brand-ink`        | `#120B38`                   |
-| Burgundy accent       | `--color-brand-burgundy`   | `#9A0B2E`                   |
-| Signal yellow         | `--color-signal`            | `#F9CD34`                   |
-| White                 | `--color-brand-white`      | `#FFFFFF`                   |
-| Page background       | `--color-bg-page`          | `#FFFFFF`                   |
-| Soft background       | `--color-bg-soft`          | `#F7F5F8`                   |
-| Soft card panel       | `--color-panel-soft`       | `#EEE9EB`                   |
-| Dark surface          | `--color-bg-deep`          | `#120B38`                   |
-| Elevated dark surface | `--color-bg-deep-elevated` | `#1C1450`                   |
-| Primary text          | `--color-text-primary`     | `#120B38`                   |
-| Secondary text        | `--color-text-secondary`   | `rgba(18, 11, 56, 0.72)`    |
-| Muted text            | `--color-text-muted`       | `rgba(18, 11, 56, 0.52)`    |
-| Text on dark          | `--color-text-inverse`     | `#FFFFFF`                   |
-| Border subtle         | `--color-border-subtle`    | `rgba(18, 11, 56, 0.12)`    |
-| Border on dark        | `--color-border-inverse`   | `rgba(255, 255, 255, 0.14)` |
-| Accent soft           | `--color-accent-soft`      | `rgba(154, 11, 46, 0.10)`   |
+| Role | Token | Value |
+| --- | --- | --- |
+| Brand red (CTA, accents, icons) | `brand` | `#DF0210` |
+| Deep navy surfaces / ink | `ink` | `#0A1847` |
+| Darker navy (footer utility cards, map) | `ink-deep` | `#000B3B` |
+| Heading navy | `heading` | `#101844` |
+| Secondary text | `muted` | `#424971` |
+| Page surface | `surface` | `#F6F7F8` |
+| Form fields | `field` | `#F3F3F3` |
+| Header utility chips | `chip` | `#EBEBEB` |
+| Logo placeholders | `placeholder` | `#E2E2E2` |
+| Dividers | `line` | `#DEE2F4` |
+| Signal yellow (legacy, no longer used on the homepage/footer) | `signal` | `#F9CD34` |
 
 ## Tailwind Token Usage
 
@@ -66,11 +61,7 @@ Do not use random raw classes like `text-zinc-700`, `bg-slate-950`, `from-purple
 
 ## Typography
 
-| Role             | Font                             | Notes                                                                         |
-| ---------------- | -------------------------------- | ----------------------------------------------------------------------------- |
-| UI and body      | DM Sans                          | Load through Google Fonts / framework font utility.                           |
-| Headings         | DM Sans                          | Use the same family as body copy with medium or semibold weight, controlled negative tracking, and generous line height. |
-| Technical labels | DM Sans or system mono if needed | Use sparingly for specs, codes, parameters.                                   |
+Host Grotesk (Google Fonts, weights 300–800) is the single family for UI, body and headings, replacing DM Sans per the PSD. Homepage type is specified against the 1920 px artboard and scales with viewport through `clamp(…, vw, …)`; shared helpers `.design-shell` (111 rem max, `--design-gutter` ≈ 73 px at 1920), `.design-heading` (bold ~73 px, 1.19 line height), `.design-lead` (~25 px) and `.design-button` (pill CTA) live in `main.css`. Section eyebrows use `SectionEyebrow` (96 px red rule + uppercase 0.24em tracked label).
 
 Typography direction:
 
@@ -133,7 +124,7 @@ Use restrained radius.
 
 Primary button:
 
-- burgundy background
+- brand red background
 - white text
 - subtle hover darkening or lift
 - used for contact / key CTA
@@ -171,7 +162,7 @@ The owner-confirmed `koncesja` link ends the list of page links after `kontakt` 
 
 Current product mega menu implementation:
 
-- The global header is a floating white rounded bar with a soft shadow, compact pill states, search, locale switcher, and the EU funding mark. It remains visually consistent over the homepage hero and light internal pages rather than switching to a transparent full-width rail.
+- The global header is a full-width fixed white bar (PSD design): vector logo `/images/brand/termospec-logo.svg`, bold capitalised navy links with red active/hover state, and grey utility chips for search, PL/EN, accessibility and the EU funding mark. Mega-menu panels open below it inside `.design-shell`.
 - Desktop product and service controls open a separate rounded white panel below the bar. The product panel mirrors the catalogue: a burgundy searchable accordion index on the left and the selected family/category render with model label and a catalogue link on the right. Its height is capped at `min(42rem, 100dvh - 7.25rem)`; the index scrolls independently and the image fits the remaining preview height. Categories containing models directly use the same hierarchy as grouped series: a dark group heading followed by compact, light model links in a wrapping row; service shortcuts remain sourced from `data/services.ts`.
 - The accessibility-settings control is part of the desktop navigation action cluster directly after the PL/EN switch. It uses the same warm neutral circular treatment and 44 px height as search and language controls; there is no separate floating accessibility button outside the navigation.
 - The accessibility control opens a compact panel aligned under the navigation bar rather than a separate page or floating widget. Its deep-ink header and white control surface use the same rounded geometry as the menu panels; high contrast, text size and motion preferences remain functional on both desktop and mobile.
@@ -200,36 +191,17 @@ Current product mega menu implementation:
 
 ## Footer
 
-- Keep the yellow Termospec footer surface and its three-column desktop composition.
-- The left brand column contains the logo, positioning paragraph, and compact two-column footer navigation directly below the paragraph.
-- The middle column contains the centered `Porozmawiajmy o Twoim projekcie` image CTA with an intentionally taller service-photo stage. Its content surface uses the Termospec brand red with white copy and a white/red action button.
-- The right company-details column begins with the stacked `Dołącz do zespołu` and `Wsparcie techniczne` utility cards in the same brand-red/white treatment; the registration and contact details follow below them.
+- Deep-navy `SiteFooter` from the PSD: white vector logo, positioning paragraph, contact lines, registry line (`KRS • NIP • REGON • Kapitał`); `Firma` and `Informacje` link columns with red tracked headings; a red `Porozmawiajmy o Twoim projekcie` card with the service photo and navy `wyślij zapytanie` button; two darker `Kariera` / `Serwis` utility cards; rule and copyright. The previous yellow footer and certificate pills are retired.
 
 ## Contact Section
 
-- The homepage uses `HomeContactForm`: a deep navy contact/map panel paired with the warm-neutral technical inquiry form. The owner removed the contact and team sections from `/o-firmie`; that page now ends after the company timeline.
-- The embedded Google map remains clearly legible with only a light deep-ink tonal veil. Do not restore the decorative `Mapa — lokalizacja zakładu` caption; the map's accessible iframe title and the `Otwórz w Mapach` action provide sufficient orientation.
+- `HomeContactForm`: navy rounded panel (heading, lead, `Adres`/`Kontakt` columns, red `Serwis 24/7` phone box with tool icon, embedded Google map with `Otwórz w Mapach`) beside a white rounded form with light-grey fields, pill topic radios and a red `wyślij` button.
 
-## Homepage Partners
+## Homepage Sections
 
-- `HomePartners` is one large rounded deep-navy panel inset into the warm page surface. It shares the homepage's `max-w-[92rem]` axis and responsive `px-5 sm:px-8 lg:px-12` gutters with `HomeRealizations`. Its intro pairs a three-line trust statement with a short relationship note, followed by ten soft elevated logo slots and a wrapping row of six industry pills.
-- Until verified brand assets are supplied, show neutral `Logo` slots only. Do not publish invented partner names, initials, or sectors as if they were client references.
-- Two separated double signal-yellow bands span the shared `HomeScope` and `HomePartners` background. The upper pair runs from the left edge around mid-scope to the right edge near the section transition. After a visible vertical break, the lower pair starts farther down on the right and descends to the left edge deep inside the partners section. The motif stays below images, cards, copy and the partner panel, and uses no motion.
-
-## Homepage Section Rhythm
-
-- After the full-screen hero, the homepage uses one consistent vertical interval between major sections: `pt-20` on smaller screens and `lg:pt-28` on desktop. Do not combine symmetrical bottom and top padding between adjacent sections, because that doubles the visible gap. `HomeContactForm` keeps matching bottom padding to close the homepage before the footer.
-
-## Homepage Scope
-
-- `HomeScope` follows the same warm editorial surface and `max-w-[92rem]` axis as the adjacent homepage sections. It pairs a three-line heading with a short lead, then uses one rounded panoramic image and three equal service cards.
-- The headquarters panorama is a single static photograph in the original rounded 13:4 frame. The owner requested removal of the architectural cutout and parallax; keep the image free of scroll and hover transforms.
-- `Klimatyzacja` is the only emphasized scope card and uses the burgundy `bg-brand` token with white content. Do not restore the previous deep-navy emphasis or split-photo background. The other two cards use the solid, non-transparent `bg-panel-soft` surface so the background motif never shows through their content.
-
-## Homepage Realizations
-
-- `HomeRealizations` uses a calm editorial hierarchy instead of a carousel: a split title/lead row, one dominant wide realization with its technical facts, three 4:3 supporting images with concise descriptions, and a restrained closing reference CTA.
-- Use the established local industrial imagery, warm page surface, deep-ink typography, rounded media frames and burgundy only as a small orientation or interaction accent. Image motion is limited to a slight hover scale.
+- Order: hero → scope (surface) → realizations (white) → contact (surface) → partners (white) → footer. Each section opens with `SectionEyebrow`, a three-line `.design-heading` on the left 58 % and a bottom-aligned `.design-lead` on the right.
+- Scope cards are equal white cards with red numbers, red masked PSD icons (`/images/home/ikona-*.png`), dividers, red-dash lists and red pill actions; no card is colour-emphasised. The headquarters image is the PSD roof-cutout composite as one static transparent WebP — this supersedes the earlier owner request to drop the cutout, because the client's new design reintroduces it.
+- The yellow scope/partners background motif and the deep-navy partners panel are retired.
 
 ## Imagery
 
@@ -238,7 +210,7 @@ Current product mega menu implementation:
 - If real photos are low quality, use them selectively and support them with strong layout/typography.
 - Do not overuse decorative gradients.
 - Homepage hero media is art-directed per breakpoint: each slide defines a desktop and mobile source plus its focal position in Studio-editable `content/home.yml`, and `HomeHero` selects them through `<picture>`. Keep headings, descriptions, CTAs, and explanatory labels in HTML rather than baking them into hero images, except for the explicitly supplied full-frame machining artwork.
-- The homepage hero uses the approved full-screen photographic carousel with a glass content band. On desktop, the active image fills the viewport while a deep-ink translucent, blurred column occupies the left `42%` at full height; the image remains subtly visible beneath the column and clearly visible beside it. The column contains the authored caption, DM Sans title, lead, two actions and three existing company facts. On mobile, the same glass surface becomes a lower panel so the photograph retains a clear upper reveal. A compact deep-ink carousel capsule stays at the lower-right edge with direct numbered selectors, autoplay progress and previous/next controls. The explicit machining artwork remains a text-free full-frame exception. The existing global navigation must not be restyled or rebuilt as part of this hero composition.
+- The homepage hero follows the PSD: full-screen pre-darkened banners with copy placed directly on the image (no glass column), red/outline pill CTAs, a fact row under a white rule and a navy carousel capsule. On desktop the copy block is vertically centred in the visible area below the fixed header (`--site-header-height` + equal `--hero-gap` above and below), and titles are sized/wide enough to stay within three lines. Superseded description: the homepage hero used the approved full-screen photographic carousel with a glass content band. On desktop, the active image fills the viewport while a deep-ink translucent, blurred column occupies the left `42%` at full height; the image remains subtly visible beneath the column and clearly visible beside it. The column contains the authored caption, DM Sans title, lead, two actions and three existing company facts. On mobile, the same glass surface becomes a lower panel so the photograph retains a clear upper reveal. A compact deep-ink carousel capsule stays at the lower-right edge with direct numbered selectors, autoplay progress and previous/next controls. The explicit machining artwork remains a text-free full-frame exception. The existing global navigation must not be restyled or rebuilt as part of this hero composition.
 
 ## Motion
 

@@ -2,7 +2,7 @@
 import { gsap } from "gsap";
 import { aboutMetrics } from "~~/data/about";
 import { accessibilityPreferencesEvent } from "~/composables/useAccessibilityPreferences";
-import type { HomeHeroSlide } from "~~/types/home";
+import type { HomeHeroFact, HomeHeroSlide } from "~~/types/home";
 
 const props = defineProps<{
   slides: HomeHeroSlide[];
@@ -10,7 +10,17 @@ const props = defineProps<{
 
 const heroRoot = ref<HTMLElement | null>(null);
 const activeIndex = ref(0);
-const heroFacts = aboutMetrics.slice(0, 3);
+const companyFacts: HomeHeroFact[] = aboutMetrics
+  .slice(0, 3)
+  .map(({ value, label }) => ({ value, label }));
+
+function slideFacts(slide: HomeHeroSlide) {
+  return slide.facts?.length ? slide.facts : companyFacts;
+}
+
+function slideCaption(slide: HomeHeroSlide) {
+  return [slide.caption.label, slide.caption.text].filter(Boolean).join(" / ");
+}
 
 let animationContext: gsap.Context | null = null;
 let mediaQueries: gsap.MatchMedia | null = null;
@@ -415,13 +425,13 @@ onUnmounted(() => {
     ref="heroRoot"
     aria-label="Najważniejsze obszary działalności Termospec"
     aria-roledescription="karuzela"
-    class="relative isolate min-h-[44rem] overflow-hidden bg-ink text-white lg:min-h-[100svh]"
+    class="relative isolate overflow-hidden bg-ink text-white"
     @mouseenter="pauseAutoplay"
     @mouseleave="resumeAutoplay"
     @focusin="pauseAutoplay"
     @focusout="handleFocusOut"
   >
-    <div class="relative min-h-[44rem] w-full overflow-hidden bg-ink lg:min-h-[100svh]">
+    <div class="relative min-h-[44rem] w-full overflow-hidden bg-ink lg:min-h-[max(100svh,40rem)]">
       <div class="absolute inset-0 z-0 overflow-hidden">
         <article
           v-for="(slide, index) in props.slides"
@@ -472,8 +482,8 @@ onUnmounted(() => {
           </picture>
 
           <div
-            class="absolute inset-0"
-            :class="slide.presentation === 'pelny-kadr' ? 'bg-ink/10' : 'bg-ink/5'"
+            v-if="slide.presentation !== 'pelny-kadr'"
+            class="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/45 to-ink/10 lg:hidden"
             aria-hidden="true"
           />
         </article>
@@ -490,73 +500,78 @@ onUnmounted(() => {
         >
           <div
             v-if="slide.presentation !== 'pelny-kadr'"
-            class="absolute inset-x-0 bottom-0 min-h-[70%] border-t border-white/10 bg-ink/85 backdrop-blur-xl md:inset-y-0 md:right-auto md:min-h-0 md:w-[48%] md:border-r md:border-t-0 lg:w-[42%]"
+            class="hero-stage design-shell flex h-full flex-col justify-end pb-32 pt-28 lg:justify-center lg:pb-[var(--hero-gap)] lg:pt-[calc(var(--site-header-height)+var(--hero-gap))]"
           >
-            <div class="flex min-h-full flex-col justify-center px-5 pb-24 pt-10 sm:px-8 md:h-full md:px-10 md:pb-24 md:pt-36 lg:px-12 xl:px-16">
-              <div class="max-w-[38rem]">
-                <p
-                  data-hero-reveal
-                  :aria-label="[slide.caption.label || 'Termospec', slide.caption.text].filter(Boolean).join(' ')"
-                  class="flex items-center gap-3 text-xs font-medium uppercase tracking-[0.14em] text-white/62 sm:text-sm"
+            <div class="max-w-[clamp(20rem,46vw,55rem)]">
+              <p
+                v-if="slideCaption(slide)"
+                data-hero-reveal
+                class="flex items-center gap-5 text-[clamp(0.75rem,0.92vw,1.1rem)] uppercase leading-none tracking-[0.14em] text-white/80"
+              >
+                <span aria-hidden="true" class="h-0.5 w-[clamp(2.5rem,3.65vw,4.4rem)] shrink-0 bg-brand" />
+                <span>{{ slideCaption(slide) }}</span>
+              </p>
+
+              <h1
+                data-hero-reveal
+                :aria-label="slide.title.replace('\n', ' ')"
+                class="mt-[clamp(1.25rem,2.2vw,2.65rem)] max-w-[clamp(17rem,46vw,55rem)] text-[clamp(2.4rem,min(4.84vw,8.6svh),5.8rem)] font-bold leading-[0.99] tracking-[-0.018em] text-white"
+              >
+                <span
+                  v-for="(line, lineIndex) in slide.title.split('\n')"
+                  :key="lineIndex"
+                  aria-hidden="true"
+                  class="block"
                 >
-                  <span aria-hidden="true" class="h-0.5 w-9 shrink-0 bg-brand" />
-                  <span>
-                    {{ [slide.caption.label || 'Termospec', slide.caption.text].filter(Boolean).join(' / ') }}
-                  </span>
-                </p>
+                  {{ line }}
+                </span>
+              </h1>
 
-                <h1
-                  data-hero-reveal
-                  :aria-label="slide.title.replace('\n', ' ')"
-                  class="mt-5 max-w-[10ch] text-[clamp(2.55rem,4.8vw,4.8rem)] font-medium leading-[0.94] tracking-[-0.055em] text-white sm:mt-6"
+              <p
+                data-hero-reveal
+                class="mt-[clamp(1.25rem,1.95vw,2.35rem)] max-w-[clamp(18rem,30vw,36rem)] text-[clamp(1rem,1.245vw,1.5rem)] leading-[1.53] text-white"
+              >
+                {{ slide.lead }}
+              </p>
+
+              <div
+                data-hero-reveal
+                class="mt-[clamp(1.75rem,2.45vw,2.95rem)] flex flex-wrap items-center gap-[clamp(0.75rem,1.6vw,1.9rem)]"
+              >
+                <NuxtLink
+                  :to="slide.primaryLink.href"
+                  class="design-button min-h-[clamp(3rem,3.55vw,4.25rem)] px-[clamp(1.25rem,2vw,2.4rem)] text-[clamp(0.95rem,1.1vw,1.32rem)] bg-brand text-white hover:bg-white hover:text-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                 >
-                  <span
-                    v-for="(line, lineIndex) in slide.title.split('\n')"
-                    :key="lineIndex"
-                    aria-hidden="true"
-                    class="block"
-                  >
-                    {{ line }}
-                  </span>
-                </h1>
+                  {{ slide.primaryLink.label }}
+                  <span aria-hidden="true">→</span>
+                </NuxtLink>
 
-                <p
-                  data-hero-reveal
-                  class="mt-6 max-w-[34rem] text-sm leading-6 text-white/68 sm:text-base sm:leading-7 lg:mt-7 lg:text-lg lg:leading-8"
+                <NuxtLink
+                  :to="slide.secondaryLink.href"
+                  class="design-button min-h-[clamp(3rem,3.55vw,4.25rem)] px-[clamp(1.25rem,2.2vw,2.65rem)] text-[clamp(0.95rem,1.1vw,1.32rem)] border-[1.5px] border-white/90 text-white hover:border-white hover:bg-white hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                 >
-                  {{ slide.lead }}
-                </p>
-
-                <div data-hero-reveal class="mt-7 flex flex-wrap items-center gap-3 lg:mt-8">
-                  <NuxtLink
-                    :to="slide.primaryLink.href"
-                    class="inline-flex min-h-11 items-center justify-center rounded-full bg-brand px-6 text-sm font-semibold text-white transition-colors hover:bg-white hover:text-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                  >
-                    {{ slide.primaryLink.label }}
-                  </NuxtLink>
-
-                  <NuxtLink
-                    :to="slide.secondaryLink.href"
-                    class="inline-flex min-h-11 items-center justify-center rounded-full border border-white/35 px-6 text-sm font-semibold text-white transition-colors hover:border-white hover:bg-white hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                  >
-                    {{ slide.secondaryLink.label }}
-                  </NuxtLink>
-                </div>
-
-                <dl
-                  data-hero-reveal
-                  class="mt-8 hidden grid-cols-3 gap-5 border-t border-white/15 pt-6 xl:grid"
-                >
-                  <div v-for="fact in heroFacts" :key="fact.label" class="min-w-0">
-                    <dt class="text-[clamp(1.2rem,1.65vw,1.65rem)] font-medium leading-tight tracking-[-0.035em] text-white">
-                      {{ fact.value }}
-                    </dt>
-                    <dd class="mt-2 text-xs leading-5 text-white/42">
-                      {{ fact.label }}
-                    </dd>
-                  </div>
-                </dl>
+                  {{ slide.secondaryLink.label }}
+                  <span aria-hidden="true">→</span>
+                </NuxtLink>
               </div>
+
+              <dl
+                data-hero-reveal
+                class="mt-[clamp(2rem,3vw,3.6rem)] hidden max-w-[clamp(18rem,31vw,37.25rem)] flex-wrap gap-x-[clamp(1.5rem,2.6vw,3.1rem)] gap-y-5 xl:flex-nowrap border-t-2 border-white pt-[clamp(1.75rem,3.3vw,3.95rem)] sm:flex"
+              >
+                <div
+                  v-for="fact in slideFacts(slide)"
+                  :key="fact.value"
+                  class="flex min-w-0 flex-col-reverse ps-[0.6rem] xl:shrink-0 xl:whitespace-nowrap"
+                >
+                  <dt class="mt-1 text-[clamp(0.75rem,0.78vw,0.94rem)] leading-snug text-white/85">
+                    {{ fact.label }}
+                  </dt>
+                  <dd class="text-[clamp(1.05rem,1.18vw,1.42rem)] font-semibold leading-tight text-white">
+                    {{ fact.value }}
+                  </dd>
+                </div>
+              </dl>
             </div>
           </div>
         </article>
@@ -564,31 +579,30 @@ onUnmounted(() => {
 
       <div
         v-if="props.slides.length > 1"
-        class="pointer-events-none absolute inset-x-5 bottom-5 z-30 sm:inset-x-8 sm:bottom-8 lg:inset-x-12"
+        class="pointer-events-none absolute inset-x-0 bottom-5 z-30 sm:bottom-8 lg:bottom-[clamp(2rem,4.05vw,4.9rem)]"
       >
-        <div
-          class="pointer-events-auto ms-auto w-fit max-w-full overflow-hidden rounded-full bg-ink/90 text-white backdrop-blur-xl"
-        >
-          <span class="block h-px w-full bg-white/15">
+        <div class="design-shell flex justify-end">
+          <div
+            class="pointer-events-auto relative flex min-h-[clamp(3.75rem,4.1vw,4.9rem)] w-fit max-w-full items-center gap-[clamp(0.75rem,1.6vw,1.9rem)] overflow-hidden rounded-full bg-ink px-[clamp(0.5rem,0.75vw,0.9rem)] text-white"
+          >
             <span
               data-hero-progress
-              class="block h-full w-full origin-left scale-x-0 bg-brand"
+              aria-hidden="true"
+              class="absolute inset-x-10 bottom-0 h-0.5 origin-left scale-x-0 bg-brand"
             />
-          </span>
 
-          <div class="flex min-h-16 items-center gap-3 px-3 sm:gap-5 sm:px-4">
-            <div class="flex items-center gap-0.5" aria-label="Wybierz slajd">
+            <div class="flex items-center gap-[clamp(0rem,0.4vw,0.5rem)]" aria-label="Wybierz slajd">
               <button
                 v-for="(_slide, index) in props.slides"
                 :key="`selector-${index}`"
                 type="button"
                 :aria-label="`Pokaż slajd ${index + 1}`"
                 :aria-current="activeIndex === index ? 'true' : undefined"
-                class="grid size-9 place-items-center rounded-full text-xs font-semibold tabular-nums transition-colors"
+                class="grid size-[clamp(2.5rem,2.75vw,3.3rem)] place-items-center rounded-full text-[clamp(0.8rem,0.85vw,1rem)] font-medium tabular-nums transition-colors"
                 :class="
                   activeIndex === index
                     ? 'bg-white text-ink'
-                    : 'text-white/45 hover:bg-white/10 hover:text-white'
+                    : 'text-white/70 hover:bg-white/10 hover:text-white'
                 "
                 @click="goToSlide(index, index > activeIndex ? 1 : -1)"
               >
@@ -596,13 +610,13 @@ onUnmounted(() => {
               </button>
             </div>
 
-            <span class="h-7 w-px bg-white/15" aria-hidden="true" />
+            <span class="h-[clamp(2.25rem,3.1vw,3.75rem)] w-0.5 bg-white/45" aria-hidden="true" />
 
-            <div class="flex items-center gap-1">
+            <div class="flex items-center gap-[clamp(0.5rem,1vw,1.2rem)]">
               <button
                 type="button"
                 aria-label="Poprzedni slajd"
-                class="grid size-10 place-items-center rounded-full text-sm text-white transition-colors hover:bg-white hover:text-ink"
+                class="grid size-[clamp(2.5rem,2.65vw,3.2rem)] place-items-center rounded-full text-lg text-white transition-colors hover:bg-white hover:text-ink"
                 @click="showPreviousSlide"
               >
                 <span aria-hidden="true">←</span>
@@ -610,7 +624,7 @@ onUnmounted(() => {
               <button
                 type="button"
                 aria-label="Następny slajd"
-                class="grid size-10 place-items-center rounded-full bg-brand text-sm text-white transition-colors hover:bg-white hover:text-ink"
+                class="grid size-[clamp(2.5rem,2.65vw,3.2rem)] place-items-center rounded-full bg-brand text-lg text-white transition-colors hover:bg-white hover:text-brand"
                 @click="showNextSlide"
               >
                 <span aria-hidden="true">→</span>
@@ -629,6 +643,10 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+.hero-stage {
+  --hero-gap: clamp(1.5rem, 5svh, 3.5rem);
+}
+
 .hero-media {
   object-position: var(--hero-position-mobile, center);
 }

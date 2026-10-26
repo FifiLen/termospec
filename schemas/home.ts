@@ -106,7 +106,23 @@ const heroSlideSchema = homeField(z.object({
     }),
   }).default({ label: "", text: "" }), {
     label: "Podpis zdjęcia",
-    description: "Opcjonalny podpis w prawym dolnym obszarze slajdu.",
+    description: "Krótka etykieta nad tytułem slajdu, np. górnictwo / przemysł.",
+  }),
+  facts: homeField(z.array(homeField(z.object({
+    value: homeField(z.string().trim().min(1, "Podaj wartość"), {
+      label: "Wartość",
+      description: "Krótka, wyróżniona informacja, np. 500 MW.",
+    }),
+    label: homeField(z.string().trim().min(1, "Podaj opis"), {
+      label: "Opis",
+      description: "Krótki podpis pod wartością.",
+    }),
+  }), {
+    label: "Wyróżnik",
+    description: "Jedna informacja w pasku pod przyciskami.",
+  })).max(3, "Dodaj maksymalnie trzy wyróżniki").default([]), {
+    label: "Wyróżniki",
+    description: "Do trzech krótkich informacji pod przyciskami. Puste — zostaną użyte dane firmy.",
   }),
   primaryLink: linkSchema("Pierwszy przycisk"),
   secondaryLink: linkSchema("Drugi przycisk"),

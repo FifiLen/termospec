@@ -1,65 +1,92 @@
 <script setup lang="ts">
-import { homePartnerIndustries, homePartners } from "~~/data/home";
+import { homePartners } from "~~/data/home";
+
+const track = ref<HTMLUListElement | null>(null);
+
+function scrollPartners(direction: 1 | -1) {
+  const element = track.value;
+
+  if (!element) {
+    return;
+  }
+
+  element.scrollBy({ left: direction * element.clientWidth, behavior: "smooth" });
+}
 </script>
 
 <template>
-  <section class="bg-transparent px-5 pt-20 sm:px-8 lg:px-12 lg:pt-28">
-    <div
-      class="mx-auto max-w-[92rem] rounded-[2rem] bg-ink px-6 py-14 text-white sm:px-10 sm:py-16 lg:rounded-[2.75rem] lg:px-[4.625rem] lg:py-[5.5rem]"
-    >
-      <div
-        class="grid gap-10 xl:grid-cols-[minmax(0,3fr)_minmax(24rem,2fr)] xl:items-end xl:gap-16"
-      >
+  <section
+    aria-labelledby="partners-title"
+    class="bg-white pb-[clamp(3.5rem,3.75vw,4.5rem)] pt-[clamp(3.5rem,3.4vw,4.1rem)]"
+  >
+    <div class="design-shell">
+      <div class="grid gap-8 lg:grid-cols-[58fr_42fr] lg:items-end lg:gap-0">
         <div>
-          <p class="flex items-center gap-3 text-sm font-medium text-white/60 sm:text-base">
-            <span class="h-2 w-2 shrink-0 rounded-full bg-brand" />
-            Partnerzy i klienci
-          </p>
+          <SectionEyebrow label="Partnerzy i klienci" />
 
-          <h2
-            class="mt-8 max-w-none text-[clamp(2.6rem,4.2vw,3.65rem)] font-medium leading-[1.03] tracking-[-0.045em] text-white"
-          >
-            <span class="xl:block">Zaufali nam producenci,</span>
-            <span class="xl:block">kopalnie i operatorzy</span>
-            <span class="xl:block">infrastruktury.</span>
+          <h2 id="partners-title" class="design-heading mt-[clamp(1.75rem,2.5vw,3rem)]">
+            Zaufali nam producenci,<br class="hidden lg:inline">
+            kopalnie i operatorzy<br class="hidden lg:inline">
+            infrastruktury.
           </h2>
         </div>
 
-        <p
-          class="max-w-[34rem] text-lg leading-8 text-white/60 sm:text-xl sm:leading-9 lg:pb-1"
-        >
+        <p class="design-lead max-w-[44rem] lg:pb-[clamp(0.5rem,1.3vw,1.6rem)]">
           Część relacji trwa od pierwszych lat działalności firmy — od dostawy
           urządzeń po stały nadzór serwisowy.
         </p>
       </div>
 
-      <ul
-        aria-label="Miejsca na logotypy partnerów i klientów"
-        class="mt-16 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5 xl:gap-5"
+      <div
+        class="mt-[clamp(2.5rem,3.55vw,4.25rem)] flex min-h-[clamp(7rem,11.2vw,13.45rem)] items-center gap-2 rounded-[clamp(1.5rem,3.1vw,3.75rem)] bg-surface px-[clamp(0.5rem,1.4vw,1.7rem)]"
       >
-        <li
-          v-for="partner in homePartners"
-          :key="partner.id"
-          class="grid min-h-28 place-items-center rounded-3xl bg-white/[0.075] px-5 transition-colors duration-300 hover:bg-white/[0.1] lg:min-h-30"
+        <button
+          type="button"
+          aria-label="Poprzednie logotypy"
+          class="grid size-11 shrink-0 place-items-center rounded-full text-[2rem] font-light text-placeholder transition-colors hover:text-muted"
+          @click="scrollPartners(-1)"
         >
-          <span
-            :aria-label="partner.label"
-            class="text-xs font-medium uppercase tracking-[0.2em] text-white/50"
-          >
-            Logo
-          </span>
-        </li>
-      </ul>
+          <span aria-hidden="true">←</span>
+        </button>
 
-      <ul class="mt-12 flex flex-wrap gap-3" aria-label="Branże partnerów i klientów">
-        <li
-          v-for="industry in homePartnerIndustries"
-          :key="industry"
-          class="rounded-full bg-white/[0.09] px-6 py-2.5 text-base leading-6 text-white sm:text-lg"
+        <ul
+          ref="track"
+          aria-label="Miejsca na logotypy partnerów i klientów"
+          class="partner-track grid min-w-0 flex-1 snap-x snap-mandatory auto-cols-[50%] grid-flow-col overflow-x-auto sm:auto-cols-[33.333%] lg:auto-cols-[20%]"
         >
-          {{ industry }}
-        </li>
-      </ul>
+          <li
+            v-for="partner in homePartners"
+            :key="partner.id"
+            class="grid snap-start place-items-center px-4 py-6"
+          >
+            <span
+              :aria-label="partner.label"
+              class="text-[clamp(1.75rem,3.4vw,4.1rem)] font-extrabold uppercase leading-none tracking-[0.01em] text-placeholder [font-stretch:125%]"
+            >
+              Logo
+            </span>
+          </li>
+        </ul>
+
+        <button
+          type="button"
+          aria-label="Następne logotypy"
+          class="grid size-11 shrink-0 place-items-center rounded-full text-[2rem] font-light text-placeholder transition-colors hover:text-muted"
+          @click="scrollPartners(1)"
+        >
+          <span aria-hidden="true">→</span>
+        </button>
+      </div>
     </div>
   </section>
 </template>
+
+<style scoped>
+.partner-track {
+  scrollbar-width: none;
+}
+
+.partner-track::-webkit-scrollbar {
+  display: none;
+}
+</style>

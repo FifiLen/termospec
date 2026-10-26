@@ -5,114 +5,94 @@ import { homeScopeImage, homeScopeItems } from "~~/data/home";
 <template>
   <section
     id="zakres"
-    class="bg-transparent px-5 pt-20 sm:px-8 lg:px-12 lg:pt-28"
+    aria-labelledby="scope-title"
+    class="bg-surface pb-[clamp(3.5rem,3.4vw,4.1rem)] pt-[clamp(3.5rem,3.4vw,4.1rem)]"
   >
-    <div class="mx-auto max-w-[92rem]">
-      <div
-        class="relative z-20 grid gap-10 lg:grid-cols-[minmax(0,1.25fr)_minmax(24rem,0.75fr)] lg:items-end lg:gap-16"
-      >
+    <div class="design-shell">
+      <div class="grid gap-8 lg:grid-cols-[58fr_42fr] lg:items-end lg:gap-0">
         <div>
-          <p class="flex items-center gap-3 text-sm font-medium text-muted">
-            <span class="h-2 w-2 shrink-0 rounded-full bg-brand" aria-hidden="true" />
-            Zakres działalności
-          </p>
+          <SectionEyebrow label="Zakres działalności" />
 
-          <h2
-            class="mt-7 max-w-none text-[clamp(2.75rem,5vw,4.75rem)] font-medium leading-[1.02] tracking-[-0.045em] text-ink"
-          >
-            <span class="block">Rozwiązania techniczne</span>
-            <span class="block">dla wymagających</span>
-            <span class="block">instalacji.</span>
+          <h2 id="scope-title" class="design-heading mt-[clamp(1.75rem,2.5vw,3rem)]">
+            Rozwiązania techniczne<br class="hidden lg:inline">
+            dla wymagających<br class="hidden lg:inline">
+            instalacji.
           </h2>
         </div>
 
-        <p class="max-w-[38rem] text-lg leading-8 text-muted lg:pb-2 lg:text-xl lg:leading-9">
-          Termospec łączy projektowanie, produkcję, serwis i utrzymanie systemów
-          wykorzystywanych w przemyśle, górnictwie oraz infrastrukturze
-          technicznej.
+        <p class="design-lead max-w-[44rem] lg:pb-[clamp(0.5rem,1vw,1.2rem)]">
+          <strong class="font-semibold">Termospec</strong> łączy projektowanie,
+          produkcję, serwis i utrzymanie systemów wykorzystywanych w przemyśle,
+          górnictwie oraz infrastrukturze technicznej.
         </p>
       </div>
 
-      <div class="mt-14 aspect-[13/4] overflow-hidden rounded-3xl bg-line/45 lg:mt-16">
-        <NuxtImg
-          :src="homeScopeImage.src"
-          :alt="homeScopeImage.alt"
-          width="2600"
-          height="800"
-          loading="lazy"
-          decoding="async"
-          class="h-full w-full object-cover object-center"
-        />
-      </div>
+      <img
+        :src="homeScopeImage.src"
+        :alt="homeScopeImage.alt"
+        :width="homeScopeImage.width"
+        :height="homeScopeImage.height"
+        loading="lazy"
+        decoding="async"
+        class="mt-6 h-auto w-full lg:mt-[clamp(0.5rem,1.25vw,1.5rem)]"
+      >
 
-      <div class="mt-8 grid gap-5 lg:grid-cols-3">
+      <div class="mt-[clamp(2rem,4.15vw,5rem)] grid gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-[clamp(1.5rem,3.1vw,3.75rem)]">
         <article
           v-for="item in homeScopeItems"
           :key="item.number"
-          class="flex min-h-[30rem] flex-col rounded-3xl p-7 transition-transform duration-300 hover:-translate-y-1 sm:p-9"
-          :class="
-            item.tone === 'brand'
-              ? 'bg-brand text-white'
-              : 'bg-panel-soft text-ink'
-          "
+          class="relative flex flex-col rounded-[clamp(1.5rem,2.6vw,3.1rem)] bg-white px-[clamp(1.75rem,3.4vw,4.1rem)] pb-[clamp(2rem,2.85vw,3.4rem)] pt-[clamp(2rem,3.45vw,4.1rem)]"
         >
-          <p
-            class="text-sm"
-            :class="item.tone === 'brand' ? 'text-white/55' : 'text-muted'"
-          >
+          <span
+            aria-hidden="true"
+            class="scope-icon absolute right-[clamp(1.25rem,2.1vw,2.5rem)] top-[clamp(1.25rem,1.35vw,1.6rem)] size-[clamp(3rem,4.1vw,4.9rem)] bg-brand"
+            :style="{ '--scope-icon': `url(${item.icon})` }"
+          />
+
+          <p class="text-[clamp(1.05rem,1.31vw,1.57rem)] font-semibold leading-none text-brand">
             {{ item.number }}
           </p>
 
           <h3
-            class="mt-6 text-3xl font-medium leading-[1.06] tracking-[-0.035em]"
-            :class="item.tone === 'brand' ? 'text-white' : 'text-ink'"
+            class="mt-[clamp(1.5rem,2.3vw,2.75rem)] max-w-[9ch] text-[clamp(2rem,2.82vw,3.4rem)] font-bold leading-[1.12] tracking-[-0.015em] text-heading"
           >
             {{ item.title }}
           </h3>
 
-          <p
-            class="mt-5 whitespace-pre-line text-base leading-7"
-            :class="item.tone === 'brand' ? 'text-white/72' : 'text-muted'"
-          >
+          <p class="mt-[clamp(1rem,1.5vw,1.8rem)] whitespace-pre-line text-[clamp(1rem,1.15vw,1.38rem)] leading-[1.42] text-muted">
             {{ item.lead }}
           </p>
 
-          <div
-            class="my-7 border-t"
-            :class="item.tone === 'brand' ? 'border-white/18' : 'border-ink/10'"
-          />
+          <div class="my-[clamp(1.5rem,2.1vw,2.5rem)] h-0.5 bg-line" />
 
-          <ul class="space-y-3">
+          <ul class="space-y-[clamp(0.4rem,0.55vw,0.65rem)]">
             <li
               v-for="point in item.points"
               :key="point"
-              class="text-sm font-medium leading-6"
-              :class="item.tone === 'brand' ? 'text-white/90' : 'text-ink/82'"
+              class="flex gap-2 text-[clamp(1rem,1.15vw,1.38rem)] leading-[1.42] text-muted"
             >
+              <span aria-hidden="true" class="text-brand">–</span>
               {{ point }}
             </li>
           </ul>
 
+          <div aria-hidden="true" class="min-h-[clamp(2rem,3.5vw,4.2rem)] flex-1" />
+
           <NuxtLink
             :to="item.action.href"
-            class="group/action mt-auto inline-flex min-h-11 items-center gap-4 self-start rounded-full px-5 py-2.5 text-sm font-semibold transition-colors"
-            :class="
-              item.tone === 'brand'
-                ? 'bg-white/15 text-white hover:bg-white/22'
-                : 'bg-surface text-ink hover:bg-ink hover:text-white'
-            "
+            class="design-button self-start bg-brand px-[clamp(1.75rem,2.85vw,3.4rem)] text-white hover:bg-ink"
           >
             {{ item.action.label }}
-            <span
-              aria-hidden="true"
-              class="transition-transform duration-200 group-hover/action:translate-x-1"
-              :class="item.tone === 'brand' ? 'text-white' : 'text-brand'"
-            >
-              →
-            </span>
+            <span aria-hidden="true">→</span>
           </NuxtLink>
         </article>
       </div>
     </div>
   </section>
 </template>
+
+<style scoped>
+.scope-icon {
+  mask: var(--scope-icon) center / contain no-repeat;
+}
+</style>

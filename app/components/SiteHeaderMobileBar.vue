@@ -20,15 +20,15 @@ defineExpose({
 </script>
 
 <template>
-  <div class="flex min-h-16 w-full items-center rounded-[1.5rem] bg-white px-4 shadow-[0_14px_40px_rgb(18_11_56_/_0.09)] xl:hidden">
+  <div class="flex min-h-[var(--site-header-height)] w-full items-center bg-white px-[var(--design-gutter)] shadow-[0_1px_0_rgb(10_24_71_/_0.08)] xl:hidden">
     <NuxtLink class="inline-flex outline-none" to="/" aria-label="Termospec, strona główna" @click="emit('navigate')">
-      <NuxtImg src="/termospec-logo.png" alt="Termospec" width="120" class="h-auto w-28" />
+      <img src="/images/brand/termospec-logo.svg" alt="Termospec" width="160" height="23" class="h-auto w-36 sm:w-40">
     </NuxtLink>
 
     <div class="ms-auto flex items-center gap-2">
       <button
         type="button"
-        class="grid size-11 place-items-center rounded-full bg-[#f1ede6] text-ink/48 transition-colors hover:text-ink"
+        class="grid size-11 place-items-center rounded-full bg-chip text-ink/48 transition-colors hover:text-ink"
         aria-label="Otwórz wyszukiwanie"
         @click="isSearchOpen = true"
       >
@@ -39,7 +39,7 @@ defineExpose({
         type="button"
         data-accessibility-trigger
         class="grid size-11 place-items-center rounded-full transition-colors"
-        :class="accessibilityOpen ? 'bg-ink text-white' : 'bg-[#f1ede6] text-ink/48 hover:text-ink'"
+        :class="accessibilityOpen ? 'bg-ink text-white' : 'bg-chip text-ink/48 hover:text-ink'"
         aria-label="Ustawienia dostępności"
         aria-haspopup="dialog"
         aria-controls="accessibility-panel"
