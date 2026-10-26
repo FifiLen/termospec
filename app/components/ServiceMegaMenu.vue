@@ -4,34 +4,34 @@ import type { ServiceNavigationItem } from "~~/types/navigation";
 const props = defineProps<{
   services: ServiceNavigationItem[];
 }>();
+
+const serviceNumber = (index: number) => String(index + 1).padStart(2, "0");
 </script>
 
 <template>
-  <section class="w-full rounded-[1.75rem] bg-white p-8 shadow-[0_20px_60px_rgb(18_11_56_/_0.1)]" aria-label="Kategorie usług">
+  <section class="w-full rounded-[clamp(1.5rem,2.1vw,2.5rem)] bg-white p-6 shadow-[0_20px_60px_rgb(10_24_71_/_0.12)]" aria-label="Kategorie usług">
     <div class="grid grid-cols-5 gap-4">
       <NuxtLink
-        v-for="service in props.services"
+        v-for="(service, index) in props.services"
         :key="service.slug"
         :to="service.href"
-        class="group flex min-h-64 flex-col rounded-[1.5rem] p-6 transition-colors"
+        class="group flex min-h-56 flex-col rounded-[1.5rem] p-6 transition-colors"
         :class="service.slug === 'serwis-24-7'
-          ? 'bg-ink text-white hover:bg-[#1b1648]'
-          : 'bg-[#f4f0ea] text-ink hover:bg-[#ebe6dd]'"
+          ? 'bg-ink text-white hover:bg-brand'
+          : 'bg-surface text-heading hover:bg-ink hover:text-white'"
       >
         <p
-          class="text-xs"
-          :class="service.slug === 'serwis-24-7' ? 'text-white' : 'text-ink/38'"
+          class="text-base font-semibold leading-none"
+          :class="service.slug === 'serwis-24-7' ? 'text-white' : 'text-brand group-hover:text-white'"
         >
-          Usługa
+          {{ serviceNumber(index) }}
         </p>
-        <h3
-          class="mt-4 font-sans text-lg font-semibold leading-tight tracking-[-0.02em]"
-          :class="service.slug === 'serwis-24-7' ? 'text-white' : 'text-ink'"
-        >
+        <h3 class="mt-auto max-w-none pt-6 text-lg font-bold leading-tight text-current">
           {{ service.label }}
         </h3>
         <span
-          class="mt-auto block pt-6 text-brand transition-transform group-hover:translate-x-1"
+          class="mt-4 block transition-transform group-hover:translate-x-1"
+          :class="service.slug === 'serwis-24-7' ? 'text-white' : 'text-brand group-hover:text-white'"
           aria-hidden="true"
         >
           →
