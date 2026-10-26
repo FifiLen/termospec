@@ -74,7 +74,7 @@ watch(filteredCategories, (categories) => {
 
 <template>
   <section
-    class="grid h-[min(42rem,calc(100dvh-7.25rem))] min-h-0 w-full grid-cols-[20rem_minmax(0,1fr)] gap-5 overflow-hidden rounded-[1.75rem] bg-white p-4 shadow-[0_20px_60px_rgb(18_11_56_/_0.1)]"
+    class="grid h-[min(42rem,calc(100dvh-7.25rem))] min-h-0 w-full grid-cols-[20rem_minmax(0,1fr)] gap-5 overflow-hidden rounded-[clamp(1.5rem,2.6vw,3.1rem)] bg-white p-4 shadow-[0_20px_60px_rgb(10_24_71_/_0.12)]"
     aria-label="Katalog produktów — podgląd"
     data-lenis-prevent
   >
@@ -103,7 +103,7 @@ watch(filteredCategories, (categories) => {
           <p v-if="activeGroup" class="text-xs font-bold uppercase tracking-[0.12em] text-brand">
             {{ activeCategory.label }}
           </p>
-          <h2 class="mt-3 max-w-[28ch] text-2xl font-medium leading-tight tracking-[-0.035em] text-ink 2xl:text-3xl">
+          <h2 class="mt-3 max-w-[28ch] text-2xl font-bold leading-tight tracking-[-0.01em] text-ink 2xl:text-3xl">
             {{ previewLabel }}
           </h2>
           <p v-if="activeEntry" class="mt-3 text-base font-medium text-ink/58">

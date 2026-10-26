@@ -156,7 +156,7 @@ const hasProductScope = computed(() => {
           </div>
 
           <div class="mt-4 flex flex-wrap items-end gap-x-5 gap-y-2">
-            <h3 class="text-[clamp(2.75rem,5cqw,5rem)] font-medium leading-[0.92] tracking-[-0.055em] text-ink">
+            <h3 class="text-[clamp(2.75rem,5cqw,5rem)] font-bold leading-[1.05] tracking-[-0.015em] text-ink">
               {{ props.product.title }}
             </h3>
             <span
@@ -212,7 +212,7 @@ const hasProductScope = computed(() => {
           <p class="text-xs font-bold uppercase tracking-[0.16em] text-white/55">
             {{ labels.purpose }}
           </p>
-          <h4 class="mt-4 max-w-lg text-3xl font-medium leading-[1.04] tracking-[-0.04em] text-white md:text-4xl">
+          <h4 class="mt-4 max-w-lg text-3xl font-bold leading-[1.12] tracking-[-0.015em] text-white md:text-4xl">
             {{ overviewSection?.title || labels.applications }}
           </h4>
           <p v-if="overviewSection?.body" class="mt-6 max-w-xl text-base leading-8 text-white/72">
@@ -267,7 +267,7 @@ const hasProductScope = computed(() => {
 
       <section v-if="narrativeSections.length" class="mt-12 lg:mt-16">
         <div class="grid gap-8 border-b border-line pb-7 md:grid-cols-[minmax(0,0.72fr)_minmax(0,1.28fr)] md:items-end">
-          <h4 class="text-3xl font-medium leading-[1.04] tracking-[-0.04em] text-ink md:text-4xl">
+          <h4 class="text-3xl font-bold leading-[1.12] tracking-[-0.015em] text-ink md:text-4xl">
             {{ labels.technicalDescription }}
           </h4>
           <p v-if="props.product.lead" class="max-w-2xl text-base leading-7 text-ink/58 md:justify-self-end">
@@ -302,7 +302,7 @@ const hasProductScope = computed(() => {
       </section>
 
       <section v-if="props.product.technicalData.length" class="mt-12 lg:mt-16">
-        <h4 class="text-3xl font-medium leading-[1.04] tracking-[-0.04em] text-ink md:text-4xl">
+        <h4 class="text-3xl font-bold leading-[1.12] tracking-[-0.015em] text-ink md:text-4xl">
           {{ labels.technicalData }}
         </h4>
 
@@ -322,7 +322,7 @@ const hasProductScope = computed(() => {
                 class="border-b border-line/70 text-sm leading-6 text-ink"
               >
                 <th scope="row" class="py-4 pe-5 text-start font-bold">{{ row.label }}</th>
-                <td class="py-4 pe-5 font-mono font-bold">{{ row.value }}</td>
+                <td class="py-4 pe-5 font-bold tabular-nums">{{ row.value }}</td>
                 <td class="py-4 text-ink/58">{{ row.unit || "—" }}</td>
               </tr>
             </tbody>
@@ -339,7 +339,7 @@ const hasProductScope = computed(() => {
       </section>
 
       <section v-if="hasProductScope" class="mt-12 lg:mt-16">
-        <h4 class="text-3xl font-medium leading-[1.04] tracking-[-0.04em] text-ink md:text-4xl">
+        <h4 class="text-3xl font-bold leading-[1.12] tracking-[-0.015em] text-ink md:text-4xl">
           {{ labels.productScope }}
         </h4>
 
@@ -377,7 +377,7 @@ const hasProductScope = computed(() => {
                   class="flex items-start justify-between gap-5 text-sm font-bold leading-5 text-ink transition-colors hover:text-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
                 >
                   <span>{{ document.title }}</span>
-                  <span class="shrink-0 font-mono text-xs uppercase text-brand">↗</span>
+                  <span class="shrink-0 text-xs uppercase text-brand">↗</span>
                 </a>
               </li>
             </ul>

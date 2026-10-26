@@ -22,7 +22,7 @@ const emit = defineEmits<{
 
 <template>
   <aside
-    class="overflow-y-auto overscroll-contain rounded-[1.75rem] bg-brand text-white"
+    class="overflow-y-auto overscroll-contain rounded-[clamp(1.5rem,2.6vw,3.1rem)] bg-brand text-white"
     data-lenis-prevent
     aria-label="Indeks katalogu produktów"
   >
@@ -126,7 +126,7 @@ const emit = defineEmits<{
                       >
                         <button
                           type="button"
-                          class="w-full py-2 pe-4 ps-10 text-left font-mono text-xs font-bold leading-4 transition-colors duration-200 hover:bg-white/8 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white"
+                          class="w-full py-2 pe-4 ps-10 text-left text-xs font-bold leading-4 transition-colors duration-200 hover:bg-white/8 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white"
                           :class="props.activeEntryId === entry.id ? 'bg-white/14 text-white' : 'text-white/58'"
                           @click="emit('selectEntry', category.slug, group.slug, entry.id)"
                         >
@@ -148,7 +148,7 @@ const emit = defineEmits<{
                 >
                   <button
                     type="button"
-                    class="w-full py-2.5 pe-4 ps-7 text-left font-mono text-xs font-bold leading-4 transition-colors duration-200 hover:bg-white/8 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white"
+                    class="w-full py-2.5 pe-4 ps-7 text-left text-xs font-bold leading-4 transition-colors duration-200 hover:bg-white/8 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white"
                     :class="props.activeEntryId === entry.id ? 'bg-white/14 text-white' : 'text-white/60'"
                     @click="emit('selectEntry', category.slug, '', entry.id)"
                   >

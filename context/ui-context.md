@@ -236,7 +236,7 @@ Motion should be subtle:
 
 The catalogue begins below the fixed header as a contained technical workspace aligned with the site's other sections:
 
-- use the shared `max-w-[92rem]` content width and responsive page gutters,
+- use the shared `.design-shell` width and gutters (same axis as the homepage); the sticky index offset follows `--site-header-height`,
 - split the workspace into two visually separate rounded panels,
 - render the left catalogue navigation on the Termospec brand-red surface with white text,
 - render the flexible right catalogue content panel on white,
@@ -244,10 +244,11 @@ The catalogue begins below the fixed header as a contained technical workspace a
 
 Desktop layout:
 
-- fixed `18rem` catalogue index panel,
+- `clamp(18rem, 19vw, 23rem)` catalogue index panel,
 - flexible confirmed category-taxonomy panel,
 - controlled active state in the left nine-category index,
-- a restrained `1.25rem` gap between panels,
+- a `clamp(1.25rem, 1.6vw, 1.9rem)` gap between panels; both panels and the mega-menu use the homepage card radius `clamp(1.5rem, 2.6vw, 3.1rem)`,
+- catalogue, model and mega-menu headings use bold Host Grotesk with the homepage `-0.015em` tracking; model codes and table values are set in the regular sans (tabular numerals), not monospace,
 - no decorative shadows.
 
 The catalogue is a working B2B product surface, not a landing page.

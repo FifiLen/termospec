@@ -271,11 +271,11 @@ useSeoMeta({
 </script>
 
 <template>
-  <main class="min-h-[100svh] bg-surface px-5 pb-20 pt-32 text-ink sm:px-8 lg:px-12 lg:pb-28 lg:pt-36">
+  <main class="min-h-[100svh] bg-surface pb-[clamp(3.5rem,4.1vw,5rem)] pt-[calc(var(--site-header-height)+clamp(1.5rem,2.5vw,3rem))] text-ink">
     <h1 class="sr-only">Katalog produktów</h1>
 
     <section
-      class="mx-auto grid w-full max-w-[92rem] items-start gap-5 lg:grid-cols-[18rem_minmax(0,1fr)]"
+      class="design-shell grid items-start gap-5 lg:grid-cols-[clamp(18rem,19vw,23rem)_minmax(0,1fr)] lg:gap-[clamp(1.25rem,1.6vw,1.9rem)]"
       aria-label="Katalog produktów"
     >
       <ProductCatalogueIndex
@@ -286,13 +286,13 @@ useSeoMeta({
         :active-entry-id="activeEntryId"
         :expanded-category-slug="expandedCategorySlug"
         :expanded-group-slug="expandedGroupSlug"
-        class="lg:sticky lg:top-28 lg:max-h-[calc(100svh-8rem)]"
+        class="lg:sticky lg:top-[calc(var(--site-header-height)+1.5rem)] lg:max-h-[calc(100svh-var(--site-header-height)-3rem)]"
         @category-expanded="setCategoryExpanded"
         @group-expanded="setGroupExpanded"
         @select-entry="activateEntry"
       />
 
-      <div class="min-w-0 overflow-clip rounded-[1.75rem] bg-white">
+      <div class="min-w-0 overflow-clip rounded-[clamp(1.5rem,2.6vw,3.1rem)] bg-white">
         <ProductCatalogueCategory
           v-if="activeCategory"
           :key="`${activeCategory.slug}-${activeGroup?.slug || 'category'}`"

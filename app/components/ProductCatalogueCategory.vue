@@ -68,7 +68,7 @@ const focusLabel = computed(() => {
           Kategoria produktów
         </p>
         <h2
-          class="mt-3 max-w-[26ch] text-[clamp(1.9rem,4cqw,3.75rem)] font-medium leading-[0.98] tracking-[-0.05em] text-ink"
+          class="mt-3 max-w-[26ch] text-[clamp(1.9rem,4cqw,3.75rem)] font-bold leading-[1.05] tracking-[-0.015em] text-ink"
         >
           {{ props.category.label }}
         </h2>
@@ -89,7 +89,7 @@ const focusLabel = computed(() => {
           {{ activeGroup ? "Rodzina urządzeń" : "Grupa urządzeń" }}
         </p>
         <h3
-          class="mt-10 max-w-[20ch] text-[clamp(1.65rem,3.1cqw,3rem)] font-medium leading-[1.02] tracking-[-0.045em] text-ink"
+          class="mt-10 max-w-[20ch] text-[clamp(1.65rem,3.1cqw,3rem)] font-bold leading-[1.12] tracking-[-0.015em] text-ink"
         >
           {{ focusLabel }}
         </h3>
