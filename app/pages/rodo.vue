@@ -8,42 +8,30 @@ useSeoMeta({
 </script>
 
 <template>
-  <main class="bg-white pt-16 text-ink">
-    <section class="border-b border-line px-6 py-12 lg:px-10 lg:py-16">
-      <div class="mx-auto max-w-[96rem] text-center">
-        <p class="font-mono text-xs font-black uppercase tracking-[0.22em] text-brand">
-          ochrona danych
-        </p>
-        <h1
-          class="mx-auto mt-5 max-w-4xl font-heading text-3xl font-black leading-tight text-ink md:text-5xl"
-        >
-          {{ rodoPage.title }}
-        </h1>
-        <div class="mx-auto mt-6 h-1 w-20 bg-brand" aria-hidden="true" />
-      </div>
-    </section>
+  <main class="bg-surface text-ink">
+    <PageIntro eyebrow="Ochrona danych" :title="rodoPage.title" title-id="rodo-title" />
 
-    <section class="px-6 py-10 lg:px-10 lg:py-14">
-      <div class="mx-auto max-w-[72rem]">
-        <p class="text-base font-medium leading-8 text-ink/72">
+    <div class="design-shell pb-[clamp(3.5rem,4.1vw,5rem)]">
+      <article class="rounded-[clamp(1.5rem,2.6vw,3.1rem)] bg-white p-[clamp(1.5rem,3.85vw,4.6rem)]">
+        <p class="design-lead max-w-[64rem]">
           {{ rodoPage.intro }}
         </p>
 
-        <ol class="mt-10 space-y-6">
+        <ol class="mt-[clamp(1.75rem,2.6vw,3.1rem)] max-w-[64rem] border-t-2 border-line">
           <li
             v-for="(item, index) in rodoPage.items"
             :key="item"
-            class="grid gap-4 border-t border-line pt-6 md:grid-cols-[3rem_minmax(0,1fr)]"
+            class="grid gap-3 border-b border-line py-[clamp(1rem,1.3vw,1.55rem)] md:grid-cols-[clamp(3rem,4vw,4.8rem)_minmax(0,1fr)]"
           >
-            <span class="font-mono text-sm font-black text-brand">
-              {{ index + 1 }}.
+            <span class="text-[clamp(1.05rem,1.31vw,1.57rem)] font-semibold leading-[1.4] text-brand">
+              {{ String(index + 1).padStart(2, "0") }}
             </span>
-            <p class="text-base font-medium leading-8 text-ink/72">
+            <p class="design-body">
               {{ item }}
             </p>
           </li>
         </ol>
-      </div>
-    </section>
+      </article>
+    </div>
   </main>
 </template>

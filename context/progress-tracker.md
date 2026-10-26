@@ -12,6 +12,8 @@ Update this file whenever the current phase, active feature, implementation stat
 
 ## Completed
 
+- Finished the PSD style roll-out on the simple pages: added a shared `PageIntro` component and rebuilt `/dofinansowania` (white project cards with the EU logo strip, left-aligned copy, red-dash bullets, divider-led project facts) and `/rodo` (white card with numbered clauses on divider rows). Copy and data are unchanged; `/koncesja` stays empty per the owner and only gained the header-height offset. Checked at 1920 px and 390 px with no horizontal overflow. All public routes now use the new design system.
+
 - Aligned `/produkty` and the desktop product mega-menu with the homepage PSD system (third roll-out step). No behaviour or data changes: the catalogue now sits on the `.design-shell` axis, its sticky index follows `--site-header-height`, headings are bold with homepage tracking, model codes/table values no longer use monospace, and panel radii/shadows match the homepage. Verified category, TS-150 model, open mega-menu and 390 px mobile; typecheck and 14 tests pass. Note: running `nuxt typecheck` beside the dev server again broke Nuxt Content queries (500, empty catalogue) until the dev server was restarted.
 
 - Carried the homepage PSD style over to `/o-firmie` (second subpage). Copy and data are unchanged; the page now uses the shared design helpers, alternating surface/white sections, a numbered navy/white value-card pair and a simplified five-point timeline (red years on one axis with dots, surface cards, vertical line on mobile) in place of the alternating beige cards. Added the `Profil` eyebrow and a `zobacz usługi` action. Checked at 1920 px and 390 px (no horizontal overflow).
@@ -250,7 +252,7 @@ Update this file whenever the current phase, active feature, implementation stat
 - PSD homepage: hero group `4b` (engineers photo) is an alternative to `4` (blueprint machine) with identical copy. `4` is used; `hero-zespol-inzynierow.jpg` is stored for a quick swap.
 - PSD homepage: the three realization cards repeat one placeholder text; real project names/descriptions for the new yellow-aggregate images are needed. The footer repeats the copyright on the right; only one copy is rendered.
 - `/uslugi`: real photos are still needed for the four machine cards and for welding/steel structures (the section currently shows the CNC machining banner).
-- Designer asked whether to design remaining subpages or let development carry the homepage style over; the global tokens/font/header/footer already apply site-wide, subpage layouts still use the previous composition.
+- Designer asked whether to design remaining subpages or let development carry the homepage style over. Development carried the style over to `/uslugi`, `/o-firmie`, `/produkty`, `/dofinansowania` and `/rodo`; these layouts are an interpretation of the homepage PSD and await designer/client review.
 
 - Product mega-menu preview: should individual models eventually receive separate thumbnails? Until supplied, the compact preview will reuse the exact verified family/category render shown on `/produkty`; branches without artwork will omit the image.
 

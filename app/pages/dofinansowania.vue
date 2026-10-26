@@ -8,103 +8,80 @@ useSeoMeta({
 </script>
 
 <template>
-  <main class="bg-white pt-16 text-ink">
-    <section class="border-b border-line px-6 py-12 lg:px-10 lg:py-16">
-      <div class="mx-auto max-w-[96rem] text-center">
-        <h1
-          class="mx-auto max-w-5xl font-heading text-3xl font-black leading-tight text-ink md:text-5xl"
-        >
-          {{ fundingPage.title }}
-        </h1>
-        <div class="mx-auto mt-6 h-1 w-20 bg-brand" aria-hidden="true" />
-      </div>
-    </section>
+  <main class="bg-surface text-ink">
+    <PageIntro eyebrow="Dofinansowania" :title="fundingPage.title" title-id="funding-title" />
 
-    <section class="px-6 py-10 lg:px-10 lg:py-14">
-      <div class="mx-auto max-w-[96rem] space-y-16">
-        <article
-          v-for="project in fundingProjects"
-          :key="project.id"
-          class="border-b border-brand pb-14 last:border-b-0"
+    <div class="design-shell grid gap-[clamp(1.25rem,2vw,2.4rem)] pb-[clamp(3.5rem,4.1vw,5rem)]">
+      <article
+        v-for="project in fundingProjects"
+        :key="project.id"
+        class="rounded-[clamp(1.5rem,2.6vw,3.1rem)] bg-white p-[clamp(1.5rem,3.85vw,4.6rem)]"
+      >
+        <p
+          v-if="project.eyebrow"
+          class="text-[clamp(0.8rem,0.92vw,1.1rem)] font-semibold uppercase leading-snug tracking-[0.18em] text-brand"
         >
+          {{ project.eyebrow }}
+        </p>
+
+        <NuxtImg
+          :src="project.image.src"
+          :alt="project.image.alt"
+          width="2016"
+          sizes="100vw lg:1400px"
+          class="mt-[clamp(1.5rem,2.1vw,2.5rem)] h-auto w-full max-w-[88rem] object-contain"
+          loading="lazy"
+          decoding="async"
+        />
+
+        <div class="my-[clamp(1.75rem,2.6vw,3.1rem)] h-0.5 bg-line" />
+
+        <div class="max-w-[64rem] space-y-[clamp(1rem,1.3vw,1.55rem)]">
           <p
-            v-if="project.eyebrow"
-            class="mb-6 text-center font-mono text-xs font-black uppercase tracking-[0.22em] text-brand"
+            v-for="paragraph in project.paragraphs"
+            :key="paragraph.text"
+            :class="paragraph.emphasis ? 'design-lead font-semibold italic text-heading' : 'design-body'"
           >
-            {{ project.eyebrow }}
+            <template v-if="paragraph.emphasis">„{{ paragraph.text }}”</template>
+            <template v-else>{{ paragraph.text }}</template>
           </p>
 
-          <div class="bg-white py-4">
-            <NuxtImg
-              :src="project.image.src"
-              :alt="project.image.alt"
-              width="2016"
-              sizes="100vw lg:1400px"
-              class="mx-auto h-auto w-full max-w-[88rem] object-contain"
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
-
-          <div
-            class="mx-auto mt-10 max-w-6xl space-y-6 text-center text-base font-medium leading-8 text-ink/72"
+          <section
+            v-for="(section, index) in project.sections"
+            :key="`${project.id}-${index}`"
+            class="space-y-3 pt-2"
           >
-            <p
-              v-for="paragraph in project.paragraphs"
-              :key="paragraph.text"
-              :class="paragraph.emphasis ? 'font-black italic text-ink/82' : undefined"
-            >
-              <template v-if="paragraph.emphasis">„{{ paragraph.text }}”</template>
-              <template v-else>{{ paragraph.text }}</template>
+            <h2 v-if="section.title" class="design-subheading">
+              {{ section.title }}
+            </h2>
+
+            <p v-for="paragraph in section.paragraphs" :key="paragraph" class="design-body">
+              {{ paragraph }}
             </p>
 
-            <section
-              v-for="(section, index) in project.sections"
-              :key="`${project.id}-${index}`"
-              class="space-y-5"
-            >
-              <h2
-                v-if="section.title"
-                class="max-w-none text-base font-black leading-7 text-ink"
-              >
-                {{ section.title }}
-              </h2>
+            <ul v-if="section.bullets?.length" class="grid gap-[clamp(0.4rem,0.55vw,0.65rem)]">
+              <li v-for="bullet in section.bullets" :key="bullet" class="design-body flex gap-2">
+                <span aria-hidden="true" class="text-brand">–</span>
+                {{ bullet }}
+              </li>
+            </ul>
+          </section>
+        </div>
 
-              <p v-for="paragraph in section.paragraphs" :key="paragraph">
-                {{ paragraph }}
-              </p>
-
-              <ul
-                v-if="section.bullets?.length"
-                class="mx-auto max-w-4xl list-none space-y-2"
-              >
-                <li v-for="bullet in section.bullets" :key="bullet">
-                  <span aria-hidden="true">- </span>{{ bullet }}
-                </li>
-              </ul>
-            </section>
-
-            <dl v-if="project.facts?.length" class="space-y-4 pt-2">
-              <div
-                v-for="fact in project.facts"
-                :key="fact.label"
-                class="text-base"
-              >
-                <dt
-                  v-if="fact.value"
-                  class="inline font-black text-ink"
-                >
-                  {{ fact.label }}:
-                </dt>
-                <dd class="inline">
-                  <template v-if="fact.value"> {{ fact.value }}</template>
-                  <template v-else>{{ fact.label }}</template>
-                </dd>
-              </div>
-            </dl>
-          </div>
-        </article>
-      </div>
-    </section>
+        <ul v-if="project.facts?.length" class="mt-[clamp(1.75rem,2.6vw,3.1rem)] max-w-[64rem] border-t-2 border-line">
+          <li
+            v-for="fact in project.facts"
+            :key="fact.label"
+            class="grid gap-1 border-b border-line py-[clamp(0.75rem,0.95vw,1.15rem)] text-[clamp(0.95rem,1.05vw,1.25rem)] leading-snug sm:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] sm:gap-6"
+          >
+            <template v-if="fact.value">
+              <span class="text-muted">{{ fact.label }}</span>
+              <span class="font-semibold text-heading">{{ fact.value }}</span>
+            </template>
+            <span v-else class="font-semibold text-heading sm:col-span-2">{{ fact.label }}</span>
+          </li>
+        </ul>
+      </article>
+    </div>
   </main>
 </template>
