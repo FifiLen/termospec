@@ -135,9 +135,9 @@ onBeforeUnmount(() => {
 
 <template>
   <header
-    class="pointer-events-none fixed inset-x-0 top-0 z-50 text-ink"
+    class="pointer-events-none fixed inset-x-0 top-0 z-50 pt-[var(--site-header-gap)] text-ink"
   >
-    <div class="pointer-events-auto relative w-full">
+    <div class="design-shell pointer-events-auto relative">
       <SiteHeaderMobileBar
         ref="mobileBar"
         :is-open="isMobileMenuOpen"

@@ -20,9 +20,9 @@ defineExpose({
 </script>
 
 <template>
-  <div class="flex min-h-[var(--site-header-height)] w-full items-center bg-white px-[var(--design-gutter)] shadow-[0_1px_0_rgb(10_24_71_/_0.08)] xl:hidden">
+  <div class="flex min-h-[var(--site-header-bar)] w-full items-center rounded-[1.5rem] bg-white px-4 shadow-[0_14px_40px_rgb(10_24_71_/_0.09)] xl:hidden">
     <NuxtLink class="inline-flex outline-none" to="/" aria-label="Termospec, strona główna" @click="emit('navigate')">
-      <img src="/images/brand/termospec-logo.svg" alt="Termospec" width="160" height="23" class="h-auto w-36 sm:w-40">
+      <img src="/images/brand/termospec-logo.svg" alt="Termospec" width="160" height="23" class="h-auto w-32 sm:w-36">
     </NuxtLink>
 
     <div class="ms-auto flex items-center gap-2">

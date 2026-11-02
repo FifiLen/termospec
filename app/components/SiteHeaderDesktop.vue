@@ -43,12 +43,12 @@ watch(() => route.fullPath, () => {
     @mouseleave="openMenu = null"
     @keydown.esc="openMenu = null"
   >
-    <div class="grid min-h-[var(--site-header-height)] grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-7 bg-white px-[var(--design-gutter)] shadow-[0_1px_0_rgb(10_24_71_/_0.08)]">
+    <div class="grid min-h-[var(--site-header-bar)] grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-7 rounded-[1.75rem] bg-white px-[clamp(1.5rem,1.6vw,1.9rem)] shadow-[0_16px_50px_rgb(10_24_71_/_0.08)]">
       <NuxtLink to="/" aria-label="Termospec, strona główna" class="inline-flex pe-2 outline-none">
-        <img src="/images/brand/termospec-logo.svg" alt="Termospec" width="275" height="40" class="h-auto w-[clamp(11rem,14.3vw,17.2rem)]">
+        <img src="/images/brand/termospec-logo.svg" alt="Termospec" width="275" height="40" class="h-auto w-[clamp(10rem,12vw,14.5rem)]">
       </NuxtLink>
 
-      <nav class="flex items-center gap-[clamp(0.25rem,1.1vw,1.4rem)] ps-[clamp(1rem,8vw,10rem)]" aria-label="Główna nawigacja">
+      <nav class="flex items-center gap-[clamp(0.25rem,1.1vw,1.4rem)] ps-[clamp(1rem,5vw,6.5rem)]" aria-label="Główna nawigacja">
         <NuxtLink
           to="/o-firmie"
           class="rounded-full px-[clamp(0.75rem,0.8vw,1rem)] py-2.5 text-[clamp(1rem,1.18vw,1.42rem)] font-bold transition-colors"
@@ -130,7 +130,7 @@ watch(() => route.fullPath, () => {
           type="button"
           data-accessibility-trigger
           class="grid size-11 shrink-0 place-items-center rounded-full transition-colors"
-          :class="props.accessibilityOpen ? 'text-brand' : 'bg-chip text-ink hover:bg-field hover:text-brand'"
+          :class="props.accessibilityOpen ? 'bg-ink text-white' : 'bg-chip text-ink hover:bg-field hover:text-brand'"
           aria-label="Ustawienia dostępności"
           aria-haspopup="dialog"
           aria-controls="accessibility-panel"
@@ -173,19 +173,17 @@ watch(() => route.fullPath, () => {
       leave-to-class="-translate-y-2 opacity-0"
     >
       <div v-if="openMenu" class="absolute inset-x-0 top-full pt-3">
-        <div class="design-shell">
-          <ProductMegaMenu
-            v-if="openMenu === 'products'"
-            id="desktop-products-menu"
-            :categories="props.productCategories"
-            @navigate="openMenu = null"
-          />
-          <ServiceMegaMenu
-            v-else
-            id="desktop-services-menu"
-            :services="props.services"
-          />
-        </div>
+        <ProductMegaMenu
+          v-if="openMenu === 'products'"
+          id="desktop-products-menu"
+          :categories="props.productCategories"
+          @navigate="openMenu = null"
+        />
+        <ServiceMegaMenu
+          v-else
+          id="desktop-services-menu"
+          :services="props.services"
+        />
       </div>
     </Transition>
   </div>

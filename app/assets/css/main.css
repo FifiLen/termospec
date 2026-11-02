@@ -47,19 +47,21 @@
     --shadow-lift: 0 24px 70px rgb(10 24 71 / 0.14);
     --page-gutter: clamp(1rem, 4vw, 4rem);
     --design-gutter: clamp(1.25rem, 3.8vw, 4.6rem);
-    --site-header-height: 4rem;
+    --site-header-gap: 0.75rem;
+    --site-header-bar: 4rem;
+    --site-header-height: calc(var(--site-header-gap) + var(--site-header-bar));
     --container: 1680px;
   }
 
   @media (min-width: 40rem) {
     :root {
-      --site-header-height: 5rem;
+      --site-header-gap: 1rem;
     }
   }
 
   @media (min-width: 80rem) {
     :root {
-      --site-header-height: clamp(4.5rem, 5.05vw, 6.1rem);
+      --site-header-bar: clamp(4.5rem, 4.6vw, 5.5rem);
     }
   }
 
