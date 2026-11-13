@@ -1,6 +1,6 @@
 <script setup lang="ts">
-useSeoMeta({
-  title: "Koncesja | Termospec",
+usePageSeo({
+  title: "Koncesja",
 });
 </script>
 

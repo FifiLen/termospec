@@ -6,6 +6,8 @@ import { normalizeCatalogueCategories } from "~/utils/product-catalogue";
 const route = useRoute()
 const config = useRuntimeConfig()
 
+useSiteSeo()
+
 const searchTerm = ref('')
 
 const { data: siteContent } = await useFetch('/api/content/site', {

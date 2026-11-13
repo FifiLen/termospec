@@ -512,7 +512,7 @@ onUnmounted(() => {
                 <span>{{ slideCaption(slide) }}</span>
               </p>
 
-              <h1
+              <h2
                 data-hero-reveal
                 :aria-label="slide.title.replace('\n', ' ')"
                 class="mt-[clamp(1.25rem,2.2vw,2.65rem)] max-w-[clamp(17rem,46vw,55rem)] text-[clamp(2.4rem,min(4.84vw,8.6svh),5.8rem)] font-bold leading-[0.99] tracking-[-0.018em] text-white"
@@ -525,7 +525,7 @@ onUnmounted(() => {
                 >
                   {{ line }}
                 </span>
-              </h1>
+              </h2>
 
               <p
                 data-hero-reveal

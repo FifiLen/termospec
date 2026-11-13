@@ -26,12 +26,17 @@ export default defineNuxtConfig({
     },
     public: {
       studioEnabled: enableStudio,
+      // Production origin for canonical, Open Graph, robots.txt and sitemap URLs.
+      // Override per environment with NUXT_PUBLIC_SITE_URL.
+      siteUrl: 'https://termospec.pl',
     },
   },
   css: ['~/assets/css/main.css'],
   devtools: { enabled: true },
   app: {
     head: {
+      htmlAttrs: { lang: 'pl' },
+      titleTemplate: '%s | Termospec',
       link: [
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
@@ -102,6 +107,7 @@ export default defineNuxtConfig({
         }]
       : [],
     prerender: {
+      routes: ['/robots.txt', '/sitemap.xml'],
       ignore: [/^\/__nuxt_content\//],
     },
   },

@@ -6,7 +6,7 @@ if (!config.public.studioEnabled) {
 }
 
 useSeoMeta({
-  title: 'Logowanie do Nuxt Studio | Termospec',
+  title: 'Logowanie do Nuxt Studio',
   robots: 'noindex, nofollow',
 })
 

@@ -3,8 +3,8 @@ import { aboutProfile, aboutTimeline } from "~~/data/about";
 
 const milestones = aboutTimeline.slice(0, 5);
 
-useSeoMeta({
-  title: "O firmie | Termospec",
+usePageSeo({
+  title: "O firmie",
   description:
     "Termospec zapewnia kompleksową realizację i obsługę instalacji klimatyzacyjnych oraz wentylacyjnych o dużych mocach.",
 });

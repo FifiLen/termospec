@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { rodoPage } from "~~/data/rodo";
 
-useSeoMeta({
-  title: "RODO | Termospec",
+usePageSeo({
+  title: "RODO",
   description: rodoPage.description,
 });
 </script>

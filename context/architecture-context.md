@@ -92,6 +92,14 @@ Each page should define:
 
 Offer detail pages should include indexable copy, not only visual cards. Product-family copy is presented on `/produkty` without individual detail routes.
 
+Current implementation:
+
+- `nuxt.config.ts` sets `<html lang="pl">` and the global `titleTemplate` `%s | Termospec`. Pages call `usePageSeo({ title, description })` with the short page name (`"O firmie"`), which also sets `og:title` / `og:description`. The homepage passes `standaloneTitle: true` because its title already names the brand.
+- `app.vue` calls `useSiteSeo()` once: canonical and `og:url` (production origin + route path, no trailing slash), shared Open Graph/Twitter defaults with `/images/brand/og-termospec.jpg` (1200×630), and a site-wide `Organization` JSON-LD block.
+- The production origin is `runtimeConfig.public.siteUrl` (default `https://termospec.pl`, override with `NUXT_PUBLIC_SITE_URL`). Company identity for SEO lives in `data/company.ts`.
+- `/robots.txt` and `/sitemap.xml` are Nitro server routes (`server/routes/`), prerendered at build time. Indexable paths are listed in `server/utils/sitemap-routes.ts`; keep it aligned with the prerendered `routeRules` when routes are added or removed.
+- Each page has exactly one `h1`. On the homepage it is a visually hidden heading in `app/pages/index.vue`; hero slide titles are `h2`.
+
 ## Image / Asset Model
 
 - Place stable public images in `public/`.

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { fundingPage, fundingProjects } from "~~/data/dofinansowania";
 
-useSeoMeta({
-  title: "Dofinansowania | Termospec",
+usePageSeo({
+  title: "Dofinansowania",
   description: fundingPage.description,
 });
 </script>

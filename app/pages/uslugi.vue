@@ -26,8 +26,8 @@ const splitSpecification = (specification: string) => {
   };
 };
 
-useSeoMeta({
-  title: "Usługi | Termospec",
+usePageSeo({
+  title: "Usługi",
   description:
     "Zakres usług Termospec: projektowanie systemów klimatyzacji i wentylacji, serwis 24/7, remonty urządzeń chłodniczych, obróbka metali oraz konstrukcje stalowe.",
 });
