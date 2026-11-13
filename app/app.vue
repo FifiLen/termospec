@@ -102,6 +102,7 @@ const contentSearchUi = {
         v-if="studioEnabled"
         :catalogue="baseProductNavigation"
       />
+      <LazyRealizationEditor v-if="studioEnabled" />
 
       <LazyUContentSearch
         v-model:search-term="searchTerm"

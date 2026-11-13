@@ -12,6 +12,8 @@ Update this file whenever the current phase, active feature, implementation stat
 
 ## Completed
 
+- Studio editor pilot (2026-11-02): moved homepage realizations from `data/home.ts` to the Studio-editable `content/realizations/*.yml` collection (`schemas/realization.ts`: title, industry, description, image src/alt, order; served by `/api/content/realizations`). `HomeRealizations` shows the first three by `order` through the shared `RealizationCard`. Added the Studio-only `Dodaj realizację` form (`RealizationEditor`): Polish guided fields, inline validation from the same zod schema, an image picker fed by the Studio media library, a start/end position choice, a live card preview, automatic file naming without collisions, and creation through Studio's native document host, so drafts and Git publishing follow the standard Studio workflow. The Studio preview plugin (renamed `studio-preview.client.ts`) now also syncs realizations, so a new draft appears on the homepage immediately. Verified in local Studio mode (validation, save, live preview, file written as clean YAML, test entry removed) and in public mode (unchanged homepage, no editor controls); typecheck and 14 tests pass.
+
 - Restored the floating rounded navigation format at the client's request (2026-11-02) while keeping the new PSD styles inside it (SVG logo, bold capitalised links with red active state, grey chips). The bar is inset from the top and aligned to `.design-shell` on desktop and mobile; `--site-header-height` is now gap + bar height, so hero centring, page offsets and the sticky catalogue index follow it automatically. Also fixed the desktop accessibility trigger, whose open state had lost its navy background during the redesign. Hero centring re-measured at 1920×1080, 1440×800 and 1280×720 (equal gaps below the bar); mega menu, accessibility panel and 390 px mobile checked.
 
 - Finished the PSD style roll-out on the simple pages: added a shared `PageIntro` component and rebuilt `/dofinansowania` (white project cards with the EU logo strip, left-aligned copy, red-dash bullets, divider-led project facts) and `/rodo` (white card with numbered clauses on divider rows). Copy and data are unchanged; `/koncesja` stays empty per the owner and only gained the header-height offset. Checked at 1920 px and 390 px with no horizontal overflow. All public routes now use the new design system.
@@ -242,7 +244,7 @@ Update this file whenever the current phase, active feature, implementation stat
 ## Next Up
 
 1. Migrate `HomeScope` as the next homepage Studio module: section heading plus the three current offer cards, keeping links constrained to confirmed routes/anchors.
-2. Migrate `HomeRealizations` after confirming whether the client should edit only photos and alt text or also optional project labels/links.
+2. If the realization form pilot is accepted, extend the same pattern (custom Studio form over the native document host) to products, hero slides and partners; consider an edit/reorder mode for existing realizations.
 3. Migrate `HomePartners` only after verified partner names/logos replace the current presentation placeholders.
 4. Migrate `HomeContactForm` after final contact data and the actual form-delivery method are confirmed.
 5. Add the still-missing client render for `Systemy redukcji ciśnienia` when it is delivered.
@@ -276,6 +278,10 @@ Update this file whenever the current phase, active feature, implementation stat
 - What controls should the future accessibility panel include, and should the floating accessibility icon open a custom panel or an external accessibility widget?
 - Which verified realizations, photos, or project references should be assigned to each product family in `/produkty`?
 - Should the final `/produkty` realization grid contain 9 photos in a strict 3x3 layout, or remain a 6-photo temporary grid arranged across three columns?
+
+- Realization form pilot: new photos must first be uploaded through the Studio media library — the form only picks existing images. Confirm whether in-form upload is needed.
+- `content/index.md` mirrors homepage realization texts for site search; realizations added through Studio are not reflected there until the search mirror is generated from the collection or updated by hand.
+- With the Studio side panel open, Studio's own layout CSS stretches the floating `Dodaj realizację` and `Import produktu` buttons across the preview width (pre-existing for the importer).
 
 ## Architecture Decisions
 

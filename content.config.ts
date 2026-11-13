@@ -2,6 +2,7 @@ import { defineCollection, defineContentConfig, z } from '@nuxt/content'
 import { homeSchema } from './schemas/home'
 import { productSchema } from './schemas/product'
 import { productTranslationRecordSchema } from './schemas/product-translation'
+import { realizationSchema } from './schemas/realization'
 
 export default defineContentConfig({
   collections: {
@@ -77,6 +78,14 @@ export default defineContentConfig({
         department: z.string().default('dział operacji'),
         order: z.number().default(100),
       }),
+      indexes: [
+        { columns: ['order'] },
+      ],
+    }),
+    realizations: defineCollection({
+      type: 'data',
+      source: 'realizations/*.yml',
+      schema: realizationSchema,
       indexes: [
         { columns: ['order'] },
       ],

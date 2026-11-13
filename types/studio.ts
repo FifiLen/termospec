@@ -3,6 +3,14 @@ export interface StudioDocument {
   [key: string]: unknown;
 }
 
+export interface StudioMediaItem {
+  id: string;
+  fsPath?: string;
+  path?: string;
+  extension?: string;
+  [key: string]: unknown;
+}
+
 export interface StudioHost {
   document: {
     db: {
@@ -11,6 +19,9 @@ export interface StudioHost {
       list: () => Promise<StudioDocument[]>;
       upsert: (fsPath: string, document: Record<string, unknown>) => Promise<void>;
     };
+  };
+  media: {
+    list: () => Promise<StudioMediaItem[]>;
   };
   app: {
     requestRerender: () => Promise<void>;

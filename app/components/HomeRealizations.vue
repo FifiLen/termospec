@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { homeRealizations } from "~~/data/home";
+import type { RealizationData } from "~~/schemas/realization";
+
+const props = defineProps<{
+  realizations: RealizationData[];
+}>();
+
+const visibleRealizations = computed(() => props.realizations.slice(0, 3));
 </script>
 
 <template>
@@ -27,30 +33,12 @@ import { homeRealizations } from "~~/data/home";
         </p>
       </div>
 
-      <div class="mt-[clamp(2.5rem,4vw,4.8rem)] grid gap-10 md:grid-cols-3 md:gap-[clamp(1.25rem,2.4vw,2.9rem)]">
-        <article v-for="realization in homeRealizations" :key="realization.title">
-          <div class="group aspect-[561/286] overflow-hidden rounded-[clamp(1.25rem,2.35vw,2.8rem)] bg-surface">
-            <img
-              :src="realization.src"
-              :alt="realization.alt"
-              width="561"
-              height="286"
-              loading="lazy"
-              decoding="async"
-              class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.025]"
-            >
-          </div>
-
-          <p class="mt-[clamp(1.25rem,2.2vw,2.65rem)] text-[clamp(0.85rem,0.92vw,1.1rem)] font-light text-muted">
-            {{ realization.industry }}
-          </p>
-          <h3 class="mt-[clamp(0.75rem,1.1vw,1.3rem)] text-[clamp(1.25rem,1.5vw,1.8rem)] font-bold leading-tight tracking-[-0.01em] text-heading">
-            {{ realization.title }}
-          </h3>
-          <p class="mt-1.5 max-w-[24rem] text-[clamp(0.95rem,1.05vw,1.25rem)] leading-[1.45] text-muted">
-            {{ realization.description }}
-          </p>
-        </article>
+      <div v-if="visibleRealizations.length" class="mt-[clamp(2.5rem,4vw,4.8rem)] grid gap-10 md:grid-cols-3 md:gap-[clamp(1.25rem,2.4vw,2.9rem)]">
+        <RealizationCard
+          v-for="(realization, index) in visibleRealizations"
+          :key="`${index}-${realization.title}`"
+          :realization="realization"
+        />
       </div>
 
       <div

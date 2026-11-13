@@ -12,7 +12,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     ...(enableStudio ? ['nuxt-studio'] : []),
   ],
-  plugins: enableStudio ? ['~/plugins/studio-products.client'] : [],
+  plugins: enableStudio ? ['~/plugins/studio-preview.client'] : [],
   content: {
     experimental: {
       sqliteConnector: 'native',

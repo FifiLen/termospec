@@ -28,14 +28,6 @@ export type HomeProcessStep = {
   body: string;
 };
 
-export type HomeRealization = {
-  src: string;
-  alt: string;
-  industry: string;
-  title: string;
-  description: string;
-};
-
 export type HomeContactTopic = {
   label: string;
   value: string;
@@ -132,33 +124,6 @@ export const homeProcessSteps: HomeProcessStep[] = [
     number: "04",
     title: "Serwis i utrzymanie",
     body: "Przeglądy, naprawy, modernizacje i bieżąca obsługa eksploatacyjna.",
-  },
-];
-
-export const homeRealizations: HomeRealization[] = [
-  {
-    src: "/images/realizations/realizacja-agregat-hala.jpg",
-    alt: "Agregat chłodniczy Termospec w hali produkcyjnej",
-    industry: "Przemysł spożywczy",
-    title: "Modernizacja instalacji chłodniczej zakładu",
-    description:
-      "Wymiana agregatów i układu automatyki bez przerwania produkcji.",
-  },
-  {
-    src: "/images/realizations/realizacja-agregat-maszynownia.jpg",
-    alt: "Agregat chłodniczy Termospec w maszynowni z instalacją rurociągów",
-    industry: "Tunele",
-    title: "Wentylacja obiektu liniowego",
-    description:
-      "Dobór i montaż wentylatorów przemysłowych oraz tam wentylacyjnych.",
-  },
-  {
-    src: "/images/realizations/realizacja-agregat-zaklad.jpg",
-    alt: "Agregat chłodniczy Termospec na terenie zakładu przemysłowego",
-    industry: "Logistyka",
-    title: "Chłodzenie hali magazynowej",
-    description:
-      "Agregat z typoszeregu TS wraz z instalacją i przeglądami okresowymi.",
   },
 ];
 
