@@ -103,6 +103,8 @@ export interface SearchStaticPages {
 
 export interface SearchSources {
   pages: SearchStaticPages;
+  // SEO description of each page (`content/seo.yml`), keyed by route.
+  pageDescriptions: Record<string, string>;
   about: SearchAbout | null;
   company: SearchCompany | null;
   services: SearchService[];
@@ -279,7 +281,7 @@ const fundingSections = ({ fundingPage, fundingProjects }: SearchStaticPages): S
   const page = "Dofinansowania";
 
   return [
-    section("/dofinansowania", page, [], text(fundingPage.title, fundingPage.description)),
+    section("/dofinansowania", page, [], fundingPage.title),
     ...fundingProjects.map((project) => section(
       "/dofinansowania",
       project.title ?? project.eyebrow ?? project.id,
@@ -295,8 +297,15 @@ const fundingSections = ({ fundingPage, fundingProjects }: SearchStaticPages): S
 };
 
 const rodoSections = ({ rodoPage }: SearchStaticPages): SearchSection[] => [
-  section("/rodo", rodoPage.title, [], text(rodoPage.description, rodoPage.intro, rodoPage.items)),
+  section("/rodo", rodoPage.title, [], text(rodoPage.intro, rodoPage.items)),
 ];
+
+// Page-level entries start with the page's SEO description, which summarises the page.
+const withPageDescription = (entry: SearchSection, description: string | undefined): SearchSection => {
+  return entry.level === 1 && description
+    ? { ...entry, content: text(description, entry.content) }
+    : entry;
+};
 
 export const buildSearchSections = (sources: SearchSources): SearchSection[] => [
   ...homeSections(sources),
@@ -306,4 +315,4 @@ export const buildSearchSections = (sources: SearchSources): SearchSection[] => 
   ...fundingSections(sources.pages),
   ...rodoSections(sources.pages),
   section("/koncesja", "Koncesja", [], ""),
-];
+].map((entry) => withPageDescription(entry, sources.pageDescriptions[entry.id]));

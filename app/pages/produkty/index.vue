@@ -263,11 +263,7 @@ const syncRouteSelection = () => {
 onMounted(syncRouteSelection);
 watch(() => route.hash, syncRouteSelection);
 
-usePageSeo({
-  title: "Produkty",
-  description:
-    "Katalog produktów Termospec: agregaty chłodnicze, chłodnice powietrza, parowniki, chłodnice wyparne, systemy redukcji ciśnienia, zbiorniki, sterowanie i wentylatory.",
-});
+await usePageSeo("produkty");
 </script>
 
 <template>

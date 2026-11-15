@@ -29,11 +29,7 @@ const sectionNumber = (slug: string) => {
   return serviceNumber(services.value.findIndex((service) => service.slug === slug));
 };
 
-usePageSeo({
-  title: "Usługi",
-  description:
-    "Zakres usług Termospec: projektowanie systemów klimatyzacji i wentylacji, serwis 24/7, remonty urządzeń chłodniczych, obróbka metali oraz konstrukcje stalowe.",
-});
+await usePageSeo("uslugi");
 </script>
 
 <template>

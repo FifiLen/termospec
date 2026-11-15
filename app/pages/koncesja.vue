@@ -1,7 +1,5 @@
 <script setup lang="ts">
-usePageSeo({
-  title: "Koncesja",
-});
+await usePageSeo("koncesja");
 </script>
 
 <template>

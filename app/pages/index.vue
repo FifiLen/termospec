@@ -15,12 +15,7 @@ const heroDefaultFacts = computed(() => {
 });
 const realizations = useRealizations(publishedRealizations);
 
-usePageSeo({
-  standaloneTitle: true,
-  title: "Termospec — systemy chłodzenia i wentylacji dla przemysłu",
-  description:
-    "Projektowanie, produkcja i serwis rozwiązań chłodniczych oraz wentylacyjnych dla przemysłu, górnictwa i infrastruktury technicznej.",
-});
+await usePageSeo("stronaGlowna");
 </script>
 
 <template>

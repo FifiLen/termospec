@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import { rodoPage } from "~~/data/rodo";
 
-usePageSeo({
-  title: "RODO",
-  description: rodoPage.description,
-});
+await usePageSeo("rodo");
 </script>
 
 <template>

@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import { fundingPage, fundingProjects } from "~~/data/dofinansowania";
 
-usePageSeo({
-  title: "Dofinansowania",
-  description: fundingPage.description,
-});
+await usePageSeo("dofinansowania");
 </script>
 
 <template>

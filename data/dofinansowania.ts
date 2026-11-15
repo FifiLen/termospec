@@ -30,8 +30,6 @@ export interface FundingProject {
 export const fundingPage = {
   title:
     'Projekty współfinansowane z programu "Fundusze Europejskie dla Śląskiego 2021-2027".',
-  description:
-    "Informacje o projektach Termospec współfinansowanych ze środków Unii Europejskiej oraz funduszy regionalnych.",
 };
 
 export const fundingProjects: FundingProject[] = [

@@ -1,7 +1,5 @@
 export const rodoPage = {
   title: "Klauzula informacyjna RODO",
-  description:
-    "Klauzula informacyjna dotycząca przetwarzania danych osobowych przez Termospec sp. z o.o.",
   intro:
     "Zgodnie z art. 13 ogólnego rozporządzenia o ochronie danych osobowych z dnia 27 kwietnia 2016 r. (Dz.Urz. UE L 119 z 04.05.2016) informuję, iż:",
   items: [

@@ -6,11 +6,7 @@ const profile = computed(() => about.value?.profile);
 // The timeline grid has five columns, so the page shows the first five milestones.
 const milestones = computed(() => (about.value?.timeline ?? []).slice(0, 5));
 
-usePageSeo({
-  title: "O firmie",
-  description:
-    "Termospec zapewnia kompleksową realizację i obsługę instalacji klimatyzacyjnych oraz wentylacyjnych o dużych mocach.",
-});
+await usePageSeo("oFirmie");
 </script>
 
 <template>

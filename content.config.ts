@@ -5,6 +5,7 @@ import { homeSchema } from './schemas/home'
 import { productSchema } from './schemas/product'
 import { productTranslationRecordSchema } from './schemas/product-translation'
 import { realizationSchema } from './schemas/realization'
+import { seoSchema } from './schemas/seo'
 import { serviceSchema } from './schemas/service'
 
 export default defineContentConfig({
@@ -87,6 +88,11 @@ export default defineContentConfig({
       type: 'data',
       source: 'about.yml',
       schema: aboutSchema,
+    }),
+    seo: defineCollection({
+      type: 'data',
+      source: 'seo.yml',
+      schema: seoSchema,
     }),
     company: defineCollection({
       type: 'data',

@@ -4,12 +4,14 @@ import { parse } from "yaml";
 
 import { fundingPage, fundingProjects } from "../../data/dofinansowania.ts";
 import { rodoPage } from "../../data/rodo.ts";
+import { seoPageRoutes } from "../../data/seo.ts";
 import { orderServicesByLayout, serviceSlugFromPath } from "../../data/services.ts";
 import { aboutSchema } from "../../schemas/about.ts";
 import { companySchema } from "../../schemas/company.ts";
 import { homeSchema } from "../../schemas/home.ts";
 import { productSchema } from "../../schemas/product.ts";
 import { realizationSchema } from "../../schemas/realization.ts";
+import { seoSchema } from "../../schemas/seo.ts";
 import { serviceSchema } from "../../schemas/service.ts";
 import type { SearchSources } from "../../server/utils/search-sections.ts";
 
@@ -40,9 +42,13 @@ export const loadSearchSources = async (): Promise<SearchSources> => {
   const realizations = await readCollection("realizations");
   const products = await readCollection("products");
   const home = homeSchema.parse(await readYaml(path.join(contentRoot, "home.yml")));
+  const seo = seoSchema.parse(await readYaml(path.join(contentRoot, "seo.yml")));
 
   return {
     pages: { fundingPage, fundingProjects, rodoPage },
+    pageDescriptions: Object.fromEntries(Object.entries(seoPageRoutes).map(([key, route]) => {
+      return [route, seo[key as keyof typeof seoPageRoutes].opis];
+    })),
     about: aboutSchema.parse(await readYaml(path.join(contentRoot, "about.yml"))),
     company: companySchema.parse(await readYaml(path.join(contentRoot, "company.yml"))),
     services: orderServicesByLayout(services.map(({ file, data }) => ({

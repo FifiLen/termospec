@@ -136,3 +136,19 @@ test("homepage scope cards in the index follow home.yml", async () => {
     sources.scopeItems.length,
   );
 });
+
+test("page entries carry the SEO description from seo.yml", async () => {
+  const sources = await loadSearchSources();
+
+  const sections = buildSearchSections({
+    ...sources,
+    pageDescriptions: { ...sources.pageDescriptions, "/uslugi": "Opis SEO po edycji w Studio." },
+  });
+
+  const services = sections.find((section) => section.id === "/uslugi" && section.level === 1);
+  assert.ok(services?.content.startsWith("Opis SEO po edycji w Studio."));
+  assert.ok(
+    sections.filter((section) => section.level > 1).every((section) => !section.content.includes("Opis SEO po edycji")),
+    "only page-level entries get the SEO description",
+  );
+});
