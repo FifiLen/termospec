@@ -7,6 +7,9 @@ const { data: publishedRealizations } = await useFetch("/api/content/realization
   key: "home-realizations",
 });
 
+const company = await useCompany();
+const studioEditable = useStudioEditable();
+
 const heroSlides = computed(() => home.value?.hero.slides ?? []);
 const realizations = useRealizations(publishedRealizations);
 
@@ -21,10 +24,10 @@ usePageSeo({
 <template>
   <main aria-label="Strona główna" class="bg-surface text-ink">
     <h1 class="sr-only">Termospec — systemy chłodzenia i wentylacji dla przemysłu</h1>
-    <HomeHero v-if="heroSlides.length" :slides="heroSlides" />
+    <HomeHero v-if="heroSlides.length" v-bind="studioEditable(home?.id)" :slides="heroSlides" />
     <HomeScope />
     <HomeRealizations :realizations="realizations" />
-    <HomeContactForm />
+    <HomeContactForm v-if="company" :company="company" />
     <HomePartners />
   </main>
 </template>

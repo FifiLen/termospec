@@ -6,7 +6,8 @@ import { normalizeCatalogueCategories } from "~/utils/product-catalogue";
 const route = useRoute()
 const config = useRuntimeConfig()
 
-useSiteSeo()
+const company = await useCompany()
+useSiteSeo(company)
 
 const searchTerm = ref('')
 
@@ -89,13 +90,14 @@ const contentSearchUi = {
     <SiteHeader
       :product-categories="productNavigation"
       :services="serviceNavigation"
+      :service-hotline="company?.serviceHotline"
     />
     <div
       class="relative z-[1] min-h-svh bg-surface"
     >
       <NuxtPage />
     </div>
-    <SiteFooter />
+    <SiteFooter v-if="company" :company="company" />
   </div>
 
   <ClientOnly v-if="!isStudioLogin">

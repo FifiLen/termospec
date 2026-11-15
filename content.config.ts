@@ -1,4 +1,5 @@
 import { defineCollection, defineContentConfig, z } from '@nuxt/content'
+import { companySchema } from './schemas/company'
 import { homeSchema } from './schemas/home'
 import { productSchema } from './schemas/product'
 import { productTranslationRecordSchema } from './schemas/product-translation'
@@ -94,6 +95,11 @@ export default defineContentConfig({
       type: 'data',
       source: 'home.yml',
       schema: homeSchema,
+    }),
+    company: defineCollection({
+      type: 'data',
+      source: 'company.yml',
+      schema: companySchema,
     }),
   },
 })

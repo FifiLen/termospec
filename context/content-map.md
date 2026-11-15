@@ -42,26 +42,16 @@ export const navigation = [
 
 The owner-confirmed `koncesja` link is the final page link in the desktop and mobile main navigation, after `kontakt`. `/koncesja` is intentionally empty for now, retaining the shared header/footer and a visually hidden heading. Its search entry contains only the confirmed title; document copy and files remain unauthored.
 
-Single source of truth example:
+Company identity and contact details live in the Studio-editable `content/company.yml` (validated by `schemas/company.ts`, served by `/api/content/company`, read through `useCompany`):
 
-```ts
-export const company = {
-  name: "Termospec Sp. z o.o.",
-  fullName: "TERMOSPEC SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ",
-  address: {
-    street: "ul. Górnicza 10",
-    postalCode: "44-240",
-    city: "Żory",
-    status: "TODO: verify with client before publication"
-  },
-  website: "www.termospec.pl",
-  email: "TODO: verify",
-  phone: "TODO: verify",
-  nip: "6422590547",
-  regon: "276184836",
-  krs: "0000109147"
-}
-```
+- `legalName` — `Termospec Sp. z o.o.` (footer copyright, contact panel, map query, JSON-LD `legalName`)
+- `address` — `ul. Górnicza 10`, `44-240`, `Żory`, `Polska`
+- `phone` — office `+48 (32) 435 80 50`; `fax` — `+48 (32) 435 80 50 wew. 16` (optional, hidden when empty)
+- `email` — `biuro@termospec.pl`
+- `serviceHotline` — `Serwis 24/7`, `+48 603 899 165` (ServiceHotline button on `/uslugi` and the homepage contact panel, mobile menu card)
+- `registry` — KRS `0000109147`, NIP `PL6422590547`, REGON `276184836`, share capital `100.000 PLN` (footer)
+
+`tel:` links are derived from the displayed numbers and the Google Maps embed/link from the legal name, street and city, so editors only maintain the visible text. Brand constants used only for SEO (short name, logo, Open Graph image) stay in `data/company.ts`. Company details that appear inside longer prose (`/rodo` clause, `/o-firmie` profile, `content/*.md` search mirror) are not bound to the collection.
 
 ## Homepage Content Model
 
@@ -137,6 +127,8 @@ Current homepage scope cards:
 - `schemas/home.ts` validates this structure and requests textarea and media-picker controls. `app/pages/index.vue` queries the single `home` data record and passes its slides to `HomeHero`.
 - Autoplay remains a presentation behavior in the component rather than client content: slides advance every 6.5 seconds, pause during pointer/focus interaction, retain arrow navigation, and respect reduced-motion preferences.
 - `content/realizations/*.yml` is the Studio source for realizations (one file per project: title, industry, description, image src/alt, order). Editors add them through the Studio-only `Dodaj realizację` form, which validates against `schemas/realization.ts`, picks images from the Studio media library, sets `order` for a start/end position and creates a Studio draft; the regular Studio form remains available for editing and reordering.
+- `content/company.yml` is the Studio source for company contact data shared by the footer, homepage contact panel, `/uslugi`, mobile menu and Organization JSON-LD (see `## Company Data`).
+- In Studio, double-clicking a section opens its source document: the hero (`home.yml`), each realization card, and the company contact blocks (footer address and registry line, homepage contact panel, `/uslugi` contact line and hotline).
 - Other homepage sections are intentionally still sourced from `data/home.ts`. They should move to Studio individually after their client-facing field structure is agreed, rather than exposing unused or ambiguous fields all at once.
 
 ## Search Quick Links

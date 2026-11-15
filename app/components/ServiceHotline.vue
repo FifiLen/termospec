@@ -1,14 +1,14 @@
 <script setup lang="ts">
-const hotline = {
-  label: "Serwis 24/7",
-  display: "+48 603 899 165",
-  href: "tel:+48603899165",
-};
+import type { CompanyData } from "~~/schemas/company";
+
+const props = defineProps<{
+  hotline: CompanyData["serviceHotline"];
+}>();
 </script>
 
 <template>
   <a
-    :href="hotline.href"
+    :href="telephoneHref(props.hotline.phone)"
     class="flex items-center gap-[clamp(1.25rem,2.6vw,3.1rem)] rounded-[clamp(1.25rem,1.6vw,1.9rem)] bg-brand px-[clamp(1.5rem,3.3vw,4rem)] py-[clamp(1.25rem,2vw,2.4rem)] text-white transition-colors hover:bg-white hover:text-brand"
   >
     <svg
@@ -27,10 +27,10 @@ const hotline = {
     </svg>
     <span>
       <span class="block text-[clamp(0.85rem,1.02vw,1.22rem)] font-semibold uppercase leading-none tracking-[0.2em]">
-        {{ hotline.label }}
+        {{ props.hotline.label }}
       </span>
       <span class="mt-2 block whitespace-nowrap text-[clamp(1.35rem,2.1vw,2.5rem)] font-bold leading-tight">
-        {{ hotline.display }}
+        {{ props.hotline.phone }}
       </span>
     </span>
   </a>

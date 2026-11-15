@@ -1,4 +1,12 @@
 <script setup lang="ts">
+import type { CompanyContent } from "~/composables/useCompany";
+
+const props = defineProps<{
+  company: CompanyContent;
+}>();
+
+const studioEditable = useStudioEditable();
+
 interface FooterLink {
   label: string;
   to?: string;
@@ -25,12 +33,16 @@ const linkGroups = [
   { title: "Informacje", links: informationLinks },
 ];
 
-const registryDetails = [
-  { label: "KRS", value: "0000109147" },
-  { label: "NIP", value: "PL6422590547" },
-  { label: "REGON", value: "276184836" },
-  { label: "Kapitał", value: "100.000 PLN" },
-];
+const registryDetails = computed(() => {
+  const { krs, nip, regon, shareCapital } = props.company.registry;
+
+  return [
+    { label: "KRS", value: krs },
+    { label: "NIP", value: nip },
+    { label: "REGON", value: regon },
+    { label: "Kapitał", value: shareCapital },
+  ].filter((detail) => detail.value);
+});
 
 const utilityCards = [
   { eyebrow: "kariera", title: "Dołącz do zespołu", to: "/#kontakt" },
@@ -57,14 +69,17 @@ const utilityCards = [
             Inżynieria.
           </p>
 
-          <address class="mt-[clamp(1.5rem,2.1vw,2.5rem)] text-[clamp(0.95rem,0.92vw,1.1rem)] not-italic leading-[1.9] text-white/65">
-            <span class="block">Tel: <a href="tel:+48324358050" class="text-white hover:text-brand">+48 (32) 435 80 50</a></span>
-            <span class="block">Fax: <span class="text-white">+48 (32) 435 80 50 wew. 16</span></span>
-            <span class="block">E-mail: <a href="mailto:biuro@termospec.pl" class="text-white hover:text-brand">biuro@termospec.pl</a></span>
-            <span class="block text-white">ul. Górnicza 10, 44–240 Żory, Polska</span>
+          <address
+            v-bind="studioEditable(props.company.id)"
+            class="mt-[clamp(1.5rem,2.1vw,2.5rem)] text-[clamp(0.95rem,0.92vw,1.1rem)] not-italic leading-[1.9] text-white/65"
+          >
+            <span class="block">Tel: <a :href="telephoneHref(props.company.phone)" class="text-white hover:text-brand">{{ props.company.phone }}</a></span>
+            <span v-if="props.company.fax" class="block">Fax: <span class="text-white">{{ props.company.fax }}</span></span>
+            <span class="block">E-mail: <a :href="`mailto:${props.company.email}`" class="text-white hover:text-brand">{{ props.company.email }}</a></span>
+            <span class="block text-white">{{ props.company.address.street }}, {{ props.company.address.postalCode }} {{ props.company.address.city }}, {{ props.company.address.country }}</span>
           </address>
 
-          <p class="mt-[clamp(1.5rem,2.6vw,3.1rem)] text-[clamp(0.85rem,0.92vw,1.1rem)] leading-relaxed xl:whitespace-nowrap text-white/35">
+          <p v-bind="studioEditable(props.company.id)" class="mt-[clamp(1.5rem,2.6vw,3.1rem)] text-[clamp(0.85rem,0.92vw,1.1rem)] leading-relaxed xl:whitespace-nowrap text-white/35">
             <template v-for="(detail, index) in registryDetails" :key="detail.label">
               <span v-if="index > 0" aria-hidden="true"> • </span>
               {{ detail.label }} <span class="text-white/65">{{ detail.value }}</span>
@@ -138,7 +153,7 @@ const utilityCards = [
       </div>
 
       <div class="mt-[clamp(2rem,2.1vw,2.5rem)] border-t border-white/25 pt-[clamp(1.25rem,1.6vw,1.9rem)] text-[clamp(0.85rem,0.92vw,1.1rem)] text-white/45">
-        <p class="xl:ps-[0.3vw]">© 2026 Termospec Sp. z o.o. Wszelkie prawa zastrzeżone.</p>
+        <p class="xl:ps-[0.3vw]">© 2026 {{ props.company.legalName }} Wszelkie prawa zastrzeżone.</p>
       </div>
     </div>
   </footer>

@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import type { RealizationData } from "~~/schemas/realization";
+import type { RealizationContent } from "~~/schemas/realization";
 
 const props = defineProps<{
-  realization: Pick<RealizationData, "title" | "industry" | "description" | "image">;
+  realization: Pick<RealizationContent, "id" | "title" | "industry" | "description" | "image">;
 }>();
+
+const studioEditable = useStudioEditable();
 </script>
 
 <template>
-  <article>
+  <article v-bind="studioEditable(props.realization.id)">
     <div class="group aspect-[561/286] overflow-hidden rounded-[clamp(1.25rem,2.35vw,2.8rem)] bg-surface">
       <NuxtImg
         v-if="props.realization.image.src"

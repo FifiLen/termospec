@@ -60,4 +60,6 @@ export const realizationSchema = z.object({
 });
 
 export type RealizationData = z.output<typeof realizationSchema>;
+// Published records and Studio drafts also carry their Nuxt Content id.
+export type RealizationContent = RealizationData & { id?: string };
 export type RealizationInput = z.input<typeof realizationSchema>;

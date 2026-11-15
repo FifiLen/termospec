@@ -1,5 +1,12 @@
 <script setup lang="ts">
 import { homeContactTopics } from "~~/data/home";
+import type { CompanyContent } from "~/composables/useCompany";
+
+const props = defineProps<{
+  company: CompanyContent;
+}>();
+
+const studioEditable = useStudioEditable();
 
 const fieldClass =
   "mt-2.5 h-[clamp(3rem,3.4vw,4.05rem)] w-full rounded-[1.1rem] border-0 bg-field px-5 text-base text-ink outline-none ring-brand/25 transition focus:ring-2";
@@ -13,6 +20,7 @@ const fieldClass =
   >
     <div class="design-shell grid gap-5 lg:grid-cols-[812fr_925fr] lg:gap-[clamp(1.5rem,2.15vw,2.6rem)]">
       <div
+        v-bind="studioEditable(props.company.id)"
         class="flex flex-col rounded-[clamp(1.75rem,3.1vw,3.75rem)] bg-ink px-[clamp(1.5rem,3.85vw,4.6rem)] py-[clamp(2rem,3.85vw,4.6rem)] text-white"
       >
         <h2
@@ -33,33 +41,35 @@ const fieldClass =
           <div>
             <h3 class="text-[clamp(1.3rem,1.44vw,1.73rem)] font-bold text-white">Adres</h3>
             <p class="mt-4 text-white/90">
-              Termospec Sp. z o.o.<br>
-              ul. Górnicza 10<br>
-              44–240 Żory
+              {{ props.company.legalName }}<br>
+              {{ props.company.address.street }}<br>
+              {{ props.company.address.postalCode }} {{ props.company.address.city }}
             </p>
           </div>
           <div>
             <h3 class="text-[clamp(1.3rem,1.44vw,1.73rem)] font-bold text-white">Kontakt</h3>
             <p class="mt-4 text-white/90">
-              <a href="mailto:biuro@termospec.pl" class="hover:text-white">biuro@termospec.pl</a><br>
-              <a href="tel:+48324358050" class="hover:text-white">tel. +48 (32) 435 80 50</a><br>
-              <span class="xl:whitespace-nowrap">fax. +48 (32) 435 80 50 wew. 16</span>
+              <a :href="`mailto:${props.company.email}`" class="hover:text-white">{{ props.company.email }}</a><br>
+              <a :href="telephoneHref(props.company.phone)" class="hover:text-white">tel. {{ props.company.phone }}</a>
+              <template v-if="props.company.fax">
+                <br><span class="xl:whitespace-nowrap">fax. {{ props.company.fax }}</span>
+              </template>
             </p>
           </div>
         </div>
 
-        <ServiceHotline class="mt-[clamp(2rem,3.4vw,4.1rem)]" />
+        <ServiceHotline :hotline="props.company.serviceHotline" class="mt-[clamp(2rem,3.4vw,4.1rem)]" />
 
         <div class="relative mt-[clamp(1.5rem,1.95vw,2.35rem)] min-h-64 flex-1 overflow-hidden rounded-[clamp(1.25rem,1.6vw,1.9rem)] bg-ink-deep">
           <iframe
-            src="https://maps.google.com/maps?q=Termospec%20Sp.%20z%20o.o.,%20G%C3%B3rnicza%2010,%20%C5%BBory&t=&z=15&ie=UTF8&iwloc=&output=embed"
+            :src="companyMapUrl(props.company, true)"
             title="Mapa lokalizacji Termospec"
             class="absolute inset-0 h-full w-full border-0"
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
           />
           <a
-            href="https://maps.google.com/?q=Termospec%20Sp.%20z%20o.o.,%20G%C3%B3rnicza%2010,%20%C5%BBory"
+            :href="companyMapUrl(props.company)"
             target="_blank"
             rel="noopener noreferrer"
             class="absolute bottom-5 right-5 rounded-full bg-ink/90 px-5 py-2.5 text-sm font-medium text-white backdrop-blur-sm transition-colors hover:bg-brand"

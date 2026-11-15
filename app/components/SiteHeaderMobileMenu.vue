@@ -3,11 +3,13 @@ import type {
   ProductNavigationCategory,
   ServiceNavigationItem,
 } from "~~/types/navigation";
+import type { CompanyData } from "~~/schemas/company";
 
 const props = withDefaults(
   defineProps<{
     productCategories?: ProductNavigationCategory[];
     services?: ServiceNavigationItem[];
+    serviceHotline?: CompanyData["serviceHotline"];
   }>(),
   {
     productCategories: () => [],
@@ -134,9 +136,13 @@ defineExpose({
         </button>
       </nav>
 
-      <a href="tel:+48603899165" class="mt-8 rounded-[1.5rem] bg-white/10 p-5 transition-colors hover:bg-white/[0.14]">
-        <span class="block text-xs text-white/38">Serwis 24h</span>
-        <span class="mt-2 block text-2xl font-medium tracking-[-0.025em] text-white">+48 603 899 165</span>
+      <a
+        v-if="props.serviceHotline"
+        :href="telephoneHref(props.serviceHotline.phone)"
+        class="mt-8 rounded-[1.5rem] bg-white/10 p-5 transition-colors hover:bg-white/[0.14]"
+      >
+        <span class="block text-xs text-white/38">{{ props.serviceHotline.label }}</span>
+        <span class="mt-2 block text-2xl font-medium tracking-[-0.025em] text-white">{{ props.serviceHotline.phone }}</span>
       </a>
 
       <div class="mt-auto grid grid-cols-[auto_1fr] gap-3 pt-8">

@@ -1,5 +1,7 @@
 import type { CatalogueProductRecord } from "~/utils/product-catalogue";
-import { realizationSchema, type RealizationData } from "~~/schemas/realization";
+import { companySchema } from "~~/schemas/company";
+import { realizationSchema, type RealizationContent } from "~~/schemas/realization";
+import type { CompanyContent } from "~/composables/useCompany";
 import type { StudioHost } from "~~/types/studio";
 
 export default defineNuxtPlugin((nuxtApp) => {
@@ -8,11 +10,12 @@ export default defineNuxtPlugin((nuxtApp) => {
     () => [],
   );
   const isStudioPreview = useState("studio-catalogue-preview", () => false);
-  const studioRealizations = useState<RealizationData[]>(
+  const studioRealizations = useState<RealizationContent[]>(
     "studio-realizations",
     () => [],
   );
   const isRealizationPreview = useState("studio-realizations-preview", () => false);
+  const studioCompany = useState<CompanyContent | null>("studio-company", () => null);
 
   let refreshTimer: number | undefined;
   let refreshPending = false;
@@ -30,6 +33,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       studioProducts.value = [];
       isRealizationPreview.value = false;
       studioRealizations.value = [];
+      studioCompany.value = null;
       return;
     }
 
@@ -50,10 +54,20 @@ export default defineNuxtPlugin((nuxtApp) => {
 
           const result = realizationSchema.safeParse(document);
 
-          return result.success ? [result.data] : [];
+          return result.success
+            ? [{ ...result.data, id: typeof document.id === "string" ? document.id : undefined }]
+            : [];
         })
         .sort((left, right) => left.order - right.order);
       isRealizationPreview.value = true;
+
+      const companyDocument = documents.find((document) => document.fsPath === "company.yml");
+      const company = companySchema.safeParse(companyDocument);
+      // An invalid draft keeps the last valid preview instead of blanking contact details.
+      if (company.success && typeof companyDocument?.id === "string") {
+        studioCompany.value = { ...company.data, id: companyDocument.id };
+      }
+
       refreshErrorReported = false;
     } catch (error) {
       if (!studioProducts.value.length) {

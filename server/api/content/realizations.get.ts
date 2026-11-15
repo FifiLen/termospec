@@ -6,6 +6,7 @@ export default defineEventHandler(async (event) => {
     .all();
 
   return realizations.map((realization) => ({
+    id: realization.id,
     title: realization.title,
     industry: realization.industry,
     description: realization.description,

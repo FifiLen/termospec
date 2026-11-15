@@ -1,10 +1,10 @@
-import type { RealizationData } from "~~/schemas/realization";
+import type { RealizationContent } from "~~/schemas/realization";
 
 export const useRealizations = (
-  publishedRealizations: Ref<RealizationData[] | null | undefined>,
+  publishedRealizations: Ref<RealizationContent[] | null | undefined>,
 ) => {
   const config = useRuntimeConfig();
-  const studioRealizations = useState<RealizationData[]>(
+  const studioRealizations = useState<RealizationContent[]>(
     "studio-realizations",
     () => [],
   );

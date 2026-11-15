@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import type {
-  ProductNavigationCategory,
-  ServiceNavigationItem,
-} from "~~/types/navigation";
+import type { ProductNavigationCategory, ServiceNavigationItem } from "~~/types/navigation";
+import type { CompanyData } from "~~/schemas/company";
 
 withDefaults(
   defineProps<{
     productCategories?: ProductNavigationCategory[];
     services?: ServiceNavigationItem[];
+    serviceHotline?: CompanyData["serviceHotline"];
   }>(),
   {
     productCategories: () => [],
@@ -170,6 +169,7 @@ onBeforeUnmount(() => {
         ref="mobileMenu"
         :product-categories="productCategories"
         :services="services"
+        :service-hotline="serviceHotline"
         @navigate="closeMobileMenu()"
         @open-accessibility="openAccessibilityPanel"
       />

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { RealizationData } from "~~/schemas/realization";
+import type { RealizationContent } from "~~/schemas/realization";
 
 const props = defineProps<{
-  realizations: RealizationData[];
+  realizations: RealizationContent[];
 }>();
 
 const visibleRealizations = computed(() => props.realizations.slice(0, 3));

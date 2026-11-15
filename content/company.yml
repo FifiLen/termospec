@@ -1,0 +1,17 @@
+legalName: Termospec Sp. z o.o.
+address:
+  street: ul. Górnicza 10
+  postalCode: 44-240
+  city: Żory
+  country: Polska
+phone: +48 (32) 435 80 50
+fax: +48 (32) 435 80 50 wew. 16
+email: biuro@termospec.pl
+serviceHotline:
+  label: Serwis 24/7
+  phone: +48 603 899 165
+registry:
+  krs: "0000109147"
+  nip: PL6422590547
+  regon: "276184836"
+  shareCapital: 100.000 PLN

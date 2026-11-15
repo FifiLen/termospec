@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { services } from "~~/data/services";
 
+const company = await useCompany();
+const studioEditable = useStudioEditable();
+
 const designService = services[0]!;
 const emergencyService = services[1]!;
 const repairService = services[2]!;
@@ -195,7 +198,7 @@ usePageSeo({
               <p v-if="emergencyService.cta" class="mt-[clamp(2rem,3vw,3.6rem)] text-[clamp(1rem,1.15vw,1.38rem)] font-semibold leading-[1.6] text-white">
                 {{ emergencyService.cta }}
               </p>
-              <ServiceHotline class="mt-[clamp(1.25rem,1.6vw,1.9rem)]" />
+              <ServiceHotline v-if="company" :hotline="company.serviceHotline" class="mt-[clamp(1.25rem,1.6vw,1.9rem)]" />
             </div>
           </div>
         </div>
@@ -366,16 +369,20 @@ usePageSeo({
             <h2 id="services-contact-title" class="max-w-[24ch] text-[clamp(1.75rem,2.3vw,2.75rem)] font-bold leading-[1.2] tracking-[-0.015em] text-white">
               Skontaktuj się z nami, aby omówić zakres prac i przygotować ofertę dopasowaną do Twoich potrzeb!
             </h2>
-            <p class="mt-[clamp(1.5rem,2.1vw,2.5rem)] text-[clamp(1.05rem,1.31vw,1.57rem)] leading-[1.6] text-white/90">
-              <a href="tel:+48324358050" class="hover:text-white">tel. +48 (32) 435 80 50</a><br>
-              <a href="mailto:biuro@termospec.pl" class="hover:text-white">biuro@termospec.pl</a>
+            <p
+              v-if="company"
+              v-bind="studioEditable(company.id)"
+              class="mt-[clamp(1.5rem,2.1vw,2.5rem)] text-[clamp(1.05rem,1.31vw,1.57rem)] leading-[1.6] text-white/90"
+            >
+              <a :href="telephoneHref(company.phone)" class="hover:text-white">tel. {{ company.phone }}</a><br>
+              <a :href="`mailto:${company.email}`" class="hover:text-white">{{ company.email }}</a>
             </p>
             <NuxtLink to="/#kontakt" class="design-button mt-[clamp(1.5rem,2.1vw,2.5rem)] bg-brand text-white hover:bg-white hover:text-brand">
               wyślij zapytanie <span aria-hidden="true">→</span>
             </NuxtLink>
           </div>
 
-          <ServiceHotline />
+          <ServiceHotline v-if="company" v-bind="studioEditable(company.id)" :hotline="company.serviceHotline" />
         </div>
       </div>
     </section>
