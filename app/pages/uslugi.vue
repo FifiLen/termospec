@@ -380,8 +380,8 @@ await usePageSeo("uslugi");
               v-bind="studioEditable(company.id)"
               class="mt-[clamp(1.5rem,2.1vw,2.5rem)] text-[clamp(1.05rem,1.31vw,1.57rem)] leading-[1.6] text-white/90"
             >
-              <a :href="telephoneHref(company.phone)" class="hover:text-white">tel. {{ company.phone }}</a><br>
-              <a :href="`mailto:${company.email}`" class="hover:text-white">{{ company.email }}</a>
+              <a :href="telephoneHref(company.phone)" class="hover:text-white max-xl:inline-flex max-xl:min-h-11 max-xl:items-center">tel. {{ company.phone }}</a><br>
+              <a :href="`mailto:${company.email}`" class="hover:text-white max-xl:inline-flex max-xl:min-h-11 max-xl:items-center">{{ company.email }}</a>
             </p>
             <NuxtLink to="/#kontakt" class="design-button mt-[clamp(1.5rem,2.1vw,2.5rem)] bg-brand text-white hover:bg-white hover:text-brand">
               wyślij zapytanie <span aria-hidden="true">→</span>

@@ -26,7 +26,7 @@ const intro = computed(() => {
           </p>
           <span
             v-if="props.product.powerRange"
-            class="text-xs font-bold text-ink/52"
+            class="text-xs font-bold text-muted"
           >
             {{ props.product.powerRange }}
           </span>

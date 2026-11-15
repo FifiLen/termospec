@@ -85,7 +85,7 @@ const focusLabel = computed(() => {
       <div
         class="flex min-h-[16rem] flex-col justify-between px-6 py-8 md:px-8 lg:min-h-[24rem] lg:px-10 lg:py-10"
       >
-        <p class="text-xs font-bold uppercase tracking-[0.16em] text-ink/44">
+        <p class="text-xs font-bold uppercase tracking-[0.16em] text-muted">
           {{ activeGroup ? "Rodzina urządzeń" : "Grupa urządzeń" }}
         </p>
         <h3

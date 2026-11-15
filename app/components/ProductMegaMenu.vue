@@ -106,7 +106,7 @@ watch(filteredCategories, (categories) => {
           <h2 class="mt-3 max-w-[28ch] text-2xl font-bold leading-tight tracking-[-0.01em] text-ink 2xl:text-3xl">
             {{ previewLabel }}
           </h2>
-          <p v-if="activeEntry" class="mt-3 text-base font-medium text-ink/58">
+          <p v-if="activeEntry" class="mt-3 text-base font-medium text-muted">
             {{ activeEntry.label }}
           </p>
         </div>

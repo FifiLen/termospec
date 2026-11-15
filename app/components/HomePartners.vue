@@ -43,7 +43,7 @@ function scrollPartners(direction: 1 | -1) {
         <button
           type="button"
           aria-label="Poprzednie logotypy"
-          class="grid size-11 shrink-0 place-items-center rounded-full text-[2rem] font-light text-placeholder transition-colors hover:text-muted"
+          class="grid size-11 shrink-0 place-items-center rounded-full text-[2rem] font-light text-muted transition-colors hover:text-ink"
           @click="scrollPartners(-1)"
         >
           <span aria-hidden="true">←</span>
@@ -71,7 +71,7 @@ function scrollPartners(direction: 1 | -1) {
         <button
           type="button"
           aria-label="Następne logotypy"
-          class="grid size-11 shrink-0 place-items-center rounded-full text-[2rem] font-light text-placeholder transition-colors hover:text-muted"
+          class="grid size-11 shrink-0 place-items-center rounded-full text-[2rem] font-light text-muted transition-colors hover:text-ink"
           @click="scrollPartners(1)"
         >
           <span aria-hidden="true">→</span>

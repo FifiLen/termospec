@@ -652,7 +652,7 @@ onUnmounted(() => {
                 type="button"
                 :aria-label="`Pokaż slajd ${index + 1}`"
                 :aria-current="activeIndex === index ? 'true' : undefined"
-                class="grid size-[clamp(2.5rem,2.75vw,3.3rem)] place-items-center rounded-full text-[clamp(0.8rem,0.85vw,1rem)] font-medium tabular-nums transition-colors"
+                class="grid size-[clamp(2.75rem,2.75vw,3.3rem)] place-items-center rounded-full text-[clamp(0.8rem,0.85vw,1rem)] font-medium tabular-nums transition-colors"
                 :class="
                   activeIndex === index
                     ? 'bg-white text-ink'
@@ -670,7 +670,7 @@ onUnmounted(() => {
               <button
                 type="button"
                 aria-label="Poprzedni slajd"
-                class="grid size-[clamp(2.5rem,2.65vw,3.2rem)] place-items-center rounded-full text-lg text-white transition-colors hover:bg-white hover:text-ink"
+                class="grid size-[clamp(2.75rem,2.65vw,3.2rem)] place-items-center rounded-full text-lg text-white transition-colors hover:bg-white hover:text-ink"
                 @click="showPreviousSlide"
               >
                 <span aria-hidden="true">←</span>
@@ -678,7 +678,7 @@ onUnmounted(() => {
               <button
                 type="button"
                 aria-label="Następny slajd"
-                class="grid size-[clamp(2.5rem,2.65vw,3.2rem)] place-items-center rounded-full bg-brand text-lg text-white transition-colors hover:bg-white hover:text-brand"
+                class="grid size-[clamp(2.75rem,2.65vw,3.2rem)] place-items-center rounded-full bg-brand text-lg text-white transition-colors hover:bg-white hover:text-brand"
                 @click="showNextSlide"
               >
                 <span aria-hidden="true">→</span>

@@ -11,7 +11,7 @@ const props = defineProps<{
 const studioEditable = useStudioEditable();
 
 const fieldClass =
-  "mt-2.5 h-[clamp(3rem,3.4vw,4.05rem)] w-full rounded-[1.1rem] border-0 bg-field px-5 text-base text-ink outline-none ring-brand/25 transition focus:ring-2";
+  "mt-2.5 h-[clamp(3rem,3.4vw,4.05rem)] w-full rounded-[1.1rem] border-0 bg-field px-5 text-base text-ink outline-none ring-brand transition focus:ring-2";
 </script>
 
 <template>
@@ -51,8 +51,8 @@ const fieldClass =
           <div>
             <h3 class="text-[clamp(1.3rem,1.44vw,1.73rem)] font-bold text-white">Kontakt</h3>
             <p class="mt-4 text-white/90">
-              <a :href="`mailto:${props.company.email}`" class="hover:text-white">{{ props.company.email }}</a><br>
-              <a :href="telephoneHref(props.company.phone)" class="hover:text-white">tel. {{ props.company.phone }}</a>
+              <a :href="`mailto:${props.company.email}`" class="hover:text-white max-xl:inline-flex max-xl:min-h-11 max-xl:items-center">{{ props.company.email }}</a><br>
+              <a :href="telephoneHref(props.company.phone)" class="hover:text-white max-xl:inline-flex max-xl:min-h-11 max-xl:items-center">tel. {{ props.company.phone }}</a>
               <template v-if="props.company.fax">
                 <br><span class="xl:whitespace-nowrap">fax. {{ props.company.fax }}</span>
               </template>
@@ -74,7 +74,7 @@ const fieldClass =
             :href="companyMapUrl(props.company)"
             target="_blank"
             rel="noopener noreferrer"
-            class="absolute bottom-5 right-5 rounded-full bg-ink/90 px-5 py-2.5 text-sm font-medium text-white backdrop-blur-sm transition-colors hover:bg-brand"
+            class="absolute bottom-5 right-5 inline-flex min-h-11 items-center rounded-full bg-ink/90 px-5 py-2.5 text-sm font-medium text-white backdrop-blur-sm transition-colors hover:bg-brand"
           >
             Otwórz w Mapach
           </a>
@@ -121,7 +121,7 @@ const fieldClass =
                 class="peer sr-only"
               >
               <span
-                class="block rounded-full bg-field px-[clamp(1rem,1.3vw,1.55rem)] py-[clamp(0.75rem,0.95vw,1.1rem)] text-[clamp(0.75rem,0.68vw,0.82rem)] text-muted transition peer-checked:bg-ink peer-checked:text-white peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand hover:text-ink"
+                class="flex min-h-11 items-center rounded-full bg-field px-[clamp(1rem,1.3vw,1.55rem)] py-[clamp(0.75rem,0.95vw,1.1rem)] text-[clamp(0.75rem,0.68vw,0.82rem)] text-muted transition peer-checked:bg-ink peer-checked:text-white peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand hover:text-ink"
               >
                 {{ topic }}
               </span>
@@ -140,7 +140,7 @@ const fieldClass =
             name="message"
             rows="7"
             required
-            class="mt-2.5 min-h-[clamp(10rem,12vw,14.5rem)] w-full resize-none rounded-[1.1rem] border-0 bg-field px-5 py-4 text-base text-ink outline-none ring-brand/25 transition focus:ring-2"
+            class="mt-2.5 min-h-[clamp(10rem,12vw,14.5rem)] w-full resize-none rounded-[1.1rem] border-0 bg-field px-5 py-4 text-base text-ink outline-none ring-brand transition focus:ring-2"
           />
         </label>
 
@@ -155,7 +155,7 @@ const fieldClass =
         </label>
 
         <div class="mt-auto flex flex-wrap items-center justify-between gap-5 pt-[clamp(1.75rem,2.1vw,2.5rem)] lg:me-[2.5%]">
-          <p class="ps-1.5 text-[clamp(0.85rem,0.78vw,0.95rem)] text-muted/70">
+          <p class="ps-1.5 text-[clamp(0.85rem,0.78vw,0.95rem)] text-muted">
             Odpowiadamy zwykle w ciągu jednego dnia roboczego.
           </p>
           <button

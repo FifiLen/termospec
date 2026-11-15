@@ -29,6 +29,12 @@
   --shadow-lift: 0 24px 70px rgb(10 24 71 / 0.14);
 }
 
+/* Nuxt UI registers its own `text-muted` (slate `--ui-text-muted`), which
+   shadows `--color-muted`; resolve the utility to our token at build time. */
+@theme inline {
+  --text-color-muted: var(--color-muted);
+}
+
 /* Brand shades for Nuxt UI's `primary` (app.config.ts); 500 is the brand red.
    `static` keeps them emitted although only Nuxt UI's runtime styles use them. */
 @theme static {

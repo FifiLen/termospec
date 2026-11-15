@@ -59,7 +59,7 @@ Recommended names:
 
 Do not use random raw classes like `text-zinc-700`, `bg-slate-950`, `from-purple-900`, or hardcoded hex values inside components.
 
-Nuxt UI's `primary` colour is the brand red: `app/app.config.ts` sets `ui.colors.primary: "brand"` and `main.css` derives the `--color-brand-50…950` shades from `--color-brand` in an `@theme static` block (500 = `#DF0210`). Nuxt UI's `neutral` is still its default slate.
+Nuxt UI's `primary` colour is the brand red: `app/app.config.ts` sets `ui.colors.primary: "brand"` and `main.css` derives the `--color-brand-50…950` shades from `--color-brand` in an `@theme static` block (500 = `#DF0210`). Nuxt UI's `neutral` is still its default slate. Nuxt UI also registers semantic utilities (`text-muted`, `text-dimmed`, `bg-muted`, `border-muted`, `text-default`…) that take precedence over same-named `--color-*` tokens; `text-muted` is re-pointed to `--color-muted` with `@theme inline { --text-color-muted: … }` in `main.css`. Do not name new colour tokens after Nuxt UI semantic utilities, and do not fix such clashes with `:root` variable overrides (the cascade-layer order changes after client navigation).
 
 ## Typography
 
@@ -195,7 +195,7 @@ Current product mega menu implementation:
 
 ## Footer
 
-- Deep-navy `SiteFooter` from the PSD: white vector logo, positioning paragraph, contact lines, registry line (`KRS • NIP • REGON • Kapitał`); `Firma` and `Informacje` link columns with red tracked headings; a red `Porozmawiajmy o Twoim projekcie` card with the service photo and navy `wyślij zapytanie` button; two darker `Kariera` / `Serwis` utility cards; rule and copyright. The previous yellow footer and certificate pills are retired.
+- Deep-navy `SiteFooter` from the PSD: white vector logo, positioning paragraph, contact lines, registry line (`KRS • NIP • REGON • Kapitał`); `Firma` and `Informacje` link columns with white tracked headings led by a red dash (same pattern as the utility cards; red text on navy is only 3.4:1); a red `Porozmawiajmy o Twoim projekcie` card with the service photo and navy `wyślij zapytanie` button; two darker `Kariera` / `Serwis` utility cards; rule and copyright. The previous yellow footer and certificate pills are retired.
 
 ## Contact Section
 
@@ -228,7 +228,9 @@ Motion should be subtle:
 
 ## Accessibility
 
-- High contrast between text and backgrounds.
+- High contrast between text and backgrounds. Informational text must reach 4.5:1: on light surfaces use `text-heading`, `text-ink` or `text-muted` (never `text-ink/<60` opacities); on navy use `text-white` down to `text-white/55`; on the brand-red catalogue index every label is full white (selection is shown by the background tint and `aria-current`). Red text on navy is for decoration (dashes, arrows) only. Disabled controls, such as the `EN` locale button until the English version exists, are exempt and are marked `disabled`.
+- Touch targets are at least 44 px below `xl` (footer and contact links, catalogue index rows below `lg`, hero carousel controls, form topic pills, locale buttons in the mobile menu, logo links). Desktop-only pointer targets may stay smaller (header PL/EN chip).
+- Form fields show a full brand-red ring on focus.
 - Buttons and links must be keyboard accessible.
 - Do not communicate state using color alone.
 - Use semantic headings and landmarks.

@@ -38,7 +38,7 @@ defineExpose({
   <div id="mobile-navigation-panel" ref="panel" class="pointer-events-auto fixed inset-0 overflow-y-auto overscroll-contain bg-ink text-white xl:hidden">
     <div class="mx-auto flex min-h-full w-full max-w-xl flex-col px-5 py-5 sm:px-7">
       <div class="flex items-center justify-between">
-        <NuxtLink to="/" class="inline-flex" aria-label="Termospec, strona główna" @click="emit('navigate')">
+        <NuxtLink to="/" class="inline-flex min-h-11 items-center" aria-label="Termospec, strona główna" @click="emit('navigate')">
           <img src="/images/brand/termospec-logo-white.svg" alt="Termospec" width="229" height="33" class="h-auto w-32 sm:w-36">
         </NuxtLink>
 
@@ -140,14 +140,14 @@ defineExpose({
         :href="telephoneHref(props.serviceHotline.phone)"
         class="mt-8 rounded-[1.5rem] bg-white/10 p-5 transition-colors hover:bg-white/[0.14]"
       >
-        <span class="block text-xs text-white/38">{{ props.serviceHotline.label }}</span>
+        <span class="block text-xs text-white/65">{{ props.serviceHotline.label }}</span>
         <span class="mt-2 block text-2xl font-medium tracking-[-0.025em] text-white">{{ props.serviceHotline.phone }}</span>
       </a>
 
       <div class="mt-auto grid grid-cols-[auto_1fr] gap-3 pt-8">
         <div class="flex rounded-full bg-white/10 p-1 text-xs">
-          <button type="button" class="grid min-h-10 min-w-11 place-items-center rounded-full bg-white px-3 font-semibold text-ink" aria-pressed="true">PL</button>
-          <button type="button" class="grid min-h-10 min-w-11 place-items-center rounded-full px-3 text-white/45" aria-pressed="false">EN</button>
+          <button type="button" class="grid min-h-11 min-w-11 place-items-center rounded-full bg-white px-3 font-semibold text-ink" aria-pressed="true">PL</button>
+          <button type="button" class="grid min-h-11 min-w-11 cursor-not-allowed place-items-center rounded-full px-3 text-white/45" aria-pressed="false" disabled title="Wersja angielska w przygotowaniu">EN</button>
         </div>
         <NuxtLink to="/dofinansowania" class="grid min-h-12 place-items-center overflow-hidden rounded-2xl bg-white px-4 transition-colors hover:bg-chip" aria-label="Dofinansowanie ze środków Unii Europejskiej" @click="emit('navigate')">
           <NuxtImg src="/panel-dofinansowanie.png" alt="Unia Europejska" width="150" class="max-h-10 w-auto object-contain" />

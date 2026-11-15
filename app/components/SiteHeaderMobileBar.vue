@@ -21,14 +21,14 @@ defineExpose({
 
 <template>
   <div class="flex min-h-[var(--site-header-bar)] w-full items-center rounded-[1.5rem] bg-white px-4 shadow-[0_14px_40px_rgb(10_24_71_/_0.09)] xl:hidden">
-    <NuxtLink class="inline-flex" to="/" aria-label="Termospec, strona główna" @click="emit('navigate')">
+    <NuxtLink class="inline-flex min-h-11 items-center" to="/" aria-label="Termospec, strona główna" @click="emit('navigate')">
       <img src="/images/brand/termospec-logo.svg" alt="Termospec" width="160" height="23" class="h-auto w-32 sm:w-36">
     </NuxtLink>
 
     <div class="ms-auto flex items-center gap-2">
       <button
         type="button"
-        class="grid size-11 place-items-center rounded-full bg-chip text-ink/48 transition-colors hover:text-ink"
+        class="grid size-11 place-items-center rounded-full bg-chip text-muted transition-colors hover:text-ink"
         aria-label="Otwórz wyszukiwanie"
         @click="isSearchOpen = true"
       >
@@ -51,7 +51,7 @@ defineExpose({
         type="button"
         data-accessibility-trigger
         class="grid size-11 place-items-center rounded-full transition-colors"
-        :class="accessibilityOpen ? 'bg-ink text-white' : 'bg-chip text-ink/48 hover:text-ink'"
+        :class="accessibilityOpen ? 'bg-ink text-white' : 'bg-chip text-muted hover:text-ink'"
         aria-label="Ustawienia dostępności"
         aria-haspopup="dialog"
         aria-controls="accessibility-panel"

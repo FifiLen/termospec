@@ -40,7 +40,7 @@ const emit = defineEmits<{
           :id="searchId"
           v-model="searchQuery"
           type="search"
-          class="h-12 w-full rounded-xl border border-white/20 bg-white/10 pl-10 pr-3 text-sm font-medium text-white outline-none transition placeholder:text-white/52 focus:border-white/55 focus:bg-white/15"
+          class="h-12 w-full rounded-xl border border-white/20 bg-black/10 pl-10 pr-3 text-sm font-medium text-white outline-none transition placeholder:text-white/85 focus:border-white focus:ring-2 focus:ring-white/60"
           placeholder="Szukaj typu lub kategorii"
           autocomplete="off"
         />
@@ -69,7 +69,7 @@ const emit = defineEmits<{
               :class="
                 props.activeCategorySlug === category.slug || open
                   ? 'bg-white/15 text-white'
-                  : 'text-white/72 hover:bg-white/10 hover:text-white'
+                  : 'text-white hover:bg-white/10'
               "
               :aria-current="props.activeCategorySlug === category.slug ? 'location' : undefined"
             >
@@ -103,7 +103,7 @@ const emit = defineEmits<{
                     <button
                       type="button"
                       class="grid w-full grid-cols-[minmax(0,1fr)_1rem] items-center gap-2 py-3 pe-4 ps-7 text-left text-[0.78rem] font-extrabold leading-5 transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white"
-                      :class="props.activeGroupSlug === group.slug ? 'bg-white/12 text-white' : 'text-white/68 hover:bg-white/8 hover:text-white'"
+                      :class="props.activeGroupSlug === group.slug ? 'bg-white/12 text-white' : 'text-white hover:bg-white/8'"
                     >
                       <span>{{ group.label }}</span>
                       <UIcon
@@ -126,8 +126,8 @@ const emit = defineEmits<{
                       >
                         <button
                           type="button"
-                          class="w-full py-2 pe-4 ps-10 text-left text-xs font-bold leading-4 transition-colors duration-200 hover:bg-white/8 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white"
-                          :class="props.activeEntryId === entry.id ? 'bg-white/14 text-white' : 'text-white/58'"
+                          class="w-full py-2 pe-4 ps-10 text-left text-xs font-bold leading-4 max-lg:min-h-11 transition-colors duration-200 hover:bg-white/8 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white"
+                          :class="props.activeEntryId === entry.id ? 'bg-white/14 text-white' : 'text-white'"
                           @click="emit('selectEntry', category.slug, group.slug, entry.id)"
                         >
                           {{ entry.label }}
@@ -148,8 +148,8 @@ const emit = defineEmits<{
                 >
                   <button
                     type="button"
-                    class="w-full py-2.5 pe-4 ps-7 text-left text-xs font-bold leading-4 transition-colors duration-200 hover:bg-white/8 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white"
-                    :class="props.activeEntryId === entry.id ? 'bg-white/14 text-white' : 'text-white/60'"
+                    class="w-full py-2.5 pe-4 ps-7 text-left text-xs font-bold leading-4 max-lg:min-h-11 transition-colors duration-200 hover:bg-white/8 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white"
+                    :class="props.activeEntryId === entry.id ? 'bg-white/14 text-white' : 'text-white'"
                     @click="emit('selectEntry', category.slug, '', entry.id)"
                   >
                     {{ entry.label }}
@@ -161,7 +161,7 @@ const emit = defineEmits<{
         </UCollapsible>
       </div>
     </nav>
-    <p v-if="!props.categories.length" class="px-5 py-6 text-sm text-white/72" role="status">
+    <p v-if="!props.categories.length" class="px-5 py-6 text-sm text-white" role="status">
       Brak pasujących produktów.
     </p>
   </aside>

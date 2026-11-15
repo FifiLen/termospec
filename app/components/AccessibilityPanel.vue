@@ -127,7 +127,7 @@ onBeforeUnmount(() => {
         <div>
           <div class="flex items-baseline justify-between gap-4">
             <p class="text-sm font-semibold">Rozmiar tekstu</p>
-            <span class="text-xs text-ink/52">Wybierz wygodny poziom</span>
+            <span class="text-xs text-muted">Wybierz wygodny poziom</span>
           </div>
           <div class="mt-3 grid grid-cols-3 rounded-xl bg-panel-soft p-1" role="group" aria-label="Rozmiar tekstu">
             <button
@@ -135,7 +135,7 @@ onBeforeUnmount(() => {
               :key="size.value"
               type="button"
               class="flex min-h-11 items-center justify-center rounded-lg font-semibold transition-colors"
-              :class="preferences.textSize === size.value ? 'bg-ink text-white shadow-sm' : 'text-ink/58 hover:text-ink'"
+              :class="preferences.textSize === size.value ? 'bg-ink text-white shadow-sm' : 'text-muted hover:text-ink'"
               :aria-pressed="preferences.textSize === size.value"
               :aria-label="size.label"
               @click="setTextSize(size.value)"
@@ -149,7 +149,7 @@ onBeforeUnmount(() => {
           <div class="flex items-center justify-between gap-5 py-4">
             <div>
               <p class="text-sm font-semibold">Wyższy kontrast</p>
-              <p class="mt-1 text-xs leading-5 text-ink/52">Wyraźniejsze tło, obramowania i tekst pomocniczy.</p>
+              <p class="mt-1 text-xs leading-5 text-muted">Wyraźniejsze tło, obramowania i tekst pomocniczy.</p>
             </div>
             <button
               type="button"
@@ -167,7 +167,7 @@ onBeforeUnmount(() => {
           <div class="flex items-center justify-between gap-5 py-4">
             <div>
               <p class="text-sm font-semibold">Ogranicz ruch</p>
-              <p class="mt-1 text-xs leading-5 text-ink/52">Zatrzymuje automatyczne przejścia i płynne przewijanie.</p>
+              <p class="mt-1 text-xs leading-5 text-muted">Zatrzymuje automatyczne przejścia i płynne przewijanie.</p>
             </div>
             <button
               type="button"

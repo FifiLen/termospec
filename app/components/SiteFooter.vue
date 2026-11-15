@@ -73,31 +73,32 @@ const utilityCards = [
             v-bind="studioEditable(props.company.id)"
             class="mt-[clamp(1.5rem,2.1vw,2.5rem)] text-[clamp(0.95rem,0.92vw,1.1rem)] not-italic leading-[1.9] text-white/65"
           >
-            <span class="block">Tel: <a :href="telephoneHref(props.company.phone)" class="text-white hover:text-brand">{{ props.company.phone }}</a></span>
+            <span class="block">Tel: <a :href="telephoneHref(props.company.phone)" class="text-white hover:text-brand max-xl:inline-flex max-xl:min-h-11 max-xl:items-center">{{ props.company.phone }}</a></span>
             <span v-if="props.company.fax" class="block">Fax: <span class="text-white">{{ props.company.fax }}</span></span>
-            <span class="block">E-mail: <a :href="`mailto:${props.company.email}`" class="text-white hover:text-brand">{{ props.company.email }}</a></span>
+            <span class="block">E-mail: <a :href="`mailto:${props.company.email}`" class="text-white hover:text-brand max-xl:inline-flex max-xl:min-h-11 max-xl:items-center">{{ props.company.email }}</a></span>
             <span class="block text-white">{{ props.company.address.street }}, {{ props.company.address.postalCode }} {{ props.company.address.city }}, {{ props.company.address.country }}</span>
           </address>
 
-          <p v-bind="studioEditable(props.company.id)" class="mt-[clamp(1.5rem,2.6vw,3.1rem)] text-[clamp(0.85rem,0.92vw,1.1rem)] leading-relaxed xl:whitespace-nowrap text-white/35">
+          <p v-bind="studioEditable(props.company.id)" class="mt-[clamp(1.5rem,2.6vw,3.1rem)] text-[clamp(0.85rem,0.92vw,1.1rem)] leading-relaxed xl:whitespace-nowrap text-white/55">
             <template v-for="(detail, index) in registryDetails" :key="detail.label">
               <span v-if="index > 0" aria-hidden="true"> • </span>
-              {{ detail.label }} <span class="text-white/65">{{ detail.value }}</span>
+              {{ detail.label }} <span class="text-white/80">{{ detail.value }}</span>
             </template>
           </p>
         </div>
 
         <nav aria-label="Nawigacja w stopce" class="grid grid-cols-2 gap-8 xl:grid-cols-[minmax(0,170fr)_minmax(0,300fr)] xl:gap-0 xl:ps-[0.6vw]">
           <div v-for="group in linkGroups" :key="group.title">
-            <h2 class="text-[clamp(0.8rem,0.78vw,0.95rem)] font-bold uppercase leading-none tracking-[0.44em] text-brand">
+            <h2 class="flex items-center gap-2 text-[clamp(0.8rem,0.78vw,0.95rem)] font-bold uppercase leading-none tracking-[0.44em] text-white">
+              <span aria-hidden="true" class="tracking-normal text-brand">–</span>
               {{ group.title }}
             </h2>
             <ul class="mt-[clamp(1rem,1.1vw,1.3rem)] text-[clamp(0.95rem,0.92vw,1.1rem)] leading-[2.5] text-white/65">
               <li v-for="link in group.links" :key="link.label">
-                <NuxtLink v-if="link.to" :to="link.to" class="transition-colors hover:text-white">
+                <NuxtLink v-if="link.to" :to="link.to" class="transition-colors hover:text-white max-xl:inline-flex max-xl:min-h-11 max-xl:min-w-11 max-xl:items-center">
                   {{ link.label }}
                 </NuxtLink>
-                <span v-else>{{ link.label }}</span>
+                <span v-else class="max-xl:inline-flex max-xl:min-h-11 max-xl:items-center">{{ link.label }}</span>
               </li>
             </ul>
           </div>
@@ -152,7 +153,7 @@ const utilityCards = [
         </div>
       </div>
 
-      <div class="mt-[clamp(2rem,2.1vw,2.5rem)] border-t border-white/25 pt-[clamp(1.25rem,1.6vw,1.9rem)] text-[clamp(0.85rem,0.92vw,1.1rem)] text-white/45">
+      <div class="mt-[clamp(2rem,2.1vw,2.5rem)] border-t border-white/25 pt-[clamp(1.25rem,1.6vw,1.9rem)] text-[clamp(0.85rem,0.92vw,1.1rem)] text-white/55">
         <p class="xl:ps-[0.3vw]">© 2026 {{ props.company.legalName }} Wszelkie prawa zastrzeżone.</p>
       </div>
     </div>

@@ -88,7 +88,7 @@ const selectAdjacent = async (
       v-if="selectableEntries.length"
       class="border-b border-line px-6 py-7 md:px-8 lg:px-10 lg:py-8"
     >
-      <p class="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-ink/44">
+      <p class="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-muted">
         Dostępne modele
       </p>
       <div class="overflow-x-auto">

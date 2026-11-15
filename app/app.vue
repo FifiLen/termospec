@@ -70,15 +70,15 @@ const contentSearchUi = {
   modal: 'sm:max-w-4xl sm:h-[34rem]',
   viewport: 'scroll-py-2 divide-y divide-ink/10',
   group: 'px-3 py-4',
-  label: 'px-3 pb-2 text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-ink/42',
+  label: 'px-3 pb-2 text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-muted',
   item: 'min-h-12 rounded-xl px-3 py-2.5',
-  itemLeadingIcon: 'text-ink/42',
+  itemLeadingIcon: 'text-muted',
   // Below `sm` the breadcrumb, title and matched text stack on separate lines,
   // so a long breadcrumb no longer truncates the title away.
-  itemLabel: 'truncate space-x-1 text-ink/56 max-sm:flex max-sm:flex-col max-sm:space-x-0 max-sm:whitespace-normal',
+  itemLabel: 'truncate space-x-1 text-muted max-sm:flex max-sm:flex-col max-sm:space-x-0 max-sm:whitespace-normal',
   itemLabelBase: 'font-medium text-ink max-sm:line-clamp-2',
-  itemLabelPrefix: 'text-ink/38 max-sm:truncate max-sm:text-xs',
-  itemLabelSuffix: 'text-ink/42 max-sm:truncate max-sm:text-xs',
+  itemLabelPrefix: 'text-muted max-sm:truncate max-sm:text-xs',
+  itemLabelSuffix: 'text-muted max-sm:truncate max-sm:text-xs',
 }
 
 </script>

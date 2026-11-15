@@ -143,7 +143,7 @@ const hasProductScope = computed(() => {
             </p>
             <span
               v-if="props.product.powerRange"
-              class="text-xs font-semibold text-ink/44"
+              class="text-xs font-semibold text-muted"
             >
               {{ props.product.powerRange }}
             </span>
@@ -161,7 +161,7 @@ const hasProductScope = computed(() => {
             </h3>
             <span
               v-if="props.product.modelCode && props.product.modelCode !== props.product.title"
-              class="pb-1 text-sm font-semibold text-ink/44"
+              class="pb-1 text-sm font-semibold text-muted"
             >
               {{ props.product.modelCode }}
             </span>
@@ -198,7 +198,7 @@ const hasProductScope = computed(() => {
           :key="`${spec.label}-${spec.value}`"
           class="py-5 sm:pe-6 xl:border-e xl:border-line xl:px-6 xl:first:ps-0 xl:last:border-e-0"
         >
-          <dt class="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-ink/42">
+          <dt class="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-muted">
             {{ spec.label }}
           </dt>
           <dd class="mt-2 text-base font-semibold leading-6 text-ink">{{ spec.value }}</dd>
@@ -272,7 +272,7 @@ const hasProductScope = computed(() => {
           <h4 class="text-3xl font-bold leading-[1.12] tracking-[-0.015em] text-ink md:text-4xl">
             {{ labels.technicalDescription }}
           </h4>
-          <p v-if="props.product.lead" class="max-w-2xl text-base leading-7 text-ink/58 md:justify-self-end">
+          <p v-if="props.product.lead" class="max-w-2xl text-base leading-7 text-muted md:justify-self-end">
             {{ props.product.lead }}
           </p>
         </div>
@@ -311,7 +311,7 @@ const hasProductScope = computed(() => {
         <div class="mt-7 overflow-x-auto border-t border-line">
           <table class="w-full min-w-lg border-collapse text-start">
             <thead>
-              <tr class="border-b border-line text-xs font-black uppercase tracking-wide text-ink/42">
+              <tr class="border-b border-line text-xs font-black uppercase tracking-wide text-muted">
                 <th scope="col" class="py-4 pe-5 text-start">{{ labels.parameter }}</th>
                 <th scope="col" class="py-4 pe-5 text-start">{{ labels.value }}</th>
                 <th scope="col" class="py-4 text-start">{{ labels.unit }}</th>
@@ -325,7 +325,7 @@ const hasProductScope = computed(() => {
               >
                 <th scope="row" class="py-4 pe-5 text-start font-bold">{{ row.label }}</th>
                 <td class="py-4 pe-5 font-bold tabular-nums">{{ row.value }}</td>
-                <td class="py-4 text-ink/58">{{ row.unit || "—" }}</td>
+                <td class="py-4 text-muted">{{ row.unit || "—" }}</td>
               </tr>
             </tbody>
           </table>
@@ -333,7 +333,7 @@ const hasProductScope = computed(() => {
 
         <ul
           v-if="props.product.technicalNotes.length"
-          class="mt-4 grid gap-2 text-xs leading-5 text-ink/58"
+          class="mt-4 grid gap-2 text-xs leading-5 text-muted"
           :aria-label="labels.technicalNotes"
         >
           <li v-for="note in props.product.technicalNotes" :key="note">{{ note }}</li>
