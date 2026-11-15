@@ -30,6 +30,9 @@ const labels = computed(() => {
       productScope: "Product scope",
       gallery: "Product in its working environment",
       projects: "Related applications",
+      inquiryTitle: "Ask about",
+      inquiryBody: "Describe the site and operating conditions in the contact form.",
+      inquiry: "Send an inquiry",
     };
   }
 
@@ -52,6 +55,9 @@ const labels = computed(() => {
     productScope: "Zakres produktu",
     gallery: "Urządzenie w środowisku pracy",
     projects: "Powiązane zastosowania",
+    inquiryTitle: "Zapytaj o",
+    inquiryBody: "Opisz obiekt i warunki pracy urządzenia w formularzu kontaktowym.",
+    inquiry: "Wyślij zapytanie",
   };
 });
 
@@ -156,7 +162,7 @@ const hasProductScope = computed(() => {
           </div>
 
           <div class="mt-4 flex flex-wrap items-end gap-x-5 gap-y-2">
-            <h3 class="text-[clamp(2.75rem,5cqw,5rem)] font-bold leading-[1.05] tracking-[-0.015em] text-ink">
+            <h3 class="text-[clamp(2rem,3.6cqw,3rem)] font-bold leading-[1.08] tracking-[-0.015em] text-heading">
               {{ props.product.title }}
             </h3>
             <span
@@ -167,7 +173,7 @@ const hasProductScope = computed(() => {
             </span>
           </div>
 
-          <p v-if="intro" class="mt-6 max-w-2xl text-base leading-7 text-ink/64 md:text-lg md:leading-8">
+          <p v-if="intro" class="design-body mt-5 max-w-2xl">
             {{ intro }}
           </p>
         </header>
@@ -201,7 +207,7 @@ const hasProductScope = computed(() => {
           <dt class="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-muted">
             {{ spec.label }}
           </dt>
-          <dd class="mt-2 text-base font-semibold leading-6 text-ink">{{ spec.value }}</dd>
+          <dd class="mt-2 text-base font-semibold leading-6 text-heading">{{ spec.value }}</dd>
         </div>
       </dl>
 
@@ -213,10 +219,10 @@ const hasProductScope = computed(() => {
           <p class="text-xs font-bold uppercase tracking-[0.16em] text-white/55">
             {{ labels.purpose }}
           </p>
-          <h4 class="mt-4 max-w-lg text-3xl font-bold leading-[1.12] tracking-[-0.015em] text-white md:text-4xl">
+          <h4 class="design-subheading mt-4 max-w-lg text-white">
             {{ overviewSection?.title || labels.applications }}
           </h4>
-          <p v-if="overviewSection?.body" class="mt-6 max-w-xl text-base leading-8 text-white/72">
+          <p v-if="overviewSection?.body" class="mt-5 max-w-xl text-base leading-7 text-white/80">
             {{ overviewSection.body }}
           </p>
         </div>
@@ -229,7 +235,7 @@ const hasProductScope = computed(() => {
             <li
               v-for="item in purposeItems"
               :key="item"
-              class="flex gap-4 border-t border-line pt-4 text-base font-semibold leading-6 text-ink"
+              class="flex gap-4 border-t border-line pt-4 text-base font-semibold leading-6 text-heading"
             >
               <span class="mt-2 size-1.5 shrink-0 rounded-full bg-brand" aria-hidden="true" />
               <span>{{ item }}</span>
@@ -240,7 +246,7 @@ const hasProductScope = computed(() => {
 
       <section v-if="props.product.gallery.length" class="mt-12 lg:mt-16">
         <div class="mb-6 border-b border-line pb-5">
-          <h4 class="text-2xl font-semibold leading-tight tracking-[-0.025em] text-ink md:text-3xl">
+          <h4 class="design-subheading">
             {{ labels.gallery }}
           </h4>
         </div>
@@ -269,7 +275,7 @@ const hasProductScope = computed(() => {
 
       <section v-if="narrativeSections.length" class="mt-12 lg:mt-16">
         <div class="grid gap-8 border-b border-line pb-7 md:grid-cols-[minmax(0,0.72fr)_minmax(0,1.28fr)] md:items-end">
-          <h4 class="text-3xl font-bold leading-[1.12] tracking-[-0.015em] text-ink md:text-4xl">
+          <h4 class="design-subheading">
             {{ labels.technicalDescription }}
           </h4>
           <p v-if="props.product.lead" class="max-w-2xl text-base leading-7 text-muted md:justify-self-end">
@@ -283,17 +289,17 @@ const hasProductScope = computed(() => {
             :key="section.title"
             class="bg-white px-1 py-8 md:px-8 md:py-10"
           >
-            <h5 class="text-2xl font-semibold leading-tight tracking-[-0.025em] text-ink">
+            <h5 class="text-xl font-bold leading-tight text-heading">
               {{ section.title }}
             </h5>
-            <p v-if="section.body" class="mt-5 max-w-2xl text-base leading-8 text-ink/64">
+            <p v-if="section.body" class="mt-4 max-w-2xl text-base leading-7 text-muted">
               {{ section.body }}
             </p>
             <ul v-if="section.items.length" class="mt-6 grid gap-3">
               <li
                 v-for="item in section.items"
                 :key="item"
-                class="flex gap-3 text-sm font-semibold leading-6 text-ink/70"
+                class="flex gap-3 text-sm font-semibold leading-6 text-heading"
               >
                 <span class="mt-2 size-1.5 shrink-0 bg-brand" aria-hidden="true" />
                 <span>{{ item }}</span>
@@ -304,7 +310,7 @@ const hasProductScope = computed(() => {
       </section>
 
       <section v-if="props.product.technicalData.length" class="mt-12 lg:mt-16">
-        <h4 class="text-3xl font-bold leading-[1.12] tracking-[-0.015em] text-ink md:text-4xl">
+        <h4 class="design-subheading">
           {{ labels.technicalData }}
         </h4>
 
@@ -341,7 +347,7 @@ const hasProductScope = computed(() => {
       </section>
 
       <section v-if="hasProductScope" class="mt-12 lg:mt-16">
-        <h4 class="text-3xl font-bold leading-[1.12] tracking-[-0.015em] text-ink md:text-4xl">
+        <h4 class="design-subheading">
           {{ labels.productScope }}
         </h4>
 
@@ -351,14 +357,14 @@ const hasProductScope = computed(() => {
             :key="list.title"
             class="bg-surface p-6 md:p-7"
           >
-            <h5 class="text-lg font-semibold leading-tight text-ink">
+            <h5 class="text-lg font-bold leading-tight text-heading">
               {{ list.title }}
             </h5>
             <ul class="mt-5 grid gap-3">
               <li
                 v-for="item in list.items"
                 :key="item"
-                class="flex gap-3 text-sm font-semibold leading-6 text-ink/64"
+                class="flex gap-3 text-sm font-semibold leading-6 text-muted"
               >
                 <span class="mt-2 size-1.5 shrink-0 bg-brand" aria-hidden="true" />
                 <span>{{ item }}</span>
@@ -367,7 +373,7 @@ const hasProductScope = computed(() => {
           </section>
 
           <section v-if="props.product.documents.length" class="bg-surface p-6 md:p-7">
-            <h5 class="text-lg font-semibold leading-tight text-ink">
+            <h5 class="text-lg font-bold leading-tight text-heading">
               {{ labels.documents }}
             </h5>
             <ul class="mt-5 grid gap-3">
@@ -417,17 +423,17 @@ const hasProductScope = computed(() => {
               <p v-if="project.category" class="text-xs font-bold uppercase tracking-[0.14em] text-brand">
                 {{ project.category }}
               </p>
-              <h5 class="mt-3 text-xl font-semibold leading-tight text-ink">
+              <h5 class="mt-3 text-xl font-bold leading-tight text-heading">
                 {{ project.title }}
               </h5>
-              <p v-if="project.body" class="mt-4 text-sm leading-6 text-ink/64">
+              <p v-if="project.body" class="mt-4 text-sm leading-6 text-muted">
                 {{ project.body }}
               </p>
               <ul v-if="project.scope.length" class="mt-5 flex flex-wrap gap-2">
                 <li
                   v-for="item in project.scope"
                   :key="item"
-                  class="rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-ink/64"
+                  class="rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-muted"
                 >
                   {{ item }}
                 </li>
@@ -435,6 +441,23 @@ const hasProductScope = computed(() => {
             </div>
           </article>
         </div>
+      </section>
+
+      <section
+        class="mt-12 flex flex-col gap-6 rounded-2xl bg-ink px-6 py-8 text-white md:flex-row md:items-center md:justify-between md:px-8 lg:mt-16 lg:px-10"
+        :aria-label="`${labels.inquiryTitle} ${props.product.title}`"
+      >
+        <div>
+          <h4 class="design-subheading text-white">
+            {{ labels.inquiryTitle }} {{ props.product.title }}
+          </h4>
+          <p class="mt-2 text-base leading-7 text-white/80">
+            {{ labels.inquiryBody }}
+          </p>
+        </div>
+        <NuxtLink to="/#kontakt" class="design-button shrink-0 self-start bg-brand text-white hover:bg-white hover:text-brand md:self-auto">
+          {{ labels.inquiry }} <span aria-hidden="true">→</span>
+        </NuxtLink>
       </section>
     </div>
   </article>

@@ -38,10 +38,10 @@ const intro = computed(() => {
           </span>
         </div>
 
-        <h3 class="mt-2 font-heading text-xl font-black leading-tight text-ink md:text-2xl">
+        <h3 class="mt-2 text-xl font-bold leading-tight text-heading md:text-2xl">
           {{ props.product.title }}
         </h3>
-        <p v-if="intro" class="mt-2 max-w-4xl text-sm leading-6 text-ink/62">
+        <p v-if="intro" class="mt-2 max-w-4xl text-sm leading-6 text-muted">
           {{ intro }}
         </p>
       </div>

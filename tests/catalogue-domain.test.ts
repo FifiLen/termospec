@@ -5,9 +5,11 @@ import test from "node:test";
 import { parse } from "yaml";
 
 import {
+  hasProductContent,
   mergeProductsIntoCatalogue,
   normalizeCatalogueText,
   resolveCatalogueSelection,
+  toProductFamily,
   type CatalogueProductRecord,
 } from "../app/utils/product-catalogue.ts";
 import {
@@ -183,4 +185,17 @@ test("catalogue and product placement identifiers are internally consistent", as
 
     assert.ok(match, `${fileName}: placement does not resolve to catalogue.yml`);
   }
+});
+
+test("only placed records with authored copy count as product content", async () => {
+  const emptyRecord = await readYaml<CatalogueProductRecord>(
+    path.join(repositoryRoot, "content/products/agregaty-tlokowe-ts-200.yml"),
+  );
+  const authoredRecord = await readYaml<CatalogueProductRecord>(
+    path.join(repositoryRoot, "content/products/agregaty-tlokowe-ts-150.yml"),
+  );
+
+  assert.equal(hasProductContent(undefined), false);
+  assert.equal(hasProductContent(toProductFamily(emptyRecord, "TS-200")), false);
+  assert.equal(hasProductContent(toProductFamily(authoredRecord, "TS-150")), true);
 });

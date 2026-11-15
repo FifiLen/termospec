@@ -200,6 +200,28 @@ export const mergeProductsIntoCatalogue = (
   return merged;
 };
 
+// A placed record with only its title and placement has nothing to show yet;
+// the catalogue renders an inquiry empty state for it instead of a bare title.
+export const hasProductContent = (product: ProductFamily | undefined) => {
+  if (!product) return false;
+
+  return Boolean(
+    product.shortDescription
+    || product.lead
+    || product.powerRange
+    || product.specs.length
+    || product.sections.length
+    || product.applications.length
+    || product.features.length
+    || product.components.length
+    || product.serviceScope.length
+    || product.technicalData.length
+    || product.gallery.length
+    || product.documents.length
+    || product.relatedProjects.length,
+  );
+};
+
 export const selectableCatalogueEntries = (
   entries: ProductNavigationEntry[],
 ) => {

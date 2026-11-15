@@ -9,6 +9,8 @@ const props = defineProps<{
   activeEntryId: string;
   expandedCategorySlug: string;
   expandedGroupSlug: string;
+  // `families` stops at device families; models are chosen in the catalogue content.
+  depth?: "families" | "models";
 }>();
 
 const searchQuery = defineModel<string>("searchQuery", { default: "" });
@@ -53,7 +55,21 @@ const emit = defineEmits<{
         :key="category.slug"
         class="border-b border-white/15 last:border-b-0"
       >
+        <button
+          v-if="props.depth === 'families' && !category.groups.length"
+          type="button"
+          class="w-full px-5 py-4 text-left transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white"
+          :class="props.activeCategorySlug === category.slug ? 'bg-white/15 text-white' : 'text-white hover:bg-white/10'"
+          :aria-current="props.activeCategorySlug === category.slug ? 'location' : undefined"
+          @click="emit('categoryExpanded', category.slug, true)"
+        >
+          <span class="whitespace-nowrap text-[0.8rem] font-black uppercase leading-5">
+            {{ category.label }}
+          </span>
+        </button>
+
         <UCollapsible
+          v-else
           :open="props.expandedCategorySlug === category.slug"
           :unmount-on-hide="false"
           :ui="{
@@ -87,7 +103,21 @@ const emit = defineEmits<{
 
           <template #content>
             <div class="border-t border-white/15 bg-black/10 py-1.5">
-              <div v-if="category.groups.length">
+              <ul v-if="props.depth === 'families'" :aria-label="`Rodziny w kategorii ${category.label}`">
+                <li v-for="group in category.groups" :key="group.slug">
+                  <button
+                    type="button"
+                    class="w-full py-3 pe-4 ps-7 text-left text-[0.78rem] font-extrabold leading-5 transition-colors duration-200 max-lg:min-h-11 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white"
+                    :class="props.activeGroupSlug === group.slug ? 'bg-white/14 text-white' : 'text-white hover:bg-white/8'"
+                    :aria-current="props.activeGroupSlug === group.slug ? 'location' : undefined"
+                    @click="emit('groupExpanded', category.slug, group.slug, true)"
+                  >
+                    {{ group.label }}
+                  </button>
+                </li>
+              </ul>
+
+              <div v-else-if="category.groups.length">
                 <UCollapsible
                   v-for="group in category.groups"
                   :key="group.slug"

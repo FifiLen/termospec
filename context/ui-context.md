@@ -98,16 +98,24 @@ Use this direction when changing company/about pages:
 
 The product catalogue should be a functional B2B technical catalogue, not a landing-page hero, app dashboard, documentation template, or e-commerce listing.
 
+Current navigation and sheet layout (owner-approved variant A, 2026-11-16; supersedes conflicting older bullets in this file):
+
+- The `/produkty` index (`ProductCatalogueIndex` with `depth="families"`) stops at device families. Categories with families expand to a plain family list; categories without families are single buttons. Models are chosen only in the content. The desktop product mega-menu keeps the full category → family → model index (default `depth="models"`).
+- The content opens with one header: orientation breadcrumbs (`Produkty › category`), the family (or category) name as the only `h2`, a model summary derived from the taxonomy (`6 modeli: TS-150 – TS-400`, Polish plural forms) and the family/category render on the right. There is no separate "Kategoria produktów" band and no repeated name.
+- The model selector is a sticky bar under the floating header (`Modele` + horizontal pills + a navy `Zapytaj o <model>` link to `/#kontakt`). Choosing a model while scrolled down returns to the bar's position so the new sheet starts under it.
+- A model whose record has no authored content (`hasProductContent` in `app/utils/product-catalogue.ts`) shows an empty state instead of a bare title: model name, "karta w przygotowaniu" copy, `Zapytaj o <model>` and, when a sibling in the same family has an authored sheet, `Zobacz kartę <sibling>`. Categories with only descriptive entries show them as a red-dash divider list with `Wyślij zapytanie`; categories with no entries show a short inquiry prompt. Do not invent parameters to fill these states.
+- Authored sheets use `.design-subheading` section titles, `text-heading`/`text-muted` copy, a smaller model title than the family name, and end with a navy `Zapytaj o <model>` inquiry block.
+- Below `lg` the index is hidden behind a full-width red `Wybierz produkt` button showing the current family; it opens the index in place and closes after a family or category is chosen, scrolling to the content.
+
 - Start `/produkty` directly below the fixed header with the catalogue workspace itself. Do not add a hero, compact intro, live counters, catalogue stats panel, or marketing preface above the index/content grid.
 - Treat `/produkty` as one complete catalogue surface: a narrow technical left-side product index from the `sm` breakpoint, local search, expandable category controls, product/family quick navigation, full product-family sheets, service/support scope, and related realization context.
-- On mobile, the left catalogue index becomes a full-width selector section above the product sheets; it must not become a cramped app-style sidebar.
+- On mobile, the left catalogue index collapses behind a full-width `Wybierz produkt` selector above the product sheets; it must not become a cramped app-style sidebar.
 - Product-family entries should use the available page width to show a business-readable product overview, product media, parameters, applications, features, components, service/support scope, source-based technical descriptions, and related realizations without sending users to product detail routes.
 - The left panel should feel like a classic industrial product index: approximately `18rem` wide, thin separators, uppercase main labels that do not wrap, visible local search, a restrained burgundy active category, and one expanded nested list showing the families or models that belong to that category.
 - Category rows use the existing Nuxt UI `UCollapsible` primitive for a restrained height reveal and chevron rotation. Opening a category only reveals its nested index; it must not scroll the page, and scroll-linked catalogue activity must not automatically open or close the user's chosen index section.
-- Nested index items navigate directly to the matching family, product disclosure, or model tab in the catalogue content; avoid counts, badges, decorative marks, and extra explanatory copy in this navigation.
+- Nested index items (families on `/produkty`, families and models in the mega-menu) navigate directly to the matching family or model in the catalogue content; avoid counts, badges, decorative marks, and extra explanatory copy in this navigation.
 - The left catalogue index starts directly with local search; do not add a separate dark title strip above it.
-- Main category registers use a compact dark band (`min-h-24` without media); categories with a supplied render keep the same heading/image alignment in a reduced `min-h-40` stage.
-- Product entries must not show e-commerce language or purchase-style CTAs such as "kup teraz". A global product contact path may exist at the end of the catalogue, but it should read as technical inquiry support.
+- Product entries must not show e-commerce language or purchase-style CTAs such as "kup teraz". Inquiry links (`Zapytaj o <model>`, `Wyślij zapytanie`) read as technical inquiry support and lead to `/#kontakt`.
 - Keep the catalogue aligned with the current homepage direction: white industrial surfaces, burgundy technical accents, strong product and realization imagery where available, sharp line-based separators, restrained typography, square geometry, and no box shadows.
 - If final product photography or product-specific realization data is missing, do not invent named case studies. Use existing product media and visible realization materials, and keep final verification as an open question in `progress-tracker.md`.
 

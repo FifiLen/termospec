@@ -139,15 +139,33 @@ const activateGroup = async (
   }
 };
 
+// Below `lg` the index collapses behind a selector button and closes after a choice.
+const isIndexOpen = ref(false);
+const indexId = useId();
+
 const setCategoryExpanded = (
   categorySlug: string,
   open: boolean,
 ) => {
   expandedCategorySlug.value = open ? categorySlug : "";
 
-  if (open) {
-    void activateCategory(categorySlug, false);
+  if (!open) {
+    return;
   }
+
+  // A category without families is a final choice; one with families only
+  // reveals them and must not move the page.
+  const hasFamilies = Boolean(filteredCategories.value.find((item) => {
+    return item.slug === categorySlug;
+  })?.groups.length);
+
+  if (hasFamilies) {
+    void activateCategory(categorySlug, false);
+    return;
+  }
+
+  isIndexOpen.value = false;
+  void activateCategory(categorySlug);
 };
 
 const setGroupExpanded = (
@@ -158,7 +176,8 @@ const setGroupExpanded = (
   expandedGroupSlug.value = open ? groupSlug : "";
 
   if (open) {
-    void activateGroup(categorySlug, groupSlug, false);
+    isIndexOpen.value = false;
+    void activateGroup(categorySlug, groupSlug);
   }
 };
 
@@ -271,10 +290,32 @@ await usePageSeo("produkty");
     <h1 class="sr-only">Katalog produktów</h1>
 
     <section
-      class="design-shell grid items-start gap-5 lg:grid-cols-[clamp(18rem,19vw,23rem)_minmax(0,1fr)] lg:gap-[clamp(1.25rem,1.6vw,1.9rem)]"
+      class="design-shell grid grid-cols-[minmax(0,1fr)] items-start gap-5 lg:grid-cols-[clamp(18rem,19vw,23rem)_minmax(0,1fr)] lg:gap-[clamp(1.25rem,1.6vw,1.9rem)]"
       aria-label="Katalog produktów"
     >
+      <button
+        type="button"
+        class="flex min-h-14 w-full items-center justify-between gap-4 rounded-[clamp(1.5rem,2.6vw,3.1rem)] bg-brand px-5 py-3 text-left text-white lg:hidden"
+        :aria-expanded="isIndexOpen"
+        :aria-controls="indexId"
+        @click="isIndexOpen = !isIndexOpen"
+      >
+        <span class="min-w-0">
+          <span class="block text-xs font-bold uppercase tracking-[0.16em]">Wybierz produkt</span>
+          <span class="mt-1 line-clamp-2 text-sm font-semibold">
+            {{ activeGroup?.label ?? activeCategory?.label }}
+          </span>
+        </span>
+        <UIcon
+          name="i-lucide-chevron-down"
+          class="size-5 shrink-0 transition-transform duration-200 motion-reduce:transition-none"
+          :class="isIndexOpen ? 'rotate-180' : ''"
+          aria-hidden="true"
+        />
+      </button>
+
       <ProductCatalogueIndex
+        :id="indexId"
         v-model:search-query="searchQuery"
         :categories="filteredCategories"
         :active-category-slug="activeCategorySlug"
@@ -282,7 +323,9 @@ await usePageSeo("produkty");
         :active-entry-id="activeEntryId"
         :expanded-category-slug="expandedCategorySlug"
         :expanded-group-slug="expandedGroupSlug"
+        depth="families"
         class="lg:sticky lg:top-[calc(var(--site-header-height)+1.5rem)] lg:max-h-[calc(100svh-var(--site-header-height)-3rem)]"
+        :class="isIndexOpen ? '' : 'max-lg:hidden'"
         @category-expanded="setCategoryExpanded"
         @group-expanded="setGroupExpanded"
         @select-entry="activateEntry"
