@@ -73,10 +73,12 @@ const contentSearchUi = {
   label: 'px-3 pb-2 text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-ink/42',
   item: 'min-h-12 rounded-xl px-3 py-2.5',
   itemLeadingIcon: 'text-ink/42',
-  itemLabel: 'truncate space-x-1 text-ink/56',
-  itemLabelBase: 'font-medium text-ink',
-  itemLabelPrefix: 'text-ink/38',
-  itemLabelSuffix: 'text-ink/42',
+  // Below `sm` the breadcrumb, title and matched text stack on separate lines,
+  // so a long breadcrumb no longer truncates the title away.
+  itemLabel: 'truncate space-x-1 text-ink/56 max-sm:flex max-sm:flex-col max-sm:space-x-0 max-sm:whitespace-normal',
+  itemLabelBase: 'font-medium text-ink max-sm:line-clamp-2',
+  itemLabelPrefix: 'text-ink/38 max-sm:truncate max-sm:text-xs',
+  itemLabelSuffix: 'text-ink/42 max-sm:truncate max-sm:text-xs',
 }
 
 </script>

@@ -59,6 +59,8 @@ Recommended names:
 
 Do not use random raw classes like `text-zinc-700`, `bg-slate-950`, `from-purple-900`, or hardcoded hex values inside components.
 
+Nuxt UI's `primary` colour is the brand red: `app/app.config.ts` sets `ui.colors.primary: "brand"` and `main.css` derives the `--color-brand-50…950` shades from `--color-brand` in an `@theme static` block (500 = `#DF0210`). Nuxt UI's `neutral` is still its default slate.
+
 ## Typography
 
 Host Grotesk (variable weights 300–800, self-hosted through `@nuxt/fonts`) is the single family for UI, body and headings, replacing DM Sans per the PSD. Homepage type is specified against the 1920 px artboard and scales with viewport through `clamp(…, vw, …)`; shared helpers `.design-shell` (111 rem max, `--design-gutter` ≈ 73 px at 1920), `.design-heading` (bold ~73 px, 1.19 line height), `.design-lead` (~25 px), `.design-subheading` (~29 px bold), `.design-body` (~22 px) and `.design-button` (pill CTA) live in `main.css`. Section eyebrows use `SectionEyebrow` (96 px red rule + uppercase 0.24em tracked label).
@@ -170,7 +172,7 @@ Current product mega menu implementation:
 - Simple content pages (`/dofinansowania`, `/rodo`) open with the shared `PageIntro` (eyebrow + `.design-heading` title + optional lead) on the surface background, followed by one white rounded content card with `.design-body` copy, red-dash bullets and divider-led fact/clause lists. `/koncesja` intentionally stays visually empty (owner decision) with only the header offset.
 - `/o-firmie` uses the same PSD system (surface/white alternation, `SectionEyebrow`, `.design-heading`, numbered navy/white value cards, red-year timeline on a thin axis); no beige surfaces remain.
 - `/uslugi` uses the homepage PSD system: surface intro with `SectionEyebrow` + `Usługi` heading/lead and five numbered white index cards (`Serwis 24/7` navy), then alternating white/surface service sections with numbered eyebrows, `.design-heading` titles, `.design-lead`/`.design-body` copy, rounded images, surface or white cards, a navy `Serwis 24/7` panel, white machine specification cards with divider rows, and a closing navy contact panel. The red `Serwis 24/7` phone box is the shared `ServiceHotline` component (also used on the homepage).
-- Below `xl`, the header collapses to a rounded white logo bar with circular search and menu controls. The open state is a deep-navy full-screen panel with large primary navigation, compact product/service accordions, the 24-hour service number, locale controls, and the EU funding mark.
+- Below `xl`, the header collapses to a rounded white logo bar with circular search (the same magnifier icon as the desktop search chip) and menu controls. The open state is a deep-navy full-screen panel opening with the white vector logo (`/images/brand/termospec-logo-white.svg`, as in the footer), large primary navigation, compact product/service accordions, the 24-hour service number, locale controls, and the EU funding mark in its original colours on a white plaque (never recoloured with filters).
 
 - Desktop navigation follows the confirmed order `O firmie`, `Produkty`, `Usługi`, `Kontakt`, `Szukaj`; `Aktualności` is removed and the logo remains the home link.
 - `Produkty` and `Usługi` use Nuxt UI `UNavigationMenu` for hover/focus trigger and viewport behavior.
@@ -179,7 +181,7 @@ Current product mega menu implementation:
 - `ServiceMegaMenu` lists the five confirmed service categories and links them to anchored sections on `/uslugi`.
 - The desktop service mega menu highlights `Serwis 24/7` with a navy tile (red on hover) and white text. Its visible gap below the navigation bar is implemented as padding inside the active hover region, so moving the pointer from the bar to the service or product panel does not close the menu. `Produkty` and `Usługi` are real route links while retaining hover/focus panel opening.
 - Global search uses the existing Nuxt UI/Nuxt Content search dialog from the compact search pill on desktop and the circular search control on mobile.
-- Search results are organized as explicit `Oferta`, `Firma`, `Kontakt i dokumenty`, and query-only `Strony i treści` groups. The shared Nuxt UI command palette uses visible group labels and dividers; do not restore the previous unlabelled flat stream of navigation documents.
+- Search results are organized as explicit `Oferta`, `Firma`, `Kontakt i dokumenty`, and query-only `Strony i treści` groups. The shared Nuxt UI command palette uses visible group labels and dividers; do not restore the previous unlabelled flat stream of navigation documents. Below `sm`, a content result stacks its breadcrumb (small, one line), title (up to two lines) and matched text (one line), so long breadcrumbs cannot hide the title; desktop keeps the single-line row. Matches are highlighted in the brand red through Nuxt UI `primary`.
 - Below the `xl` breakpoint, the desktop header is replaced by a compact rounded logo/search/menu bar and a full-screen navigation panel.
 
 ### Mobile

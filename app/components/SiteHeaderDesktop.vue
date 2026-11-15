@@ -44,7 +44,7 @@ watch(() => route.fullPath, () => {
     @keydown.esc="openMenu = null"
   >
     <div class="grid min-h-[var(--site-header-bar)] grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-7 rounded-[1.75rem] bg-white px-[clamp(1.5rem,1.6vw,1.9rem)] shadow-[0_16px_50px_rgb(10_24_71_/_0.08)]">
-      <NuxtLink to="/" aria-label="Termospec, strona główna" class="inline-flex pe-2 outline-none">
+      <NuxtLink to="/" aria-label="Termospec, strona główna" class="inline-flex pe-2">
         <img src="/images/brand/termospec-logo.svg" alt="Termospec" width="275" height="40" class="h-auto w-[clamp(10rem,12vw,14.5rem)]">
       </NuxtLink>
 

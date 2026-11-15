@@ -21,7 +21,7 @@ defineExpose({
 
 <template>
   <div class="flex min-h-[var(--site-header-bar)] w-full items-center rounded-[1.5rem] bg-white px-4 shadow-[0_14px_40px_rgb(10_24_71_/_0.09)] xl:hidden">
-    <NuxtLink class="inline-flex outline-none" to="/" aria-label="Termospec, strona główna" @click="emit('navigate')">
+    <NuxtLink class="inline-flex" to="/" aria-label="Termospec, strona główna" @click="emit('navigate')">
       <img src="/images/brand/termospec-logo.svg" alt="Termospec" width="160" height="23" class="h-auto w-32 sm:w-36">
     </NuxtLink>
 
@@ -32,7 +32,19 @@ defineExpose({
         aria-label="Otwórz wyszukiwanie"
         @click="isSearchOpen = true"
       >
-        <span class="size-3.5 rounded-full border border-current" aria-hidden="true" />
+        <svg
+          class="size-5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <circle cx="11" cy="11" r="7" />
+          <path d="m20 20-4-4" />
+        </svg>
       </button>
 
       <button
