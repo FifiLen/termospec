@@ -11,7 +11,7 @@ Current working assumption based on the existing POC:
 | Content | Nuxt Content / local structured content | Page and product/service content |
 | UI integration | Nuxt UI | Content search modal, desktop navigation primitives, and Nuxt Content prose/search integration |
 | Components | Vue SFC components | Reusable page sections and UI patterns |
-| Fonts | Host Grotesk | Single family for UI, body and headings (Google Fonts, 300–800) |
+| Fonts | Host Grotesk | Single family for UI, body and headings (variable 300–800, self-hosted from `/_fonts` via `@nuxt/fonts`) |
 | Deployment | Static/SSR-capable hosting | Final target to confirm |
 
 If the project later moves to another CMS or backend, update this file before implementing that change.
@@ -102,6 +102,9 @@ Current implementation:
 
 ## Image / Asset Model
 
+- Raster images render through `NuxtImg` with `format="webp"` and a breakpoint `sizes` list (`image.quality: 80`). In Nuxt Image v2 every `sizes` entry needs a breakpoint prefix: a bare base value such as `100vw` is measured against 1 px and adds useless 1–2 px srcset candidates. Use `xs:`/`sm:` for the smallest range. `image.screens` adds `xs` (480) and `3xl` (1920) to the Tailwind defaults; on Vercel these screens are the only widths the image optimizer serves.
+- `HomeHero` keeps its art-directed `<picture>` (separate mobile source) and builds srcsets with `useImage().getSizes`; the first slide is preloaded per media query. SVG logos stay plain `<img>` because image optimizers do not process SVG.
+- Source photos are stored as WebP or JPG, not multi-megabyte PNG. Files no page references are removed from `public/` (recover them from git history when needed).
 - Place stable public images in `public/`.
 - Optimize names using lowercase kebab-case.
 - Avoid embedding remote URLs directly in components unless temporary.

@@ -90,15 +90,17 @@ const utilityCards = [
 
         <div class="lg:col-span-2 xl:col-span-1 xl:ps-[0.15vw]">
           <article class="grid overflow-hidden rounded-[clamp(1.5rem,2.6vw,3.1rem)] bg-brand sm:grid-cols-[202fr_446fr]">
-            <img
-              src="/stopka-img.png"
+            <NuxtImg
+              src="/stopka-img.webp"
+              sizes="sm:100vw md:31vw xl:12vw"
+              format="webp"
               alt="Serwisant Termospec przy urządzeniu chłodniczym"
               width="941"
               height="1672"
               loading="lazy"
               decoding="async"
               class="h-56 w-full object-cover object-[center_20%] sm:h-full"
-            >
+            />
             <div class="px-[clamp(1.5rem,2.5vw,3rem)] py-[clamp(1.5rem,1.85vw,2.2rem)]">
               <h2 class="max-w-none text-[clamp(1.4rem,1.5vw,1.8rem)] font-bold leading-[1.26] tracking-[-0.01em] text-white">
                 Porozmawiajmy o Twoim projekcie

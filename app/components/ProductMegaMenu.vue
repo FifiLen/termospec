@@ -119,6 +119,7 @@ watch(filteredCategories, (categories) => {
             width="900"
             height="570"
             sizes="600px 2xl:900px"
+            format="webp"
             class="h-full max-h-[26rem] w-full object-contain"
             loading="eager"
             decoding="async"

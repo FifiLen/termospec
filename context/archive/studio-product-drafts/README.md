@@ -21,3 +21,9 @@ records deliberately carry only their title, catalogue placement, display kind,
 publication status, and ordering until the client supplies approved details.
 
 To restore an archived draft to Nuxt Studio, copy the selected YAML or JSON record back into `content/products/`, give it a unique lowercase kebab-case filename, verify its `cataloguePlacement`, and keep `status: draft` until its content is approved.
+
+The product photos and line schematics referenced by these drafts
+(`/images/products/*-wyrobisko-ujecie-*.png`, `*-schemat-liniowy.png` and the
+related `/images/realizations/*.png`) were removed from `public/` on 2026-11-13
+because no active page used them. Restore them from git history
+(`git checkout <commit>~1 -- public/images/...`) before restoring a draft.

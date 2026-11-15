@@ -61,7 +61,7 @@ Do not use random raw classes like `text-zinc-700`, `bg-slate-950`, `from-purple
 
 ## Typography
 
-Host Grotesk (Google Fonts, weights 300–800) is the single family for UI, body and headings, replacing DM Sans per the PSD. Homepage type is specified against the 1920 px artboard and scales with viewport through `clamp(…, vw, …)`; shared helpers `.design-shell` (111 rem max, `--design-gutter` ≈ 73 px at 1920), `.design-heading` (bold ~73 px, 1.19 line height), `.design-lead` (~25 px), `.design-subheading` (~29 px bold), `.design-body` (~22 px) and `.design-button` (pill CTA) live in `main.css`. Section eyebrows use `SectionEyebrow` (96 px red rule + uppercase 0.24em tracked label).
+Host Grotesk (variable weights 300–800, self-hosted through `@nuxt/fonts`) is the single family for UI, body and headings, replacing DM Sans per the PSD. Homepage type is specified against the 1920 px artboard and scales with viewport through `clamp(…, vw, …)`; shared helpers `.design-shell` (111 rem max, `--design-gutter` ≈ 73 px at 1920), `.design-heading` (bold ~73 px, 1.19 line height), `.design-lead` (~25 px), `.design-subheading` (~29 px bold), `.design-body` (~22 px) and `.design-button` (pill CTA) live in `main.css`. Section eyebrows use `SectionEyebrow` (96 px red rule + uppercase 0.24em tracked label).
 
 Typography direction:
 

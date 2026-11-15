@@ -51,7 +51,7 @@
           class="relative overflow-hidden border border-ink/10 bg-white/50 p-3 shadow-[0_3rem_7rem_rgba(8,8,63,.08)]"
         >
           <NuxtImg
-            src="/głowna-01.png"
+            src="/głowna-01.webp"
             alt="Przemysłowe urządzenie chłodnicze Termospec"
             width="1672"
             height="941"

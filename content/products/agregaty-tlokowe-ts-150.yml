@@ -20,12 +20,12 @@ features:
   - Możliwość pracy z otwartym lub zamkniętym układem chłodzenia skraplacza
   - Zastosowanie w wyrobiskach zagrożonych wybuchem
 gallery:
-  - src: /images/products/chlodziarka-bezposredniego-dzialania-wyrobisko-ujecie-01.png
+  - src: /images/products/chlodziarka-bezposredniego-dzialania-wyrobisko-ujecie-01.webp
     alt: Poglądowe ujęcie urządzenia chłodniczego w podziemnym wyrobisku
-  - src: /images/products/chlodziarka-bezposredniego-dzialania-wyrobisko-ujecie-02.png
+  - src: /images/products/chlodziarka-bezposredniego-dzialania-wyrobisko-ujecie-02.webp
     alt: Poglądowe ujęcie urządzenia chłodniczego od strony wentylatora
 headerSketch:
-  src: /images/products/chlodziarka-bezposredniego-dzialania-schemat-liniowy.png
+  src: /images/products/chlodziarka-bezposredniego-dzialania-schemat-liniowy.webp
   alt: Poglądowy schemat liniowy urządzenia chłodniczego
 heroImage: /images/products/catalogue-renders/agregaty-sprezarka-tlokowa.jpg
 imageAlt: Poglądowy render agregatu chłodniczego Termospec ze sprężarką tłokową
@@ -37,7 +37,7 @@ relatedProjects:
     category: klimatyzacja kopalń
     title: Układ chłodzenia dla wyrobisk podziemnych
     body: Dobór i obsługa rozwiązania chłodniczego dla infrastruktury pracującej w wymagających warunkach eksploatacyjnych.
-    image: /images/realizations/uklad-chlodzenia-wyrobisko-podziemne.png
+    image: /images/realizations/uklad-chlodzenia-wyrobisko-podziemne.webp
     imageAlt: Przemysłowy układ chłodzenia w wyrobisku podziemnym
     scope:
       - analiza warunków

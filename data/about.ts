@@ -40,7 +40,7 @@ export const aboutHero: AboutHero = {
     "Wieloletnie doświadczenie, wykwalifikowana kadra oraz współpraca z jednostkami naukowo-badawczymi i kopalniami pozwalają rozwijać rozwiązania potwierdzone patentami oraz publikacjami naukowymi.",
   ],
   image: {
-    src: "/budynek-termospec.png",
+    src: "/budynek-termospec.webp",
     alt: "Budynek Termospec",
   },
 };

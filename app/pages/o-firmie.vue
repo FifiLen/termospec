@@ -29,15 +29,19 @@ usePageSeo({
           </p>
         </div>
 
-        <img
-          src="/budynek-termospec.png"
+        <NuxtImg
+          src="/budynek-termospec.webp"
+          sizes="sm:100vw md:100vw lg:100vw xl:100vw 2xl:1776px"
+          format="webp"
+          preload
+          fetchpriority="high"
           alt="Siedziba i zakład Termospec w Żorach"
           width="1672"
           height="941"
           loading="eager"
           decoding="async"
           class="mt-[clamp(2.5rem,4vw,4.8rem)] aspect-[2.45/1] min-h-64 w-full rounded-[clamp(1.5rem,4.95vw,5.95rem)] object-cover"
-        >
+        />
       </div>
     </section>
 

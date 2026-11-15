@@ -37,14 +37,6 @@ export default defineNuxtConfig({
     head: {
       htmlAttrs: { lang: 'pl' },
       titleTemplate: '%s | Termospec',
-      link: [
-        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
-        {
-          rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@300..800&display=swap',
-        },
-      ],
     },
   },
   vite: {
@@ -81,6 +73,30 @@ export default defineNuxtConfig({
   },
   image: {
     domains: ['images.unsplash.com'],
+    quality: 80,
+    // Tailwind defaults plus `xs` (small phones) and `3xl` (full-bleed 1920 px hero).
+    // Vercel image optimization only serves these widths.
+    screens: {
+      'xs': 480,
+      'sm': 640,
+      'md': 768,
+      'lg': 1024,
+      'xl': 1280,
+      '2xl': 1536,
+      '3xl': 1920,
+    },
+  },
+  // Host Grotesk is downloaded at build time and served from /_fonts (no Google Fonts request).
+  fonts: {
+    families: [{
+      name: 'Host Grotesk',
+      provider: 'google',
+      weights: ['300 800'],
+      styles: ['normal'],
+      // Polish text needs both subsets; @nuxt/fonts would preload only one of them,
+      // so rely on font-display: swap with the generated metric fallbacks instead.
+      subsets: ['latin', 'latin-ext'],
+    }],
   },
   icon: {
     provider: 'none',

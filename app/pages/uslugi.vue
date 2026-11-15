@@ -99,15 +99,17 @@ usePageSeo({
               </li>
             </ul>
 
-            <img
-              src="/images/realizations/uklad-chlodzenia-instalacja-przemyslowa.png"
+            <NuxtImg
+              src="/images/realizations/uklad-chlodzenia-instalacja-przemyslowa.webp"
+              sizes="sm:100vw md:100vw lg:50vw xl:50vw 2xl:888px"
+              format="webp"
               alt="Przemysłowa instalacja chłodnicza Termospec"
               width="1600"
               height="900"
               loading="lazy"
               decoding="async"
               class="mt-[clamp(2.5rem,3.5vw,4.2rem)] aspect-[1.85/1] w-full rounded-[clamp(1.25rem,2.35vw,2.8rem)] object-cover"
-            >
+            />
           </div>
 
           <div class="grid content-start gap-[clamp(1rem,1.6vw,1.9rem)]">
@@ -240,15 +242,17 @@ usePageSeo({
           </div>
 
           <div class="grid content-start gap-[clamp(1rem,1.6vw,1.9rem)]">
-            <img
-              src="/images/products/chlodziarka-bezposredniego-dzialania-wyrobisko-ujecie-01.png"
+            <NuxtImg
+              src="/images/products/chlodziarka-bezposredniego-dzialania-wyrobisko-ujecie-01.webp"
+              sizes="sm:100vw md:100vw lg:50vw xl:50vw 2xl:888px"
+              format="webp"
               alt="Urządzenie chłodnicze Termospec podczas pracy"
               width="1200"
               height="900"
               loading="lazy"
               decoding="async"
               class="aspect-[4/3] w-full rounded-[clamp(1.25rem,2.35vw,2.8rem)] object-cover"
-            >
+            />
 
             <article v-for="feature in repairFeatures" :key="feature.title" class="rounded-[clamp(1.5rem,2.6vw,3.1rem)] bg-surface p-[clamp(1.75rem,3vw,3.6rem)]">
               <h3 class="design-subheading">{{ feature.title }}</h3>
@@ -340,15 +344,17 @@ usePageSeo({
               {{ paragraph }}
             </p>
           </div>
-          <img
+          <NuxtImg
             src="/images/hero/hero-obrobka-stali.jpg"
+            sizes="sm:100vw md:100vw lg:50vw xl:50vw 2xl:888px"
+            format="webp"
             alt="Obróbka stali w zakładzie Termospec"
             width="1920"
             height="1241"
             loading="lazy"
             decoding="async"
             class="aspect-[1.4/1] w-full rounded-[clamp(1.25rem,2.35vw,2.8rem)] object-cover"
-          >
+          />
         </div>
       </div>
     </section>

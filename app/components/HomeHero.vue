@@ -22,6 +22,55 @@ function slideCaption(slide: HomeHeroSlide) {
   return [slide.caption.label, slide.caption.text].filter(Boolean).join(" / ");
 }
 
+// Art-directed <picture> sources need explicit srcsets, so build them with useImage
+// instead of NuxtImg. The blurred backdrop only needs a small rendition.
+const image = useImage();
+const heroImageSizes = "sm:100vw md:100vw lg:100vw xl:100vw 2xl:100vw 3xl:100vw";
+const heroMobileMedia = "(max-width: 1023px)";
+
+function heroImageSources(src: string) {
+  return image.getSizes(src, {
+    sizes: heroImageSizes,
+    densities: "x1",
+    modifiers: { format: "webp" },
+  });
+}
+
+const heroImages = computed(() =>
+  props.slides.map((slide) => ({
+    mobile: heroImageSources(slide.image.mobile.src),
+    desktop: heroImageSources(slide.image.desktop.src),
+    backdropMobile: image(slide.image.mobile.src, { width: 640, format: "webp" }),
+    backdropDesktop: image(slide.image.desktop.src, { width: 640, format: "webp" }),
+  })),
+);
+
+useHead(() => {
+  const first = heroImages.value[0];
+  if (!first) return {};
+
+  return {
+    link: [
+      {
+        rel: "preload",
+        as: "image",
+        media: heroMobileMedia,
+        imagesrcset: first.mobile.srcset,
+        imagesizes: first.mobile.sizes,
+        fetchpriority: "high",
+      },
+      {
+        rel: "preload",
+        as: "image",
+        media: "(min-width: 1024px)",
+        imagesrcset: first.desktop.srcset,
+        imagesizes: first.desktop.sizes,
+        fetchpriority: "high",
+      },
+    ],
+  };
+});
+
 let animationContext: gsap.Context | null = null;
 let mediaQueries: gsap.MatchMedia | null = null;
 let transitionTimeline: gsap.core.Timeline | null = null;
@@ -445,9 +494,9 @@ onUnmounted(() => {
             aria-hidden="true"
             class="absolute -inset-8 block overflow-hidden"
           >
-            <source media="(max-width: 1023px)" :srcset="slide.image.mobile.src" />
+            <source :media="heroMobileMedia" :srcset="heroImages[index]?.backdropMobile" />
             <img
-              :src="slide.image.desktop.src"
+              :src="heroImages[index]?.backdropDesktop"
               alt=""
               loading="lazy"
               decoding="async"
@@ -460,10 +509,16 @@ onUnmounted(() => {
           </picture>
 
           <picture class="absolute inset-0 block overflow-hidden">
-            <source media="(max-width: 1023px)" :srcset="slide.image.mobile.src" />
+            <source
+              :media="heroMobileMedia"
+              :srcset="heroImages[index]?.mobile.srcset"
+              :sizes="heroImages[index]?.mobile.sizes"
+            />
             <img
               data-hero-image
-              :src="slide.image.desktop.src"
+              :src="heroImages[index]?.desktop.src"
+              :srcset="heroImages[index]?.desktop.srcset"
+              :sizes="heroImages[index]?.desktop.sizes"
               :alt="slide.image.alt"
               :loading="index === 0 ? 'eager' : 'lazy'"
               :fetchpriority="index === 0 ? 'high' : 'auto'"

@@ -136,7 +136,7 @@ test("saved TS-150 English draft matches and merges with the current Polish sour
   );
   assert.equal(
     merged.gallery[0]?.src,
-    "/images/products/chlodziarka-bezposredniego-dzialania-wyrobisko-ujecie-01.png",
+    "/images/products/chlodziarka-bezposredniego-dzialania-wyrobisko-ujecie-01.webp",
   );
   assert.equal(
     merged.gallery[0]?.alt,

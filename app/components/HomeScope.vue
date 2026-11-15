@@ -27,15 +27,17 @@ import { homeScopeImage, homeScopeItems } from "~~/data/home";
         </p>
       </div>
 
-      <img
+      <NuxtImg
         :src="homeScopeImage.src"
+        sizes="sm:100vw md:100vw lg:100vw xl:100vw 2xl:1776px"
+        format="webp"
         :alt="homeScopeImage.alt"
         :width="homeScopeImage.width"
         :height="homeScopeImage.height"
         loading="lazy"
         decoding="async"
         class="mt-6 h-auto w-full lg:mt-[clamp(0.5rem,1.25vw,1.5rem)]"
-      >
+      />
 
       <div class="mt-[clamp(2rem,4.15vw,5rem)] grid gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-[clamp(1.5rem,3.1vw,3.75rem)]">
         <article
