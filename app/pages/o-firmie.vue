@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { aboutProfile, aboutTimeline } from "~~/data/about";
+const about = await useAbout();
+const studioEditable = useStudioEditable();
 
-const milestones = aboutTimeline.slice(0, 5);
+const profile = computed(() => about.value?.profile);
+// The timeline grid has five columns, so the page shows the first five milestones.
+const milestones = computed(() => (about.value?.timeline ?? []).slice(0, 5));
 
 usePageSeo({
   title: "O firmie",
@@ -13,6 +16,8 @@ usePageSeo({
 <template>
   <main aria-label="O firmie" class="bg-surface text-ink">
     <section
+      v-if="profile"
+      v-bind="studioEditable(about?.id)"
       aria-labelledby="about-title"
       class="pb-[clamp(3.5rem,4.1vw,5rem)] pt-[calc(var(--site-header-height)+clamp(3rem,5vw,6rem))]"
     >
@@ -20,12 +25,12 @@ usePageSeo({
         <SectionEyebrow label="O firmie" />
 
         <h1 id="about-title" class="design-heading mt-[clamp(1.75rem,2.5vw,3rem)] max-w-[28ch] text-balance">
-          {{ aboutProfile.title }}
+          {{ profile.title }}
         </h1>
 
         <div class="mt-[clamp(1.5rem,2.5vw,3rem)] grid lg:grid-cols-[58fr_42fr]">
           <p class="design-lead max-w-[46rem] lg:col-start-2">
-            {{ aboutProfile.lead }}
+            {{ profile.lead }}
           </p>
         </div>
 
@@ -45,23 +50,23 @@ usePageSeo({
       </div>
     </section>
 
-    <section aria-label="Profil firmy" class="bg-white py-[clamp(3.5rem,4.1vw,5rem)]">
+    <section v-if="profile" v-bind="studioEditable(about?.id)" aria-label="Profil firmy" class="bg-white py-[clamp(3.5rem,4.1vw,5rem)]">
       <div class="design-shell grid gap-10 lg:grid-cols-[58fr_42fr] lg:gap-[clamp(2rem,4vw,4.8rem)]">
         <div>
           <SectionEyebrow label="Profil" />
           <p class="mt-[clamp(1.75rem,2.5vw,3rem)] text-[clamp(1.5rem,2.1vw,2.5rem)] font-bold leading-[1.35] tracking-[-0.01em] text-heading">
-            {{ aboutProfile.intro }}
+            {{ profile.intro }}
           </p>
         </div>
 
         <article class="rounded-[clamp(1.5rem,2.6vw,3.1rem)] bg-surface p-[clamp(1.75rem,3vw,3.6rem)]">
           <p class="design-body">
-            {{ aboutProfile.servicesIntro }}
+            {{ profile.servicesIntro }}
           </p>
           <div class="my-[clamp(1.25rem,1.6vw,1.9rem)] h-0.5 bg-line" />
           <ul class="grid gap-[clamp(0.5rem,0.75vw,0.9rem)]">
             <li
-              v-for="specialty in aboutProfile.specialties"
+              v-for="specialty in profile.specialties"
               :key="specialty"
               class="design-body flex gap-2 text-heading"
             >
@@ -76,10 +81,10 @@ usePageSeo({
       </div>
     </section>
 
-    <section aria-label="Podejście do współpracy" class="py-[clamp(3.5rem,4.1vw,5rem)]">
+    <section v-if="profile?.sections.length" v-bind="studioEditable(about?.id)" aria-label="Podejście do współpracy" class="py-[clamp(3.5rem,4.1vw,5rem)]">
       <div class="design-shell grid gap-5 lg:grid-cols-2 lg:gap-[clamp(1.5rem,3.1vw,3.75rem)]">
         <article
-          v-for="(item, index) in aboutProfile.sections"
+          v-for="(item, index) in profile.sections"
           :key="item.title"
           class="flex flex-col rounded-[clamp(1.75rem,3.1vw,3.75rem)] p-[clamp(1.75rem,3.85vw,4.6rem)]"
           :class="index === 0 ? 'bg-ink text-white' : 'bg-white text-heading'"
@@ -98,7 +103,7 @@ usePageSeo({
       </div>
     </section>
 
-    <section id="historia" aria-labelledby="history-title" class="bg-white py-[clamp(3.5rem,4.1vw,5rem)]">
+    <section v-if="milestones.length" v-bind="studioEditable(about?.id)" id="historia" aria-labelledby="history-title" class="bg-white py-[clamp(3.5rem,4.1vw,5rem)]">
       <div class="design-shell">
         <SectionEyebrow label="Historia firmy" />
         <h2 id="history-title" class="design-heading mt-[clamp(1.75rem,2.5vw,3rem)]">

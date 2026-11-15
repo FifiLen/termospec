@@ -86,3 +86,35 @@ test("product entries carry the published product copy", async () => {
   assert.ok(section, `missing product entry ${product.cataloguePlacement.entryId}`);
   assert.ok(section.content.includes(product.lead.replace(/\s+/g, " ").trim()));
 });
+
+test("company page entries follow the about record and the visible timeline", async () => {
+  const sources = await loadSearchSources();
+  const about = sources.about!;
+  const timeline = [
+    ...about.timeline,
+    { year: "2099", title: "Etap poza osią czasu" },
+  ];
+
+  const sections = buildSearchSections({
+    ...sources,
+    about: {
+      ...about,
+      profile: { ...about.profile, title: "Nagłówek po edycji w Studio" },
+      timeline,
+    },
+  });
+
+  const page = sections.find((section) => section.id === "/o-firmie" && section.level === 1);
+  assert.match(page?.content ?? "", /Nagłówek po edycji w Studio/);
+
+  const history = sections.find((section) => section.id === "/o-firmie#historia");
+  for (const milestone of timeline.slice(0, 5)) {
+    assert.ok(history?.content.includes(milestone.title), `missing milestone ${milestone.title}`);
+  }
+  assert.ok(!history?.content.includes("Etap poza osią czasu"), "hidden milestones must not be indexed");
+
+  const home = sections.find((section) => section.id === "/");
+  for (const metric of about.metrics.slice(0, 3)) {
+    assert.ok(home?.content.includes(metric.value), `missing hero figure ${metric.value}`);
+  }
+});

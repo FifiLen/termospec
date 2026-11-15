@@ -2,11 +2,11 @@ import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { parse } from "yaml";
 
-import { aboutProfile, aboutTimeline } from "../../data/about.ts";
 import { fundingPage, fundingProjects } from "../../data/dofinansowania.ts";
 import { homeScopeItems } from "../../data/home.ts";
 import { rodoPage } from "../../data/rodo.ts";
 import { orderServicesByLayout, serviceSlugFromPath } from "../../data/services.ts";
+import { aboutSchema } from "../../schemas/about.ts";
 import { companySchema } from "../../schemas/company.ts";
 import { homeSchema } from "../../schemas/home.ts";
 import { productSchema } from "../../schemas/product.ts";
@@ -42,7 +42,8 @@ export const loadSearchSources = async (): Promise<SearchSources> => {
   const products = await readCollection("products");
 
   return {
-    pages: { aboutProfile, aboutTimeline, fundingPage, fundingProjects, homeScopeItems, rodoPage },
+    pages: { fundingPage, fundingProjects, homeScopeItems, rodoPage },
+    about: aboutSchema.parse(await readYaml(path.join(contentRoot, "about.yml"))),
     company: companySchema.parse(await readYaml(path.join(contentRoot, "company.yml"))),
     services: orderServicesByLayout(services.map(({ file, data }) => ({
       ...serviceSchema.parse(data),

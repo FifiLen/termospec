@@ -1,21 +1,20 @@
 <script setup lang="ts">
 import { gsap } from "gsap";
-import { aboutMetrics } from "~~/data/about";
 import { accessibilityPreferencesEvent } from "~/composables/useAccessibilityPreferences";
 import type { HomeHeroFact, HomeHeroSlide } from "~~/types/home";
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   slides: HomeHeroSlide[];
-}>();
+  // Fallback facts for slides without their own (the first three company figures).
+  defaultFacts?: HomeHeroFact[];
+}>(), {
+  defaultFacts: () => [],
+});
 
 const heroRoot = ref<HTMLElement | null>(null);
 const activeIndex = ref(0);
-const companyFacts: HomeHeroFact[] = aboutMetrics
-  .slice(0, 3)
-  .map(({ value, label }) => ({ value, label }));
-
 function slideFacts(slide: HomeHeroSlide) {
-  return slide.facts?.length ? slide.facts : companyFacts;
+  return slide.facts?.length ? slide.facts : props.defaultFacts;
 }
 
 function slideCaption(slide: HomeHeroSlide) {

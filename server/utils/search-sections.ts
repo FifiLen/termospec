@@ -1,4 +1,3 @@
-import type { AboutTimelineItem, aboutProfile } from "../../data/about";
 import type { FundingProject, fundingPage } from "../../data/dofinansowania";
 import type { HomeScopeItem } from "../../data/home";
 import type { rodoPage } from "../../data/rodo";
@@ -33,6 +32,19 @@ interface SearchService {
   machines: Array<{ title: string; description: string; specifications: Array<{ label: string; value: string }> }>;
   closing?: string;
   cta?: string;
+}
+
+interface SearchAbout {
+  profile: {
+    title: string;
+    lead: string;
+    intro: string;
+    servicesIntro: string;
+    specialties: string[];
+    sections: Array<{ title: string; body: string }>;
+  };
+  metrics: Array<{ value: string; label: string }>;
+  timeline: Array<{ year: string; title: string; body?: string }>;
 }
 
 interface SearchRealization {
@@ -79,8 +91,6 @@ interface SearchProduct {
 // Copy of pages that are not Studio collections yet, passed in so this module
 // stays a pure function (imports types only) and can run under `node --test`.
 export interface SearchStaticPages {
-  aboutProfile: typeof aboutProfile;
-  aboutTimeline: AboutTimelineItem[];
   fundingPage: typeof fundingPage;
   fundingProjects: FundingProject[];
   homeScopeItems: HomeScopeItem[];
@@ -89,6 +99,7 @@ export interface SearchStaticPages {
 
 export interface SearchSources {
   pages: SearchStaticPages;
+  about: SearchAbout | null;
   company: SearchCompany | null;
   services: SearchService[];
   realizations: SearchRealization[];
@@ -97,8 +108,11 @@ export interface SearchSources {
   products: SearchProduct[];
 }
 
-// Matches the homepage, which shows only the first three realizations.
+// Match what the pages render: the homepage shows the first three realizations
+// and three company figures in the hero, /o-firmie the first five milestones.
 const VISIBLE_REALIZATIONS = 3;
+const VISIBLE_HERO_FIGURES = 3;
+const VISIBLE_MILESTONES = 5;
 
 const text = (...parts: Array<string | undefined | null | false | string[]>) => {
   return parts
@@ -125,6 +139,7 @@ const homeSections = (sources: SearchSources): SearchSection[] => {
     section("/", home, [], text(
       "Termospec — systemy chłodzenia i wentylacji dla przemysłu, górnictwa oraz infrastruktury technicznej.",
       sources.heroSlides.map((slide) => text(slide.title, slide.lead)),
+      (sources.about?.metrics ?? []).slice(0, VISIBLE_HERO_FIGURES).map((metric) => text(metric.value, metric.label)),
     )),
     section("/#zakres", "Zakres działalności", [home], text(
       "Rozwiązania techniczne dla wymagających instalacji.",
@@ -159,20 +174,25 @@ const homeSections = (sources: SearchSources): SearchSection[] => {
   ];
 };
 
-const aboutSections = ({ aboutProfile, aboutTimeline }: SearchStaticPages): SearchSection[] => {
+const aboutSections = (about: SearchAbout | null): SearchSection[] => {
   const page = "O firmie";
 
+  if (!about) {
+    return [section("/o-firmie", page, [], "")];
+  }
+
+  const { profile } = about;
+  const milestones = about.timeline.slice(0, VISIBLE_MILESTONES);
+
   return [
-    section("/o-firmie", page, [], text(aboutProfile.title, aboutProfile.lead)),
-    section("/o-firmie", "Profil firmy", [page], text(
-      aboutProfile.intro,
-      aboutProfile.servicesIntro,
-      aboutProfile.specialties,
-    )),
-    ...aboutProfile.sections.map((item) => section("/o-firmie", item.title, [page, "Profil firmy"], item.body)),
-    section("/o-firmie#historia", "Historia firmy", [page], text(
-      aboutTimeline.map((item) => text(item.year, item.title, item.body)),
-    )),
+    section("/o-firmie", page, [], text(profile.title, profile.lead)),
+    section("/o-firmie", "Profil firmy", [page], text(profile.intro, profile.servicesIntro, profile.specialties)),
+    ...profile.sections.map((item) => section("/o-firmie", item.title, [page, "Profil firmy"], item.body)),
+    ...(milestones.length
+      ? [section("/o-firmie#historia", "Historia firmy", [page], text(
+          milestones.map((item) => text(item.year, item.title, item.body)),
+        ))]
+      : []),
   ];
 };
 
@@ -275,8 +295,8 @@ const rodoSections = ({ rodoPage }: SearchStaticPages): SearchSection[] => [
 
 export const buildSearchSections = (sources: SearchSources): SearchSection[] => [
   ...homeSections(sources),
-  ...aboutSections(sources.pages),
-  ...serviceSections(sources.services, sources.pages.aboutProfile.servicesIntro),
+  ...aboutSections(sources.about),
+  ...serviceSections(sources.services, sources.about?.profile.servicesIntro ?? ""),
   ...productSections(sources.catalogue, sources.products),
   ...fundingSections(sources.pages),
   ...rodoSections(sources.pages),
