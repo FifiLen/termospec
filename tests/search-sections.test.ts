@@ -152,3 +152,29 @@ test("page entries carry the SEO description from seo.yml", async () => {
     "only page-level entries get the SEO description",
   );
 });
+
+test("funding and RODO entries follow their Studio documents", async () => {
+  const sources = await loadSearchSources();
+  const funding = sources.funding!;
+  const [firstProject, ...otherProjects] = funding.projects;
+
+  const sections = buildSearchSections({
+    ...sources,
+    funding: {
+      ...funding,
+      projects: [
+        { ...firstProject!, name: "Projekt po edycji w Studio" },
+        ...otherProjects,
+      ],
+    },
+    rodo: { ...sources.rodo!, items: [...sources.rodo!.items, "Nowy punkt klauzuli"] },
+  });
+
+  const projects = sections.filter((section) => section.id === "/dofinansowania" && section.level === 2);
+  assert.equal(projects.length, funding.projects.length);
+  assert.equal(projects[0]?.title, "Projekt po edycji w Studio");
+  assert.ok(projects.every((section) => !/^[a-z0-9-]+$/.test(section.title)), "project entries need readable titles");
+
+  const rodo = sections.find((section) => section.id === "/rodo");
+  assert.match(rodo?.content ?? "", /Nowy punkt klauzuli/);
+});

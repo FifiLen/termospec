@@ -1,17 +1,24 @@
 <script setup lang="ts">
-import { fundingPage, fundingProjects } from "~~/data/dofinansowania";
+const funding = await useFunding();
+const studioEditable = useStudioEditable();
 
 await usePageSeo("dofinansowania");
 </script>
 
 <template>
-  <main class="bg-surface text-ink">
-    <PageIntro eyebrow="Dofinansowania" :title="fundingPage.title" title-id="funding-title" />
+  <main v-if="funding" class="bg-surface text-ink">
+    <PageIntro
+      v-bind="studioEditable(funding.id)"
+      eyebrow="Dofinansowania"
+      :title="funding.title"
+      title-id="funding-title"
+    />
 
     <div class="design-shell grid gap-[clamp(1.25rem,2vw,2.4rem)] pb-[clamp(3.5rem,4.1vw,5rem)]">
       <article
-        v-for="project in fundingProjects"
-        :key="project.id"
+        v-for="(project, projectIndex) in funding.projects"
+        :key="projectIndex"
+        v-bind="studioEditable(funding.id)"
         class="rounded-[clamp(1.5rem,2.6vw,3.1rem)] bg-white p-[clamp(1.5rem,3.85vw,4.6rem)]"
       >
         <p
@@ -36,8 +43,8 @@ await usePageSeo("dofinansowania");
 
         <div class="max-w-[64rem] space-y-[clamp(1rem,1.3vw,1.55rem)]">
           <p
-            v-for="paragraph in project.paragraphs"
-            :key="paragraph.text"
+            v-for="(paragraph, paragraphIndex) in project.paragraphs"
+            :key="paragraphIndex"
             :class="paragraph.emphasis ? 'design-lead font-semibold italic text-heading' : 'design-body'"
           >
             <template v-if="paragraph.emphasis">„{{ paragraph.text }}”</template>
@@ -46,7 +53,7 @@ await usePageSeo("dofinansowania");
 
           <section
             v-for="(section, index) in project.sections"
-            :key="`${project.id}-${index}`"
+            :key="`${projectIndex}-${index}`"
             class="space-y-3 pt-2"
           >
             <h2 v-if="section.title" class="design-subheading">
@@ -57,7 +64,7 @@ await usePageSeo("dofinansowania");
               {{ paragraph }}
             </p>
 
-            <ul v-if="section.bullets?.length" class="grid gap-[clamp(0.4rem,0.55vw,0.65rem)]">
+            <ul v-if="section.bullets.length" class="grid gap-[clamp(0.4rem,0.55vw,0.65rem)]">
               <li v-for="bullet in section.bullets" :key="bullet" class="design-body flex gap-2">
                 <span aria-hidden="true" class="text-brand">–</span>
                 {{ bullet }}
@@ -66,7 +73,7 @@ await usePageSeo("dofinansowania");
           </section>
         </div>
 
-        <ul v-if="project.facts?.length" class="mt-[clamp(1.75rem,2.6vw,3.1rem)] max-w-[64rem] border-t-2 border-line">
+        <ul v-if="project.facts.length" class="mt-[clamp(1.75rem,2.6vw,3.1rem)] max-w-[64rem] border-t-2 border-line">
           <li
             v-for="fact in project.facts"
             :key="fact.label"

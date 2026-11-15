@@ -137,7 +137,8 @@ Global search combines the generated page index (see `## Site Search Content Mod
 
 Current `/dofinansowania` composition:
 
-- `data/dofinansowania.ts` stores the page title, project records, logo/image paths, project paragraphs, lists, and financial facts.
+- `content/dofinansowania.yml` (Studio collection `funding`, `schemas/funding.ts`, `/api/content/funding`, `useFunding`) stores the page heading and the ordered projects: `name` (Studio list label and search title only, not rendered), optional eyebrow, logo strip (src/alt), intro paragraphs (`emphasis` renders the bold italic quoted project title), sections (optional title, paragraphs, bullets) and facts (label + optional value; an empty value renders the label alone, e.g. `#FunduszeEuropejskie`). The heading and every project card open the document on double-click in Studio.
+- `content/rodo.yml` (Studio collection `rodo`, `schemas/rodo.ts`, `/api/content/rodo`, `useRodo`) stores the `/rodo` heading, intro and clause items (numbers `01…` derived from order).
 - `app/pages/dofinansowania.vue` renders a simple document-like public page using the supplied funding logo groups: `/grupa-dofinansowanie-grant-01.png`, `/grupa-dofinansowanie-grand-02.png`, and `/grupa-dofinansowanie-grant-03.jpg`.
 - The header funding panel and footer `dotacje` link point to `/dofinansowania`.
 - `SiteFooter` follows the approved three-column editorial composition while retaining the established Termospec yellow background. The left column contains the logo, positioning copy, and compact navigation directly below it; the middle column contains the centered project image CTA with a taller service-photo stage; the right column contains the career/service utility cards and verified company details. Legal labels and certification markers form one quiet bottom row.
@@ -405,8 +406,8 @@ Sources, in index order:
 - `/o-firmie` — the `about` record: profile and highlight cards, plus the first five milestones (`#historia`), matching the page.
 - `/uslugi` — page intro (`about.profile.servicesIntro`, the same text the page lead shows) and every `services` record: label + intro + untitled sections + closing/CTA as `#<slug>`, titled sections and machines as sub-entries with the service label in the breadcrumb.
 - `/produkty` — every `catalogue.yml` category, group and entry with its own anchor (`#<category>`, `#<group>`, `#<entry id>`); entries include the published product's title, category, lead, short description, applications and features.
-- `/dofinansowania` — `fundingPage` and each project from `data/dofinansowania.ts`.
-- `/rodo` — `rodoPage` from `data/rodo.ts`; `/koncesja` — title only.
+- `/dofinansowania` — the `funding` record: heading plus one entry per project, titled with the project `name`.
+- `/rodo` — the `rodo` record (heading, intro, items); `/koncesja` — title only.
 
 Each entry has `id` (route + anchor), `title`, `titles` (breadcrumb) and `level` (breadcrumb depth + 1), the shape `UContentSearch` items are built from in `app.vue`. Published Studio edits reach search after the publish rebuild; Studio drafts are not indexed. Copy hardcoded in Vue templates is not indexed unless it is added to the generator. `tests/search-sections.test.ts` checks that every entry points to an existing route/anchor and that collection edits flow into the index.
 

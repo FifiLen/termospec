@@ -1,5 +1,3 @@
-import type { FundingProject, fundingPage } from "../../data/dofinansowania";
-import type { rodoPage } from "../../data/rodo";
 
 // The site search index is generated from the same sources the pages render
 // (Studio collections and the remaining `data/*.ts` modules), so published
@@ -93,16 +91,26 @@ interface SearchProduct {
   cataloguePlacement: { entryId: string };
 }
 
-// Copy of pages that are not Studio collections yet, passed in so this module
-// stays a pure function (imports types only) and can run under `node --test`.
-export interface SearchStaticPages {
-  fundingPage: typeof fundingPage;
-  fundingProjects: FundingProject[];
-  rodoPage: typeof rodoPage;
+interface SearchFunding {
+  title: string;
+  projects: Array<{
+    name: string;
+    eyebrow?: string;
+    paragraphs: Array<{ text: string; emphasis: boolean }>;
+    sections: Array<{ title?: string; paragraphs: string[]; bullets: string[] }>;
+    facts: Array<{ label: string; value: string }>;
+  }>;
+}
+
+interface SearchRodo {
+  title: string;
+  intro: string;
+  items: string[];
 }
 
 export interface SearchSources {
-  pages: SearchStaticPages;
+  funding: SearchFunding | null;
+  rodo: SearchRodo | null;
   // SEO description of each page (`content/seo.yml`), keyed by route.
   pageDescriptions: Record<string, string>;
   about: SearchAbout | null;
@@ -277,27 +285,27 @@ const productSections = (catalogue: SearchCatalogueCategory[], products: SearchP
   ];
 };
 
-const fundingSections = ({ fundingPage, fundingProjects }: SearchStaticPages): SearchSection[] => {
+const fundingSections = (funding: SearchFunding | null): SearchSection[] => {
   const page = "Dofinansowania";
 
   return [
-    section("/dofinansowania", page, [], fundingPage.title),
-    ...fundingProjects.map((project) => section(
+    section("/dofinansowania", page, [], funding?.title ?? ""),
+    ...(funding?.projects ?? []).map((project) => section(
       "/dofinansowania",
-      project.title ?? project.eyebrow ?? project.id,
+      project.name,
       [page],
       text(
         project.eyebrow,
         project.paragraphs.map((paragraph) => paragraph.text),
-        (project.sections ?? []).map((item) => text(item.title, item.paragraphs ?? [], item.bullets ?? [])),
-        (project.facts ?? []).map((fact) => `${fact.label}: ${fact.value}`),
+        project.sections.map((item) => text(item.title, item.paragraphs, item.bullets)),
+        project.facts.map((fact) => (fact.value ? `${fact.label}: ${fact.value}` : fact.label)),
       ),
     )),
   ];
 };
 
-const rodoSections = ({ rodoPage }: SearchStaticPages): SearchSection[] => [
-  section("/rodo", rodoPage.title, [], text(rodoPage.intro, rodoPage.items)),
+const rodoSections = (rodo: SearchRodo | null): SearchSection[] => [
+  section("/rodo", rodo?.title ?? "RODO", [], text(rodo?.intro, rodo?.items ?? [])),
 ];
 
 // Page-level entries start with the page's SEO description, which summarises the page.
@@ -312,7 +320,7 @@ export const buildSearchSections = (sources: SearchSources): SearchSection[] => 
   ...aboutSections(sources.about),
   ...serviceSections(sources.services, sources.about?.profile.servicesIntro ?? ""),
   ...productSections(sources.catalogue, sources.products),
-  ...fundingSections(sources.pages),
-  ...rodoSections(sources.pages),
+  ...fundingSections(sources.funding),
+  ...rodoSections(sources.rodo),
   section("/koncesja", "Koncesja", [], ""),
 ].map((entry) => withPageDescription(entry, sources.pageDescriptions[entry.id]));

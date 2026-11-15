@@ -2,15 +2,15 @@ import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { parse } from "yaml";
 
-import { fundingPage, fundingProjects } from "../../data/dofinansowania.ts";
-import { rodoPage } from "../../data/rodo.ts";
 import { seoPageRoutes } from "../../data/seo.ts";
 import { orderServicesByLayout, serviceSlugFromPath } from "../../data/services.ts";
 import { aboutSchema } from "../../schemas/about.ts";
 import { companySchema } from "../../schemas/company.ts";
+import { fundingSchema } from "../../schemas/funding.ts";
 import { homeSchema } from "../../schemas/home.ts";
 import { productSchema } from "../../schemas/product.ts";
 import { realizationSchema } from "../../schemas/realization.ts";
+import { rodoSchema } from "../../schemas/rodo.ts";
 import { seoSchema } from "../../schemas/seo.ts";
 import { serviceSchema } from "../../schemas/service.ts";
 import type { SearchSources } from "../../server/utils/search-sections.ts";
@@ -45,7 +45,8 @@ export const loadSearchSources = async (): Promise<SearchSources> => {
   const seo = seoSchema.parse(await readYaml(path.join(contentRoot, "seo.yml")));
 
   return {
-    pages: { fundingPage, fundingProjects, rodoPage },
+    funding: fundingSchema.parse(await readYaml(path.join(contentRoot, "dofinansowania.yml"))),
+    rodo: rodoSchema.parse(await readYaml(path.join(contentRoot, "rodo.yml"))),
     pageDescriptions: Object.fromEntries(Object.entries(seoPageRoutes).map(([key, route]) => {
       return [route, seo[key as keyof typeof seoPageRoutes].opis];
     })),

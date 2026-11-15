@@ -1,10 +1,12 @@
 import { defineCollection, defineContentConfig, z } from '@nuxt/content'
 import { aboutSchema } from './schemas/about'
 import { companySchema } from './schemas/company'
+import { fundingSchema } from './schemas/funding'
 import { homeSchema } from './schemas/home'
 import { productSchema } from './schemas/product'
 import { productTranslationRecordSchema } from './schemas/product-translation'
 import { realizationSchema } from './schemas/realization'
+import { rodoSchema } from './schemas/rodo'
 import { seoSchema } from './schemas/seo'
 import { serviceSchema } from './schemas/service'
 
@@ -88,6 +90,16 @@ export default defineContentConfig({
       type: 'data',
       source: 'about.yml',
       schema: aboutSchema,
+    }),
+    funding: defineCollection({
+      type: 'data',
+      source: 'dofinansowania.yml',
+      schema: fundingSchema,
+    }),
+    rodo: defineCollection({
+      type: 'data',
+      source: 'rodo.yml',
+      schema: rodoSchema,
     }),
     seo: defineCollection({
       type: 'data',

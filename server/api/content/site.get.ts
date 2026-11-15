@@ -1,11 +1,9 @@
 import { queryCollection } from "@nuxt/content/server";
-import { fundingPage, fundingProjects } from "../../../data/dofinansowania";
-import { rodoPage } from "../../../data/rodo";
 import { seoPageRoutes } from "../../../data/seo";
 import { orderServicesByLayout, serviceSlugFromPath } from "../../../data/services";
 
 export default defineEventHandler(async (event) => {
-  const [catalogue, about, company, services, realizations, home, products, seo] = await Promise.all([
+  const [catalogue, about, company, services, realizations, home, products, seo, funding, rodo] = await Promise.all([
     queryCollection(event, "catalogue").first(),
     queryCollection(event, "about").first(),
     queryCollection(event, "company").first(),
@@ -14,10 +12,13 @@ export default defineEventHandler(async (event) => {
     queryCollection(event, "home").first(),
     queryCollection(event, "products").where("status", "=", "published").all(),
     queryCollection(event, "seo").first(),
+    queryCollection(event, "funding").first(),
+    queryCollection(event, "rodo").first(),
   ]);
 
   const searchSections = buildSearchSections({
-    pages: { fundingPage, fundingProjects, rodoPage },
+    funding: funding ?? null,
+    rodo: rodo ?? null,
     pageDescriptions: Object.fromEntries(Object.entries(seoPageRoutes).map(([key, route]) => {
       return [route, seo?.[key as keyof typeof seoPageRoutes]?.opis ?? ""];
     })),

@@ -1,14 +1,18 @@
 import type { CatalogueProductRecord } from "~/utils/product-catalogue";
 import { aboutSchema } from "~~/schemas/about";
 import { companySchema } from "~~/schemas/company";
+import { fundingSchema } from "~~/schemas/funding";
 import { homeSchema } from "~~/schemas/home";
+import { rodoSchema } from "~~/schemas/rodo";
 import { seoSchema } from "~~/schemas/seo";
 import { serviceSchema, type ServiceContent } from "~~/schemas/service";
 import { orderServicesByLayout, serviceSlugFromPath } from "~~/data/services";
 import { realizationSchema, type RealizationContent } from "~~/schemas/realization";
 import type { AboutContent } from "~/composables/useAbout";
 import type { CompanyContent } from "~/composables/useCompany";
+import type { FundingContent } from "~/composables/useFunding";
 import type { HomeContent } from "~/composables/useHome";
+import type { RodoContent } from "~/composables/useRodo";
 import type { SeoContent } from "~/composables/usePageSeo";
 import type { StudioHost } from "~~/types/studio";
 
@@ -27,6 +31,8 @@ export default defineNuxtPlugin((nuxtApp) => {
   const studioAbout = useState<AboutContent | null>("studio-about", () => null);
   const studioHome = useState<HomeContent | null>("studio-home", () => null);
   const studioSeo = useState<SeoContent | null>("studio-seo", () => null);
+  const studioFunding = useState<FundingContent | null>("studio-funding", () => null);
+  const studioRodo = useState<RodoContent | null>("studio-rodo", () => null);
   const studioServices = useState<ServiceContent[] | null>("studio-services", () => null);
 
   let refreshTimer: number | undefined;
@@ -49,6 +55,8 @@ export default defineNuxtPlugin((nuxtApp) => {
       studioAbout.value = null;
       studioHome.value = null;
       studioSeo.value = null;
+      studioFunding.value = null;
+      studioRodo.value = null;
       studioServices.value = null;
       return;
     }
@@ -100,6 +108,18 @@ export default defineNuxtPlugin((nuxtApp) => {
       const seo = seoSchema.safeParse(seoDocument);
       if (seo.success && typeof seoDocument?.id === "string") {
         studioSeo.value = { ...seo.data, id: seoDocument.id };
+      }
+
+      const fundingDocument = documents.find((document) => document.fsPath === "dofinansowania.yml");
+      const funding = fundingSchema.safeParse(fundingDocument);
+      if (funding.success && typeof fundingDocument?.id === "string") {
+        studioFunding.value = { ...funding.data, id: fundingDocument.id };
+      }
+
+      const rodoDocument = documents.find((document) => document.fsPath === "rodo.yml");
+      const rodo = rodoSchema.safeParse(rodoDocument);
+      if (rodo.success && typeof rodoDocument?.id === "string") {
+        studioRodo.value = { ...rodo.data, id: rodoDocument.id };
       }
 
       const serviceResults = documents
