@@ -18,6 +18,8 @@ import type {
   ProductNavigationCategory,
   ProductNavigationEntry,
 } from "../types/navigation.ts";
+import { buildSearchSections } from "../server/utils/search-sections.ts";
+import { loadSearchSources } from "./helpers/search-sources.ts";
 
 interface CatalogueFile {
   categories: ProductNavigationCategory[];
@@ -122,10 +124,10 @@ test("catalogue and product placement identifiers are internally consistent", as
     ];
   });
   const entryIds = allEntries.map(({ entry }) => entry.id);
-  const searchIndex = await readFile(
-    path.join(repositoryRoot, "content/produkty.md"),
-    "utf8",
-  );
+  const searchIndex = buildSearchSections(await loadSearchSources())
+    .filter((section) => section.id.startsWith("/produkty"))
+    .map((section) => `${section.title} ${section.content}`)
+    .join(" ");
   const normalizedSearchIndex = normalizeCatalogueText(searchIndex)
     .replace(/[^a-z0-9]+/g, " ");
 

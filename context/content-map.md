@@ -51,7 +51,7 @@ Company identity and contact details live in the Studio-editable `content/compan
 - `serviceHotline` — `Serwis 24/7`, `+48 603 899 165` (ServiceHotline button on `/uslugi` and the homepage contact panel, mobile menu card)
 - `registry` — KRS `0000109147`, NIP `PL6422590547`, REGON `276184836`, share capital `100.000 PLN` (footer)
 
-`tel:` links are derived from the displayed numbers and the Google Maps embed/link from the legal name, street and city, so editors only maintain the visible text. Brand constants used only for SEO (short name, logo, Open Graph image) stay in `data/company.ts`. Company details that appear inside longer prose (`/rodo` clause, `/o-firmie` profile, `content/*.md` search mirror) are not bound to the collection.
+`tel:` links are derived from the displayed numbers and the Google Maps embed/link from the legal name, street and city, so editors only maintain the visible text. Brand constants used only for SEO (short name, logo, Open Graph image) stay in `data/company.ts`. Company details that appear inside longer prose (`/rodo` clause, `/o-firmie` profile) are not bound to the collection; the generated search index reads the contact block from it.
 
 ## Homepage Content Model
 
@@ -133,16 +133,7 @@ Current homepage scope cards:
 
 ## Search Quick Links
 
-Global search uses root-level `content/*.md` entries for indexed page content plus `data/search.ts` for visible UI/footer labels that do not yet have standalone pages.
-
-Current root markdown search-index entries:
-
-- `content/index.md` mirrors the currently rendered homepage sections: scope, partners, realizations, homepage contact form, global navigation labels, and interface labels.
-- `content/produkty.md` mirrors the visible product catalogue UI plus all current product-family YAML fields that are relevant to search: title, category, lead, short description, specs, applications, components, features, service scope, related realizations, technical sections, and image alt text.
-- `content/uslugi.md` mirrors the five confirmed service categories, detailed scopes, calls to action, and metalworking machine specifications rendered on `/uslugi`.
-- `content/o-firmie.md` mirrors the company page copy; team and contact sections have been removed at the owner’s request.
-- `content/dofinansowania.md` mirrors the funding projects page and the EU/regional project copy rendered from `data/dofinansowania.ts`.
-- `content/rodo.md` mirrors the RODO information clause rendered from `data/rodo.ts`.
+Global search combines the generated page index (see `## Site Search Content Model`) with `data/search.ts` quick links for visible UI/footer labels that do not yet have standalone pages.
 
 Current `/dofinansowania` composition:
 
@@ -406,25 +397,18 @@ When extracting the current/old site copy, preserve it like this:
 
 ## Site Search Content Model
 
-Global site search is powered by Nuxt UI `UContentSearch` and Nuxt Content helper queries:
+Global site search is powered by Nuxt UI `UContentSearch`. Its page sections are generated on the server by `buildSearchSections` (`server/utils/search-sections.ts`) and served by `/api/content/site`; there are no hand-written markdown mirrors and no `pages` collection, so nothing search-only appears in Studio.
 
-- `queryCollectionNavigation("pages")`
-- `queryCollectionSearchSections("pages")`
+Sources, in index order:
 
-The `pages` collection is a page-type Nuxt Content collection backed by root-level markdown files in `content/*.md`. These files are search-index entries for existing public routes, not a replacement for the route components in `app/pages/`.
+- `/` — hero slides (`home.yml`), `HomeScope` cards (`data/home.ts`, `#zakres`), the first three realizations by `order` (`realizations`, `#realizacje`, matching what the homepage shows), and the contact block from `company.yml` (`#kontakt`).
+- `/o-firmie` — `aboutProfile` and `aboutTimeline` from `data/about.ts` (`#historia`).
+- `/uslugi` — page intro (`aboutProfile.servicesIntro`) and every `services` record: label + intro + untitled sections + closing/CTA as `#<slug>`, titled sections and machines as sub-entries with the service label in the breadcrumb.
+- `/produkty` — every `catalogue.yml` category, group and entry with its own anchor (`#<category>`, `#<group>`, `#<entry id>`); entries include the published product's title, category, lead, short description, applications and features.
+- `/dofinansowania` — `fundingPage` and each project from `data/dofinansowania.ts`.
+- `/rodo` — `rodoPage` from `data/rodo.ts`; `/koncesja` — title only.
 
-Current search-index files:
-
-- `content/index.md` -> `/`
-- `content/produkty.md` -> `/produkty`
-- `content/uslugi.md` -> `/uslugi`
-- `content/o-firmie.md` -> `/o-firmie`
-- Contact search content is indexed through `content/index.md`; there is no standalone `/kontakt` content page.
-- `content/dofinansowania.md` -> `/dofinansowania`
-- `content/rodo.md` -> `/rodo`
-- `content/koncesja.md` -> `/koncesja`
-
-For `/produkty`, product headings use explicit anchors matching the catalogue anchors, e.g. `#produkt-chlodziarki-bezposredniego-dzialania`, so search results can jump into the existing catalogue page without adding product detail routes.
+Each entry has `id` (route + anchor), `title`, `titles` (breadcrumb) and `level` (breadcrumb depth + 1), the shape `UContentSearch` items are built from in `app.vue`. Published Studio edits reach search after the publish rebuild; Studio drafts are not indexed. Copy hardcoded in Vue templates is not indexed unless it is added to the generator. `tests/search-sections.test.ts` checks that every entry points to an existing route/anchor and that collection edits flow into the index.
 
 ## Copy Tone
 

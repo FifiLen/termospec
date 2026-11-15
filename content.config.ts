@@ -8,10 +8,6 @@ import { serviceSchema } from './schemas/service'
 
 export default defineContentConfig({
   collections: {
-    pages: defineCollection({
-      type: 'page',
-      source: '*.md',
-    }),
     catalogue: defineCollection({
       type: 'data',
       source: 'catalogue.yml',
