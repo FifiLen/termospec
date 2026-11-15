@@ -3,7 +3,6 @@ import path from "node:path";
 import { parse } from "yaml";
 
 import { fundingPage, fundingProjects } from "../../data/dofinansowania.ts";
-import { homeScopeItems } from "../../data/home.ts";
 import { rodoPage } from "../../data/rodo.ts";
 import { orderServicesByLayout, serviceSlugFromPath } from "../../data/services.ts";
 import { aboutSchema } from "../../schemas/about.ts";
@@ -40,9 +39,10 @@ export const loadSearchSources = async (): Promise<SearchSources> => {
   const services = await readCollection("services");
   const realizations = await readCollection("realizations");
   const products = await readCollection("products");
+  const home = homeSchema.parse(await readYaml(path.join(contentRoot, "home.yml")));
 
   return {
-    pages: { fundingPage, fundingProjects, homeScopeItems, rodoPage },
+    pages: { fundingPage, fundingProjects, rodoPage },
     about: aboutSchema.parse(await readYaml(path.join(contentRoot, "about.yml"))),
     company: companySchema.parse(await readYaml(path.join(contentRoot, "company.yml"))),
     services: orderServicesByLayout(services.map(({ file, data }) => ({
@@ -52,7 +52,8 @@ export const loadSearchSources = async (): Promise<SearchSources> => {
     realizations: realizations
       .map(({ data }) => realizationSchema.parse(data))
       .sort((left, right) => left.order - right.order),
-    heroSlides: homeSchema.parse(await readYaml(path.join(contentRoot, "home.yml"))).hero.slides,
+    heroSlides: home.hero.slides,
+    scopeItems: home.scope.items,
     catalogue: catalogue.categories,
     products: products
       .map(({ data }) => productSchema.parse(data))

@@ -1,6 +1,5 @@
 import { queryCollection } from "@nuxt/content/server";
 import { fundingPage, fundingProjects } from "../../../data/dofinansowania";
-import { homeScopeItems } from "../../../data/home";
 import { rodoPage } from "../../../data/rodo";
 import { orderServicesByLayout, serviceSlugFromPath } from "../../../data/services";
 
@@ -16,7 +15,7 @@ export default defineEventHandler(async (event) => {
   ]);
 
   const searchSections = buildSearchSections({
-    pages: { fundingPage, fundingProjects, homeScopeItems, rodoPage },
+    pages: { fundingPage, fundingProjects, rodoPage },
     about: about ?? null,
     company: company ?? null,
     services: orderServicesByLayout(services.map((service) => ({
@@ -25,6 +24,7 @@ export default defineEventHandler(async (event) => {
     }))),
     realizations,
     heroSlides: home?.hero.slides ?? [],
+    scopeItems: home?.scope.items ?? [],
     catalogue: catalogue?.categories ?? [],
     products,
   });

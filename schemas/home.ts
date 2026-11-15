@@ -131,6 +131,31 @@ const heroSlideSchema = homeField(z.object({
   description: "Jeden ekran karuzeli strony głównej.",
 });
 
+const scopeItemSchema = homeField(z.object({
+  title: homeField(z.string().trim().min(1, "Podaj nazwę obszaru"), {
+    label: "Nazwa obszaru",
+    description: "Np. Klimatyzacja.",
+  }),
+  lead: homeField(z.string().trim().min(1, "Podaj krótki opis"), {
+    label: "Opis",
+    description: "Krótki opis pod nazwą. Nowa linia w polu oznacza nową linię na karcie.",
+    input: "textarea",
+  }),
+  points: homeField(z.array(z.string().trim().min(1, "Usuń pusty punkt")).default([]), {
+    label: "Punkty",
+    description: "Lista z czerwonymi myślnikami, jeden punkt na element.",
+  }),
+  icon: homeField(z.string().trim().min(1, "Wybierz ikonę"), {
+    label: "Ikona",
+    description: "Sylwetka na przezroczystym tle (PNG lub SVG). Wyświetla się w kolorze marki w prawym górnym rogu karty.",
+    input: "media",
+  }),
+  action: linkSchema("Przycisk"),
+}), {
+  label: "Karta obszaru",
+  description: "Jedna karta w sekcji Zakres działalności.",
+});
+
 export const homeSchema = z.object({
   hero: homeField(z.object({
     slides: homeField(z.array(heroSlideSchema).min(1, "Dodaj co najmniej jeden slajd"), {
@@ -141,4 +166,38 @@ export const homeSchema = z.object({
     label: "Karuzela strony głównej",
     description: "Treść pierwszej sekcji widocznej po wejściu na stronę.",
   }),
+  scope: homeField(z.object({
+    image: homeField(z.object({
+      src: homeField(z.string().trim().min(1, "Wybierz zdjęcie"), {
+        label: "Plik zdjęcia",
+        description: "Szeroka panorama w proporcji około 3:1 (np. 1775 × 570 px). Inne proporcje zostaną przycięte.",
+        input: "media",
+      }),
+      alt: homeField(z.string().trim().min(1, "Opisz zawartość zdjęcia"), {
+        label: "Opis alternatywny",
+        description: "Krótki, rzeczowy opis zdjęcia dla dostępności i SEO.",
+      }),
+    }), {
+      label: "Panorama",
+      description: "Zdjęcie nad kartami obszarów.",
+    }),
+    items: homeField(z.array(scopeItemSchema).min(1, "Dodaj co najmniej jedną kartę"), {
+      label: "Karty",
+      description: "Karty obszarów działalności. Numery 01, 02… nadawane są automatycznie według kolejności.",
+    }),
+  }), {
+    label: "Zakres działalności",
+    description: "Sekcja pod karuzelą: panorama siedziby i karty obszarów.",
+  }),
+  contact: homeField(z.object({
+    topics: homeField(z.array(z.string().trim().min(1, "Usuń pusty temat")).min(1, "Dodaj co najmniej jeden temat"), {
+      label: "Tematy zapytania",
+      description: "Przyciski wyboru „Zakres zapytania technicznego” w formularzu kontaktowym.",
+    }),
+  }), {
+    label: "Formularz kontaktowy",
+    description: "Ustawienia formularza w sekcji Kontakt na stronie głównej.",
+  }),
 });
+
+export type HomeData = z.output<typeof homeSchema>;

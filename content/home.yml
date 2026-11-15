@@ -112,3 +112,50 @@ hero:
       secondaryLink:
         label: zobacz realizacje
         href: "#realizacje"
+scope:
+  image:
+    src: /images/home/zakres-siedziba-termospec.webp
+    alt: Siedziba i zakład produkcyjny Termospec w Żorach
+  items:
+    - title: Klimatyzacja
+      lead: |-
+        Produkcja urządzeń chłodniczych dla kopalń podziemnych oraz tuneli.
+        Projektowanie, obsługa oraz serwis układów klimatyzacji kopalń.
+      points:
+        - układy klimatyzacji kopalń
+        - urządzenia chłodnicze
+        - dobór parametrów pracy
+        - serwis i modernizacja instalacji
+      icon: /images/home/ikona-klimatyzacja.png
+      action:
+        label: zobacz produkty
+        href: /produkty
+    - title: Wentylacja
+      lead: Produkcja i serwis wentylatorów oraz tam wentylacyjnych dla kopalń.
+      points:
+        - wentylatory przemysłowe
+        - tamy wentylacyjne
+        - obsługa eksploatacyjna
+        - utrzymanie przepływu powietrza
+      icon: /images/home/ikona-wentylacja.png
+      action:
+        label: zobacz produkty
+        href: /produkty
+    - title: Energia odnawialna
+      lead: Projektowanie, montaż, serwis oraz obsługa systemów opartych na odnawialnych źródłach energii.
+      points:
+        - dobór rozwiązań OZE
+        - montaż instalacji
+        - obsługa techniczna
+        - serwis i utrzymanie
+      icon: /images/home/ikona-odnawialna.png
+      action:
+        label: zobacz usługi
+        href: /uslugi
+contact:
+  topics:
+    - Klimatyzacja / chłodzenie
+    - Wentylacja
+    - Serwis lub modernizacja
+    - Energia odnawialna
+    - Inny zakres techniczny

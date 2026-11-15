@@ -1,5 +1,4 @@
 import type { FundingProject, fundingPage } from "../../data/dofinansowania";
-import type { HomeScopeItem } from "../../data/home";
 import type { rodoPage } from "../../data/rodo";
 
 // The site search index is generated from the same sources the pages render
@@ -58,6 +57,12 @@ interface SearchHeroSlide {
   lead: string;
 }
 
+interface SearchScopeItem {
+  title: string;
+  lead: string;
+  points: string[];
+}
+
 interface SearchCatalogueEntry {
   id: string;
   label: string;
@@ -93,7 +98,6 @@ interface SearchProduct {
 export interface SearchStaticPages {
   fundingPage: typeof fundingPage;
   fundingProjects: FundingProject[];
-  homeScopeItems: HomeScopeItem[];
   rodoPage: typeof rodoPage;
 }
 
@@ -104,6 +108,7 @@ export interface SearchSources {
   services: SearchService[];
   realizations: SearchRealization[];
   heroSlides: SearchHeroSlide[];
+  scopeItems: SearchScopeItem[];
   catalogue: SearchCatalogueCategory[];
   products: SearchProduct[];
 }
@@ -133,7 +138,7 @@ const homeSections = (sources: SearchSources): SearchSection[] => {
   const home = "Strona główna";
   const realizations = sources.realizations.slice(0, VISIBLE_REALIZATIONS);
   const company = sources.company;
-  const { homeScopeItems } = sources.pages;
+  const scopeItems = sources.scopeItems;
 
   return [
     section("/", home, [], text(
@@ -143,9 +148,9 @@ const homeSections = (sources: SearchSources): SearchSection[] => {
     )),
     section("/#zakres", "Zakres działalności", [home], text(
       "Rozwiązania techniczne dla wymagających instalacji.",
-      homeScopeItems.map((item) => item.title),
+      scopeItems.map((item) => item.title),
     )),
-    ...homeScopeItems.map((item) => section(
+    ...scopeItems.map((item) => section(
       "/#zakres",
       item.title,
       [home, "Zakres działalności"],

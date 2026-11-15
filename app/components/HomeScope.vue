@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { homeScopeImage, homeScopeItems } from "~~/data/home";
+import type { HomeData } from "~~/schemas/home";
+
+const props = defineProps<{
+  scope: HomeData["scope"];
+}>();
+
+const cardNumber = (index: number) => String(index + 1).padStart(2, "0");
 </script>
 
 <template>
@@ -28,12 +34,12 @@ import { homeScopeImage, homeScopeItems } from "~~/data/home";
       </div>
 
       <NuxtImg
-        :src="homeScopeImage.src"
+        :src="props.scope.image.src"
         sizes="sm:100vw md:100vw lg:100vw xl:100vw 2xl:1776px"
         format="webp"
-        :alt="homeScopeImage.alt"
-        :width="homeScopeImage.width"
-        :height="homeScopeImage.height"
+        :alt="props.scope.image.alt"
+        width="1775"
+        height="570"
         loading="lazy"
         decoding="async"
         class="mt-6 h-auto w-full lg:mt-[clamp(0.5rem,1.25vw,1.5rem)]"
@@ -41,8 +47,8 @@ import { homeScopeImage, homeScopeItems } from "~~/data/home";
 
       <div class="mt-[clamp(2rem,4.15vw,5rem)] grid gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-[clamp(1.5rem,3.1vw,3.75rem)]">
         <article
-          v-for="item in homeScopeItems"
-          :key="item.number"
+          v-for="(item, index) in props.scope.items"
+          :key="`${index}-${item.title}`"
           class="relative flex flex-col rounded-[clamp(1.5rem,2.6vw,3.1rem)] bg-white px-[clamp(1.75rem,3.4vw,4.1rem)] pb-[clamp(2rem,2.85vw,3.4rem)] pt-[clamp(2rem,3.45vw,4.1rem)]"
         >
           <span
@@ -52,7 +58,7 @@ import { homeScopeImage, homeScopeItems } from "~~/data/home";
           />
 
           <p class="text-[clamp(1.05rem,1.31vw,1.57rem)] font-semibold leading-none text-brand">
-            {{ item.number }}
+            {{ cardNumber(index) }}
           </p>
 
           <h3

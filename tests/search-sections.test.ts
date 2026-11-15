@@ -118,3 +118,21 @@ test("company page entries follow the about record and the visible timeline", as
     assert.ok(home?.content.includes(metric.value), `missing hero figure ${metric.value}`);
   }
 });
+
+test("homepage scope cards in the index follow home.yml", async () => {
+  const sources = await loadSearchSources();
+  const [first, ...rest] = sources.scopeItems;
+
+  const sections = buildSearchSections({
+    ...sources,
+    scopeItems: [{ ...first!, title: "Obszar po edycji w Studio", points: ["nowy punkt karty"] }, ...rest],
+  });
+
+  const card = sections.find((section) => section.id === "/#zakres" && section.title === "Obszar po edycji w Studio");
+  assert.equal(card?.level, 3);
+  assert.match(card?.content ?? "", /nowy punkt karty/);
+  assert.equal(
+    sections.filter((section) => section.id === "/#zakres" && section.level === 3).length,
+    sources.scopeItems.length,
+  );
+});

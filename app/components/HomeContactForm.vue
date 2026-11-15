@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { homeContactTopics } from "~~/data/home";
 import type { CompanyContent } from "~/composables/useCompany";
 
 const props = defineProps<{
   company: CompanyContent;
+  topics: string[];
+  // Content id of `home.yml`, which stores the topics (double-click editing in Studio).
+  topicsContentId?: string;
 }>();
 
 const studioEditable = useStudioEditable();
@@ -102,26 +104,26 @@ const fieldClass =
           </label>
         </div>
 
-        <fieldset class="mt-[clamp(1.75rem,2.3vw,2.75rem)]">
+        <fieldset v-bind="studioEditable(props.topicsContentId)" class="mt-[clamp(1.75rem,2.3vw,2.75rem)]">
           <legend class="text-[clamp(0.85rem,0.78vw,0.95rem)] text-muted">
             Zakres zapytania technicznego
           </legend>
           <div class="mt-4 flex flex-wrap gap-x-2.5 gap-y-2">
             <label
-              v-for="topic in homeContactTopics"
-              :key="topic.value"
+              v-for="topic in props.topics"
+              :key="topic"
               class="cursor-pointer"
             >
               <input
                 type="radio"
                 name="topic"
-                :value="topic.value"
+                :value="topic"
                 class="peer sr-only"
               >
               <span
                 class="block rounded-full bg-field px-[clamp(1rem,1.3vw,1.55rem)] py-[clamp(0.75rem,0.95vw,1.1rem)] text-[clamp(0.75rem,0.68vw,0.82rem)] text-muted transition peer-checked:bg-ink peer-checked:text-white peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand hover:text-ink"
               >
-                {{ topic.label }}
+                {{ topic }}
               </span>
             </label>
           </div>

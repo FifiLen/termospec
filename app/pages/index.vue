@@ -1,7 +1,5 @@
 <script setup lang="ts">
-const { data: home } = await useFetch("/api/content/home", {
-  key: "home-page",
-});
+const home = await useHome();
 
 const { data: publishedRealizations } = await useFetch("/api/content/realizations", {
   key: "home-realizations",
@@ -34,9 +32,14 @@ usePageSeo({
       :slides="heroSlides"
       :default-facts="heroDefaultFacts"
     />
-    <HomeScope />
+    <HomeScope v-if="home" v-bind="studioEditable(home.id)" :scope="home.scope" />
     <HomeRealizations :realizations="realizations" />
-    <HomeContactForm v-if="company" :company="company" />
+    <HomeContactForm
+      v-if="company"
+      :company="company"
+      :topics="home?.contact.topics ?? []"
+      :topics-content-id="home?.id"
+    />
     <HomePartners />
   </main>
 </template>
