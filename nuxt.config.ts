@@ -72,7 +72,6 @@ export default defineNuxtConfig({
     },
   },
   image: {
-    domains: ['images.unsplash.com'],
     quality: 80,
     // Tailwind defaults plus `xs` (small phones) and `3xl` (full-bleed 1920 px hero).
     // Vercel image optimization only serves these widths.

@@ -1,5 +1,7 @@
 import type { CatalogueProductRecord } from "~/utils/product-catalogue";
 import { companySchema } from "~~/schemas/company";
+import { serviceSchema, type ServiceContent } from "~~/schemas/service";
+import { orderServicesByLayout, serviceSlugFromPath } from "~~/data/services";
 import { realizationSchema, type RealizationContent } from "~~/schemas/realization";
 import type { CompanyContent } from "~/composables/useCompany";
 import type { StudioHost } from "~~/types/studio";
@@ -16,6 +18,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   );
   const isRealizationPreview = useState("studio-realizations-preview", () => false);
   const studioCompany = useState<CompanyContent | null>("studio-company", () => null);
+  const studioServices = useState<ServiceContent[] | null>("studio-services", () => null);
 
   let refreshTimer: number | undefined;
   let refreshPending = false;
@@ -34,6 +37,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       isRealizationPreview.value = false;
       studioRealizations.value = [];
       studioCompany.value = null;
+      studioServices.value = null;
       return;
     }
 
@@ -66,6 +70,22 @@ export default defineNuxtPlugin((nuxtApp) => {
       // An invalid draft keeps the last valid preview instead of blanking contact details.
       if (company.success && typeof companyDocument?.id === "string") {
         studioCompany.value = { ...company.data, id: companyDocument.id };
+      }
+
+      const serviceResults = documents
+        .filter((document) => document.fsPath?.startsWith("services/"))
+        .map((document) => ({ document, result: serviceSchema.safeParse(document) }));
+      // Keep the last valid preview while any service draft fails validation mid-edit.
+      if (serviceResults.length && serviceResults.every(({ result }) => result.success)) {
+        studioServices.value = orderServicesByLayout(serviceResults.flatMap(({ document, result }) => {
+          return result.success
+            ? [{
+                ...result.data,
+                slug: serviceSlugFromPath(document.fsPath ?? ""),
+                id: typeof document.id === "string" ? document.id : undefined,
+              }]
+            : [];
+        }));
       }
 
       refreshErrorReported = false;

@@ -494,7 +494,6 @@
   .about-copy p,
   .section-heading p:not(.eyebrow),
   .product-detail-copy p:not(.eyebrow),
-  .team-card p,
   .product-card p,
   .service-list p,
   .contact-cta p,
@@ -566,15 +565,13 @@
     margin-bottom: 1rem;
   }
 
-  .product-grid,
-  .team-grid {
+  .product-grid {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
     gap: clamp(1rem, 2vw, 1.4rem);
   }
 
-  .product-grid > *,
-  .team-grid > * {
+  .product-grid > * {
     grid-column: span 4;
   }
 
@@ -590,8 +587,7 @@
     grid-column: span 3;
   }
 
-  .product-card,
-  .team-card {
+  .product-card {
     overflow: hidden;
     border: 1px solid var(--line);
     border-radius: var(--radius);
@@ -635,8 +631,7 @@
     padding: clamp(1.1rem, 2.2vw, 1.45rem);
   }
 
-  .meta-row,
-  .team-card .role {
+  .meta-row {
     display: flex;
     flex-wrap: wrap;
     gap: 0.45rem;
@@ -995,18 +990,6 @@
     color: var(--white);
   }
 
-  .team-card img {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    background: var(--line);
-    object-fit: cover;
-  }
-
-  .team-card-body {
-    display: grid;
-    gap: 0.75rem;
-    padding: clamp(1.15rem, 2.2vw, 1.5rem);
-  }
 
   .page-hero {
     padding-block: clamp(4rem, 8vw, 7rem) clamp(2rem, 4vw, 3rem);
@@ -1288,13 +1271,11 @@ html[data-accessibility-motion="reduced"] *::after {
     grid-row: auto;
   }
 
-  .product-grid,
-  .team-grid {
+  .product-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .product-grid > *,
-  .team-grid > *,
   .product-grid > :first-child,
   .product-grid > :nth-child(2),
   .product-grid > :nth-child(3) {
@@ -1416,7 +1397,6 @@ html[data-accessibility-motion="reduced"] *::after {
   }
 
   .product-grid,
-  .team-grid,
   .feature-list,
   .product-spec-grid {
     grid-template-columns: 1fr;

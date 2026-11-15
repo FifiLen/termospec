@@ -1,32 +1,32 @@
 <script setup lang="ts">
-import { services } from "~~/data/services";
+import type { ServiceLayoutSlug } from "~~/data/services";
 
 const company = await useCompany();
+const services = await useServices();
 const studioEditable = useStudioEditable();
 
-const designService = services[0]!;
-const emergencyService = services[1]!;
-const repairService = services[2]!;
-const metalService = services[3]!;
-const weldingService = services[4]!;
+// Each section below is a dedicated layout for one service (see `serviceLayoutSlugs`).
+const serviceBySlug = (slug: ServiceLayoutSlug) => computed(() => {
+  return services.value.find((service) => service.slug === slug);
+});
 
-const designPoints = designService.sections?.[0]?.points ?? [];
-const designFeatures = designService.sections?.slice(1) ?? [];
-const emergencyPrimary = emergencyService.sections?.[0];
-const emergencySummary = emergencyService.sections?.[1]?.paragraphs ?? [];
-const repairPrimary = repairService.sections?.[0];
-const repairFeatures = repairService.sections?.slice(1) ?? [];
-const metalPoints = metalService.sections?.[0]?.points ?? [];
+const designService = serviceBySlug("projektowanie-systemow-klimatyzacji-i-wentylacji");
+const emergencyService = serviceBySlug("serwis-24-7");
+const repairService = serviceBySlug("remonty-urzadzen-chlodniczych");
+const metalService = serviceBySlug("obrobka-metali-skrawaniem-i-laserem");
+const weldingService = serviceBySlug("uslugi-spawalnicze-i-konstrukcje-stalowe");
+
+const designPoints = computed(() => designService.value?.sections[0]?.points ?? []);
+const designFeatures = computed(() => designService.value?.sections.slice(1) ?? []);
+const emergencyPrimary = computed(() => emergencyService.value?.sections[0]);
+const emergencySummary = computed(() => emergencyService.value?.sections[1]?.paragraphs ?? []);
+const repairPrimary = computed(() => repairService.value?.sections[0]);
+const repairFeatures = computed(() => repairService.value?.sections.slice(1) ?? []);
+const metalPoints = computed(() => metalService.value?.sections[0]?.points ?? []);
 
 const serviceNumber = (index: number) => String(index + 1).padStart(2, "0");
-
-const splitSpecification = (specification: string) => {
-  const [label, ...value] = specification.split(" — ");
-
-  return {
-    label,
-    value: value.join(" — "),
-  };
+const sectionNumber = (slug: string) => {
+  return serviceNumber(services.value.findIndex((service) => service.slug === slug));
 };
 
 usePageSeo({
@@ -62,15 +62,15 @@ usePageSeo({
               <a
                 :href="`#${service.slug}`"
                 class="group flex h-full min-h-[clamp(11rem,13vw,15.5rem)] flex-col rounded-[clamp(1.5rem,2.1vw,2.5rem)] p-[clamp(1.5rem,2vw,2.4rem)] transition-colors"
-                :class="index === 1 ? 'bg-ink text-white hover:bg-brand' : 'bg-white text-heading hover:bg-ink hover:text-white'"
+                :class="service.slug === 'serwis-24-7' ? 'bg-ink text-white hover:bg-brand' : 'bg-white text-heading hover:bg-ink hover:text-white'"
               >
-                <span class="text-[clamp(1rem,1.15vw,1.38rem)] font-semibold leading-none" :class="index === 1 ? 'text-white' : 'text-brand group-hover:text-white'">
+                <span class="text-[clamp(1rem,1.15vw,1.38rem)] font-semibold leading-none" :class="service.slug === 'serwis-24-7' ? 'text-white' : 'text-brand group-hover:text-white'">
                   {{ serviceNumber(index) }}
                 </span>
                 <span class="mt-auto pt-8 text-[clamp(1.1rem,1.2vw,1.45rem)] font-bold leading-[1.25]">
                   {{ service.label }}
                 </span>
-                <span aria-hidden="true" class="mt-4 transition-transform group-hover:translate-x-1" :class="index === 1 ? 'text-white' : 'text-brand group-hover:text-white'">→</span>
+                <span aria-hidden="true" class="mt-4 transition-transform group-hover:translate-x-1" :class="service.slug === 'serwis-24-7' ? 'text-white' : 'text-brand group-hover:text-white'">→</span>
               </a>
             </li>
           </ul>
@@ -79,12 +79,14 @@ usePageSeo({
     </section>
 
     <section
+      v-if="designService"
+      v-bind="studioEditable(designService.id)"
       :id="designService.slug"
       class="scroll-mt-[var(--site-header-height)] bg-white py-[clamp(3.5rem,4.1vw,5rem)]"
       :aria-labelledby="`${designService.slug}-title`"
     >
       <div class="design-shell">
-        <SectionEyebrow :label="serviceNumber(0)" />
+        <SectionEyebrow :label="sectionNumber(designService.slug)" />
         <h2 :id="`${designService.slug}-title`" class="design-heading mt-[clamp(1.75rem,2.5vw,3rem)] max-w-[22ch]">
           {{ designService.label }}
         </h2>
@@ -142,6 +144,8 @@ usePageSeo({
     </section>
 
     <section
+      v-if="emergencyService"
+      v-bind="studioEditable(emergencyService.id)"
       :id="emergencyService.slug"
       class="scroll-mt-[var(--site-header-height)] py-[clamp(3.5rem,4.1vw,5rem)]"
       :aria-labelledby="`${emergencyService.slug}-title`"
@@ -150,7 +154,7 @@ usePageSeo({
         <div class="rounded-[clamp(1.75rem,3.1vw,3.75rem)] bg-ink px-[clamp(1.5rem,3.85vw,4.6rem)] py-[clamp(2.5rem,4.6vw,5.5rem)] text-white">
           <p class="flex items-center gap-5 text-[clamp(0.8rem,0.92vw,1.1rem)] font-medium uppercase leading-none tracking-[0.24em] text-white/70">
             <span aria-hidden="true" class="h-0.5 w-16 shrink-0 bg-brand lg:w-24" />
-            {{ serviceNumber(1) }}
+            {{ sectionNumber(emergencyService.slug) }}
           </p>
           <h2 :id="`${emergencyService.slug}-title`" class="design-heading mt-[clamp(1.75rem,2.5vw,3rem)] text-white">
             {{ emergencyService.label }}
@@ -206,12 +210,14 @@ usePageSeo({
     </section>
 
     <section
+      v-if="repairService"
+      v-bind="studioEditable(repairService.id)"
       :id="repairService.slug"
       class="scroll-mt-[var(--site-header-height)] bg-white py-[clamp(3.5rem,4.1vw,5rem)]"
       :aria-labelledby="`${repairService.slug}-title`"
     >
       <div class="design-shell">
-        <SectionEyebrow :label="serviceNumber(2)" />
+        <SectionEyebrow :label="sectionNumber(repairService.slug)" />
         <h2 :id="`${repairService.slug}-title`" class="design-heading mt-[clamp(1.75rem,2.5vw,3rem)] max-w-[22ch]">
           {{ repairService.label }}
         </h2>
@@ -269,12 +275,14 @@ usePageSeo({
     </section>
 
     <section
+      v-if="metalService"
+      v-bind="studioEditable(metalService.id)"
       :id="metalService.slug"
       class="scroll-mt-[var(--site-header-height)] py-[clamp(3.5rem,4.1vw,5rem)]"
       :aria-labelledby="`${metalService.slug}-title`"
     >
       <div class="design-shell">
-        <SectionEyebrow :label="serviceNumber(3)" />
+        <SectionEyebrow :label="sectionNumber(metalService.slug)" />
         <h2 :id="`${metalService.slug}-title`" class="design-heading mt-[clamp(1.75rem,2.5vw,3rem)]">
           {{ metalService.label }}
         </h2>
@@ -313,11 +321,11 @@ usePageSeo({
               <dl class="mt-[clamp(1.5rem,2.1vw,2.5rem)] border-t-2 border-line">
                 <div
                   v-for="specification in machine.specifications"
-                  :key="specification"
+                  :key="specification.label"
                   class="flex items-start justify-between gap-6 border-b border-line py-[clamp(0.65rem,0.8vw,0.95rem)] text-[clamp(0.9rem,0.92vw,1.1rem)] leading-snug"
                 >
-                  <dt class="text-muted">{{ splitSpecification(specification).label }}</dt>
-                  <dd class="text-right font-semibold text-heading">{{ splitSpecification(specification).value }}</dd>
+                  <dt class="text-muted">{{ specification.label }}</dt>
+                  <dd class="text-right font-semibold text-heading">{{ specification.value }}</dd>
                 </div>
               </dl>
             </article>
@@ -331,12 +339,14 @@ usePageSeo({
     </section>
 
     <section
+      v-if="weldingService"
+      v-bind="studioEditable(weldingService.id)"
       :id="weldingService.slug"
       class="scroll-mt-[var(--site-header-height)] bg-white py-[clamp(3.5rem,4.1vw,5rem)]"
       :aria-labelledby="`${weldingService.slug}-title`"
     >
       <div class="design-shell">
-        <SectionEyebrow :label="serviceNumber(4)" />
+        <SectionEyebrow :label="sectionNumber(weldingService.slug)" />
         <h2 :id="`${weldingService.slug}-title`" class="design-heading mt-[clamp(1.75rem,2.5vw,3rem)] max-w-[22ch]">
           {{ weldingService.label }}
         </h2>

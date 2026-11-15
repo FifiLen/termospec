@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { searchQuickLinkGroups } from "~~/data/search";
-import { serviceNavigation } from "~~/data/navigation";
+import { toServiceNavigation } from "~~/data/navigation";
 import { normalizeCatalogueCategories } from "~/utils/product-catalogue";
 
 const route = useRoute()
 const config = useRuntimeConfig()
 
 const company = await useCompany()
+const services = await useServices()
+const serviceNavigation = computed(() => toServiceNavigation(services.value))
 useSiteSeo(company)
 
 const searchTerm = ref('')

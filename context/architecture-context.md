@@ -37,10 +37,11 @@ Recommended separation:
 - Homepage sections: one structured file or content entry.
 - Offer/product categories: structured array with slugs.
 - Detail pages: content files or structured records by slug.
+- Services: the Studio collection `services` (`content/services/<slug>.yml`, `schemas/service.ts`, `/api/content/services`, `useServices`). The server endpoint and the Studio preview both order and filter records through `orderServicesByLayout` from `data/services.ts`, and `app.vue` derives the services menu from the same list with `toServiceNavigation`.
 - Contact details: one source of truth — the Studio-editable `content/company.yml` (`schemas/company.ts`, `/api/content/company`). Pages and `app.vue` read it with `await useCompany()` and pass it to components as props; `useSiteSeo` builds the Organization JSON-LD from it. Formatting helpers (`telephoneHref`, `companyMapUrl`) live in `app/utils/company.ts` so public components never import zod schemas.
 - Reusable CTA copy: one source of truth.
 - Search index pages: root-level `content/*.md` entries for existing public routes. The server-only `/api/content/site` endpoint builds navigation and search sections with Nuxt Content; Nuxt UI `UContentSearch` receives the resulting JSON and never initializes the browser SQLite/WASM adapter.
-- Root `content/*.md` page entries should mirror the current public page content closely enough for global search. When visible copy changes in Vue components, `content/home.yml`, `data/home.ts`, product YAML, team YAML, or footer/header UI, update the matching markdown index entry in the same work unit.
+- Root `content/*.md` page entries should mirror the current public page content closely enough for global search. When visible copy changes in Vue components, `content/home.yml`, `data/home.ts`, product YAML, service YAML, or footer/header UI, update the matching markdown index entry in the same work unit.
 - Supplemental search quick links: `data/search.ts` contains visible UI/footer labels that should be searchable but do not yet have dedicated content pages. These quick links must point only to existing routes or anchors until standalone pages are confirmed.
 - Confirmed product navigation: the Studio-editable `content/catalogue.yml` file defines the fixed internal `01–09` taxonomy for the public `/produkty` catalogue, desktop mega menu, and mobile product hierarchy; the numeric prefixes are not rendered in the catalogue sidebar. Every taxonomy entry has an immutable `id`. Published records from `content/products/` are merged through `cataloguePlacement.entryId`, never through their editable title; Studio preview additionally shows placed draft records with a `szkic` marker. Model and series entries render as controlled horizontal tabs. The selected entry id is the single source of UI state, is reflected in the URL hash, and is preserved across reactive product-document refreshes while that id still exists in the active branch. No separate product route is introduced. Product entries distinguish individual models, compact series labels, and descriptive capability lines; each main category and uppercase subcategory retains an optional render field for the client-supplied August artwork. The five service categories remain sourced from `data/navigation.ts` for desktop, mobile, and `/uslugi`.
 - Detailed product-family identity comes from the unique content filename (`content/products/<slug>.yml` or `.json`). The same stable value is stored as `cataloguePlacement.entryId` and referenced by the matching `content/catalogue.yml` entry. The visible title can therefore change without breaking the relationship or creating a duplicate tab.
@@ -147,7 +148,6 @@ Pages should be composed from reusable sections:
 - `ProductCatalogueTabs`
 - `ProductCatalogueDetail`
 - `ProductCatalogueDisclosure`
-- `TeamGrid`
 
 Components should accept data through props. Do not make every component fetch or define its own data.
 

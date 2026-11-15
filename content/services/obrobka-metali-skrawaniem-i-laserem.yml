@@ -1,0 +1,81 @@
+label: Obróbka metali
+intro:
+  - Maszyny CNC (Computer Numerical Control) umożliwiły przełom w produkcji przemysłowej dzięki automatyzacji i precyzji obróbki skrawaniem.
+  - "Firma Termospec świadczy następujące usługi w tym zakresie:"
+sections:
+  - points:
+      - frezowanie – proces usuwania materiału za pomocą obrotowego narzędzia – frezu
+      - cięcie – oddzielanie części materiału od całości przy użyciu pił, laserów lub plazmy
+      - toczenie – obróbka materiału obracającego się wokół własnej osi, podczas gdy narzędzie skrawające usuwa jego nadmiar
+      - szlifowanie – proces ścierania materiału za pomocą narzędzia szlifierskiego
+      - wiercenie – tworzenie otworów w materiale przy użyciu specjalnych wierteł
+machines:
+  - title: Pionowe centrum obróbcze Mazak VTC 820/20
+    description: To pionowe centrum obróbcze zostało zaprojektowane do wszechstronnych zastosowań w obróbce skrawaniem. Maszyna charakteryzuje się dużym zakresem ruchu we wszystkich trzech osiach oraz elastycznością i wysoką precyzją.
+    specifications:
+      - label: przesuw w osi X
+        value: 2000 mm
+      - label: przesuw w osi Y
+        value: 820 mm
+      - label: przesuw w osi Z
+        value: 720 mm
+      - label: długość stołu
+        value: 2500 mm
+      - label: szerokość stołu
+        value: 820 mm
+      - label: maks. obroty wrzeciona
+        value: 12 000 rpm
+      - label: moc silnika wrzeciona
+        value: 22 kW
+  - title: Tokarka CNC SMEC SL 2000M
+    description: To zaawansowana maszyna do obróbki skrawaniem, wyposażona w funkcje toczenia oraz frezowania dzięki zastosowaniu narzędzi obrotowych. Jest to model z serii SL 2000, produkowany przez firmę SMEC (Samsung Machine Tools Engineering Company).
+    specifications:
+      - label: maks. średnica nad łożem
+        value: 570 mm
+      - label: maks. średnica toczenia
+        value: 360 mm
+      - label: maks. długość toczenia
+        value: 520 mm
+      - label: maks. średnica obróbki z pręta
+        value: 68 mm
+      - label: prędkość obrotowa
+        value: 4500 rpm
+      - label: chwyt wrzeciona
+        value: A 2-6"
+      - label: prześwit wrzeciona
+        value: 76 mm
+      - label: średnica uchwytu 3-szczękowego
+        value: 8"
+      - label: moment obrotowy (maks./100%)
+        value: 410/249 Nm
+  - title: Pionowy automat tokarski SLV800M RH
+    description: Jest to zaawansowane centrum obróbcze przeznaczone do skomplikowanych operacji toczenia i frezowania dużych komponentów.
+    specifications:
+      - label: maks. średnica nad łożem
+        value: 890 mm
+      - label: maks. średnica toczenia
+        value: 830 mm
+      - label: maks. długość toczenia
+        value: 775 mm
+      - label: maks. średnica frezowania
+        value: 624 mm
+      - label: prędkość obrotowa
+        value: 1500 rpm
+      - label: chwyt wrzeciona
+        value: A 2-11"
+      - label: średnica uchwytu 3-szczękowego
+        value: 24"
+      - label: moment obrotowy (maks./100%)
+        value: 1158/850 Nm
+  - title: Wypalarka plazmowa Alubran CNC 3050 PRO
+    description: Wypalarka plazmowa CNC to maszyna przemysłowa wykorzystywana do precyzyjnego cięcia metali za pomocą plazmy, kontrolowana komputerowo (CNC). Jest stosowana do cięcia blach, rur i innych elementów stalowych.
+    specifications:
+      - label: wielkość stołu
+        value: 1550 × 3050 mm
+      - label: wysokość wycinanych elementów
+        value: do 220 mm
+      - label: źródło plazmy
+        value: EX-TRAFIRE 100 SD
+      - label: palnik
+        value: FHT-EX 105 TXH
+closing: Na wyposażeniu parku maszynowego posiadamy również wycinarkę laserową o powierzchni roboczej 3000 × 1500 mm oraz znakowarkę laserową Fiber Laser.

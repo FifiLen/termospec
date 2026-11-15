@@ -4,6 +4,7 @@ import { homeSchema } from './schemas/home'
 import { productSchema } from './schemas/product'
 import { productTranslationRecordSchema } from './schemas/product-translation'
 import { realizationSchema } from './schemas/realization'
+import { serviceSchema } from './schemas/service'
 
 export default defineContentConfig({
   collections: {
@@ -67,21 +68,10 @@ export default defineContentConfig({
         { columns: ['locale', 'status'] },
       ],
     }),
-    team: defineCollection({
+    services: defineCollection({
       type: 'data',
-      source: 'team/*.yml',
-      schema: z.object({
-        name: z.string(),
-        role: z.string(),
-        photo: z.string().optional().default(''),
-        bio: z.string(),
-        email: z.string().email().optional(),
-        department: z.string().default('dział operacji'),
-        order: z.number().default(100),
-      }),
-      indexes: [
-        { columns: ['order'] },
-      ],
+      source: 'services/*.yml',
+      schema: serviceSchema,
     }),
     realizations: defineCollection({
       type: 'data',
